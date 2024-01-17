@@ -67,10 +67,10 @@ def log_likelihood_function(
     """
     constant = jnp.array(-1.0) if negative else jnp.array(1.0)
 
-    if not jnp.isclose(jnp.mean(y), 0):
-        raise ValueError(
-            "Data must be centered at 0. Please center data first using y - mean(y)."
-        )
+    # if not jnp.isclose(jnp.mean(y), 0):
+    #     raise ValueError(
+    #         "Data must be centered at 0. Please center data first using y - mean(y)."
+    #     )
 
     D_background = gpx.Dataset(
         X=X[mask].reshape(-1, 1),

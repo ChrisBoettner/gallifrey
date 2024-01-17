@@ -2,6 +2,7 @@ import warnings
 from copy import deepcopy
 from typing import Optional
 
+import jax
 import jax.numpy as jnp
 import jax.random as jr
 import optax as ox
@@ -175,6 +176,7 @@ class KernelSearch:
         fitting_mode: str = "scipy",
         num_iters: int = 1000,
         verbosity: int = 1,
+        clear_caches: bool = True,
     ):
         """Greedy search for optimal Gaussian process kernel structure.
 
@@ -212,7 +214,14 @@ class KernelSearch:
             (Maximum) number of iterations for the fitting, by default 1000.
         verbosity : int, optional
             Verbosity of the output between 0 and 2, by default 1
+        clear_caches: bool, optional
+            If True, clear jax jit caches when building the tree. Helps to avoid
+            certain tracing errors, by default True.
         """
+        if clear_caches:
+            jax.clear_caches()
+        self.clear_caches = clear_caches
+
         if isinstance(obs_stddev, float):
             obs_stddev = jnp.array(obs_stddev)
 
@@ -504,6 +513,9 @@ class KernelSearch:
             if return_full is True
 
         """
+        if self.clear_caches:
+            jax.clear_caches()
+
         layer = self.root
         all_nodes = []
 
@@ -521,7 +533,10 @@ class KernelSearch:
             # calculate and sort AICs
             current_aics = sorted([float(node.aic) for node in layer])
             if self.verbosity >= 1:
-                print(f"Layer {current_depth+1} || Current AICs: {current_aics}")
+                print(
+                    f"Layer {current_depth+1} || Current top AICs: "
+                    f"{current_aics[:n_leafs]}"
+                )
 
             # select best mdeols
             layer = self.select_top_nodes(layer, n_leafs)
