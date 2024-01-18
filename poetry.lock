@@ -1,0 +1,908 @@
+[[package]]
+name = "absl-py"
+version = "2.1.0"
+description = "Abseil Python Common Libraries, see https://github.com/abseil/abseil-py."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "astropy"
+version = "6.0.0"
+description = "Astronomy and astrophysics core library"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+astropy-iers-data = ">=0.2023.10.30.0.29.53"
+numpy = ">=1.22,<2"
+packaging = ">=19.0"
+pyerfa = ">=2.0"
+PyYAML = ">=3.13"
+
+[package.extras]
+all = ["astropy", "certifi", "dask", "h5py", "pyarrow (>=5.0.0)", "beautifulsoup4", "html5lib", "bleach", "pandas", "sortedcontainers", "pytz", "jplephem", "mpmath", "asdf-astropy (>=0.3)", "bottleneck", "ipython (>=4.2)", "pytest (>=7.0)", "typing-extensions (>=3.10.0.1)", "fsspec[http] (>=2023.4.0)", "s3fs (>=2023.4.0)", "pre-commit"]
+docs = ["astropy", "sphinx", "sphinx-astropy[confv2] (>=1.9.1)", "pytest (>=7.0)", "sphinx-changelog (>=1.2.0)", "sphinx-design", "Jinja2 (>=3.0)", "tomli"]
+recommended = ["scipy (>=1.5)", "matplotlib (>=3.3,!=3.4.0,!=3.5.2)"]
+test = ["pytest (>=7.0)", "pytest-doctestplus (>=0.12)", "pytest-astropy-header (>=0.2.1)", "pytest-astropy (>=0.10)", "pytest-xdist"]
+test_all = ["astropy", "objgraph", "ipython (>=4.2)", "coverage", "skyfield (>=1.20)", "sgp4 (>=2.3)"]
+
+[[package]]
+name = "astropy-iers-data"
+version = "0.2024.1.15.0.30.14"
+description = "IERS Earth Rotation and Leap Second tables for the astropy core package"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+docs = ["pytest"]
+test = ["pytest", "pytest-remotedata", "hypothesis"]
+
+[[package]]
+name = "atomicwrites"
+version = "1.4.1"
+description = "Atomic file writes."
+category = "dev"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
+name = "attrs"
+version = "23.2.0"
+description = "Classes Without Boilerplate"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+cov = ["attrs", "coverage[toml] (>=5.3)"]
+dev = ["attrs", "pre-commit"]
+docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-towncrier", "towncrier", "zope-interface"]
+tests = ["attrs", "zope-interface"]
+tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
+tests-no-zope = ["attrs", "cloudpickle", "hypothesis", "pympler", "pytest-xdist", "pytest (>=4.3.0)"]
+
+[[package]]
+name = "beartype"
+version = "0.16.4"
+description = "Unbearably fast runtime type checking in pure Python."
+category = "main"
+optional = false
+python-versions = ">=3.8.0"
+
+[package.extras]
+all = ["typing-extensions (>=3.10.0.0)"]
+dev = ["coverage (>=5.5)", "pandera", "typing-extensions (>=3.10.0.0)", "pytest (>=4.0.0)", "tox (>=3.20.1)", "sphinx (>=4.2.0,<6.0.0)", "pydata-sphinx-theme (<=0.7.2)", "autoapi (>=0.9.0)", "sphinxext-opengraph (>=0.7.5)", "mypy (>=0.800)", "sphinx", "numpy"]
+doc-rtd = ["sphinx (>=4.2.0,<6.0.0)", "pydata-sphinx-theme (<=0.7.2)", "autoapi (>=0.9.0)", "sphinxext-opengraph (>=0.7.5)"]
+test-tox = ["pandera", "typing-extensions (>=3.10.0.0)", "pytest (>=4.0.0)", "mypy (>=0.800)", "sphinx", "numpy"]
+test-tox-coverage = ["coverage (>=5.5)"]
+
+[[package]]
+name = "blackjax"
+version = "1.1.0"
+description = "Flexible and fast sampling in Python"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+develop = false
+
+[package.dependencies]
+fastprogress = ">=1.0.0"
+jax = ">=0.4.16"
+jaxlib = ">=0.4.16"
+jaxopt = ">=0.8"
+optax = ">=0.1.7"
+typing-extensions = ">=4.4.0"
+
+[package.source]
+type = "git"
+url = "https://github.com/blackjax-devs/blackjax"
+reference = "2c1d779f6f9ae20818dec375ff55496d6af2467c"
+resolved_reference = "2c1d779f6f9ae20818dec375ff55496d6af2467c"
+
+[[package]]
+name = "chex"
+version = "0.1.85"
+description = "Chex: Testing made fun, in JAX!"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+absl-py = ">=0.9.0"
+jax = ">=0.4.16"
+jaxlib = ">=0.1.37"
+numpy = ">=1.24.1"
+toolz = ">=0.9.0"
+typing-extensions = ">=4.2.0"
+
+[[package]]
+name = "cloudpickle"
+version = "3.0.0"
+description = "Pickler class to extend the standard pickle.Pickler functionality"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "cola-ml"
+version = "0.0.5"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.10"
+
+[package.dependencies]
+cola-plum-dispatch = "0.1.4"
+optree = "*"
+pytreeclass = "*"
+scipy = "*"
+tqdm = ">=4.38"
+
+[package.extras]
+dev = ["pytest", "pytest-cov", "setuptools-scm", "pre-commit"]
+
+[[package]]
+name = "cola-plum-dispatch"
+version = "0.1.4"
+description = "Multiple dispatch in Python (with additional features for the CoLA library)"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+beartype = ">=0.16.2"
+typing-extensions = {version = "*", markers = "python_version <= \"3.10\""}
+
+[package.extras]
+dev = ["black (==23.9.0)", "build", "coveralls", "ghp-import", "ipython", "jupyter-book", "mypy", "numpy", "pre-commit", "pyright (>=1.1.323)", "pytest-cov", "pytest (>=6)", "tox", "wheel"]
+
+[[package]]
+name = "colorama"
+version = "0.4.6"
+description = "Cross-platform colored terminal text."
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
+
+[[package]]
+name = "coverage"
+version = "7.4.0"
+description = "Code coverage measurement for Python"
+category = "dev"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+toml = ["tomli"]
+
+[[package]]
+name = "decorator"
+version = "5.1.1"
+description = "Decorators for Humans"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "dm-tree"
+version = "0.1.8"
+description = "Tree is a library for working with nested data structures."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "equinox"
+version = "0.11.3"
+description = "Elegant easy-to-use neural networks in JAX."
+category = "main"
+optional = false
+python-versions = "~=3.9"
+
+[package.dependencies]
+jax = ">=0.4.13"
+jaxtyping = ">=0.2.20"
+typing-extensions = ">=4.5.0"
+
+[[package]]
+name = "etils"
+version = "1.6.0"
+description = "Collection of common python utils"
+category = "main"
+optional = false
+python-versions = ">=3.10"
+
+[package.dependencies]
+etils = {version = "*", extras = ["epy"], optional = true, markers = "extra == \"epath\""}
+fsspec = {version = "*", optional = true, markers = "extra == \"epath\""}
+importlib_resources = {version = "*", optional = true, markers = "extra == \"epath\""}
+typing_extensions = {version = "*", optional = true, markers = "extra == \"epath\""}
+zipp = {version = "*", optional = true, markers = "extra == \"epath\""}
+
+[package.extras]
+all = ["etils", "etils", "etils", "etils", "etils", "etils", "etils", "etils", "etils", "etils", "etils", "etils", "etils", "etils"]
+array-types = ["etils"]
+dev = ["pytest", "pytest-subtests", "pytest-xdist", "pyink", "pylint (>=2.6.0)", "chex", "torch", "optree", "dataclass-array"]
+docs = ["sphinx-apitree", "etils"]
+eapp = ["absl-py", "simple-parsing", "etils"]
+ecolab = ["jupyter", "numpy", "mediapy", "packaging", "protobuf", "etils", "etils", "etils"]
+edc = ["etils"]
+enp = ["numpy", "etils"]
+epath = ["fsspec", "importlib-resources", "typing-extensions", "zipp", "etils"]
+epath-gcs = ["gcsfs", "etils"]
+epath-s3 = ["s3fs", "etils"]
+epy = ["typing-extensions"]
+etqdm = ["absl-py", "tqdm", "etils"]
+etree = ["etils", "etils", "etils", "etils"]
+etree-dm = ["dm-tree", "etils"]
+etree-jax = ["jax", "etils"]
+etree-tf = ["tensorflow", "etils"]
+lazy-imports = ["etils"]
+
+[[package]]
+name = "fastprogress"
+version = "1.0.3"
+description = "A nested progress with plotting options for fastai"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "fsspec"
+version = "2023.12.2"
+description = "File-system specification"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+abfs = ["adlfs"]
+adl = ["adlfs"]
+arrow = ["pyarrow (>=1)"]
+dask = ["dask", "distributed"]
+devel = ["pytest", "pytest-cov"]
+dropbox = ["dropboxdrivefs", "requests", "dropbox"]
+full = ["adlfs", "aiohttp (!=4.0.0a0,!=4.0.0a1)", "dask", "distributed", "dropbox", "dropboxdrivefs", "fusepy", "gcsfs", "libarchive-c", "ocifs", "panel", "paramiko", "pyarrow (>=1)", "pygit2", "requests", "s3fs", "smbprotocol", "tqdm"]
+fuse = ["fusepy"]
+gcs = ["gcsfs"]
+git = ["pygit2"]
+github = ["requests"]
+gs = ["gcsfs"]
+gui = ["panel"]
+hdfs = ["pyarrow (>=1)"]
+http = ["requests", "aiohttp (!=4.0.0a0,!=4.0.0a1)"]
+libarchive = ["libarchive-c"]
+oci = ["ocifs"]
+s3 = ["s3fs"]
+sftp = ["paramiko"]
+smb = ["smbprotocol"]
+ssh = ["paramiko"]
+tqdm = ["tqdm"]
+
+[[package]]
+name = "gast"
+version = "0.5.4"
+description = "Python AST that abstracts the underlying Python version"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
+name = "gpjax"
+version = "0.8.0"
+description = "Gaussian processes in JAX."
+category = "main"
+optional = false
+python-versions = ">=3.10,<3.12"
+
+[package.dependencies]
+beartype = ">=0.16.2,<0.17.0"
+cola-ml = ">=0.0.5,<0.0.6"
+jax = ">=0.4.10"
+jaxlib = ">=0.4.10"
+jaxopt = ">=0.8.2,<0.9.0"
+jaxtyping = ">=0.2.15,<0.3.0"
+optax = ">=0.1.4,<0.2.0"
+orbax-checkpoint = ">=0.2.3"
+simple-pytree = ">=0.1.7,<0.2.0"
+tensorflow-probability = ">=0.19.0,<0.20.0"
+tqdm = ">=4.65.0,<5.0.0"
+
+[[package]]
+name = "importlib-resources"
+version = "6.1.1"
+description = "Read resources from Python packages"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+docs = ["sphinx (>=3.5)", "sphinx (<7.2.5)", "jaraco.packaging (>=9.3)", "rst.linker (>=1.9)", "furo", "sphinx-lint", "jaraco.tidelift (>=1.4)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ruff", "zipp (>=3.17)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
+
+[[package]]
+name = "jax"
+version = "0.4.23"
+description = "Differentiate, compile, and transform Numpy code."
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+ml-dtypes = ">=0.2.0"
+numpy = ">=1.22"
+opt-einsum = "*"
+scipy = ">=1.9"
+
+[package.extras]
+australis = ["protobuf (>=3.13,<4)"]
+ci = ["jaxlib (==0.4.22)"]
+cpu = ["jaxlib (==0.4.23)"]
+cuda = ["jaxlib (==0.4.23+cuda11.cudnn86)"]
+cuda11_cudnn86 = ["jaxlib (==0.4.23+cuda11.cudnn86)"]
+cuda11_local = ["jaxlib (==0.4.23+cuda11.cudnn86)"]
+cuda11_pip = ["jaxlib (==0.4.23+cuda11.cudnn86)", "nvidia-cublas-cu11 (>=11.11)", "nvidia-cuda-cupti-cu11 (>=11.8)", "nvidia-cuda-nvcc-cu11 (>=11.8)", "nvidia-cuda-runtime-cu11 (>=11.8)", "nvidia-cudnn-cu11 (>=8.8)", "nvidia-cufft-cu11 (>=10.9)", "nvidia-cusolver-cu11 (>=11.4)", "nvidia-cusparse-cu11 (>=11.7)", "nvidia-nccl-cu11 (>=2.18.3)"]
+cuda12 = ["jaxlib (==0.4.23)", "jax-cuda12-plugin (==0.4.23)", "nvidia-cublas-cu12 (>=12.2.5.6)", "nvidia-cuda-cupti-cu12 (>=12.2.142)", "nvidia-cuda-nvcc-cu12 (>=12.2.140)", "nvidia-cuda-runtime-cu12 (>=12.2.140)", "nvidia-cudnn-cu12 (>=8.9)", "nvidia-cufft-cu12 (>=11.0.8.103)", "nvidia-cusolver-cu12 (>=11.5.2)", "nvidia-cusparse-cu12 (>=12.1.2.141)", "nvidia-nccl-cu12 (>=2.18.3)", "nvidia-nvjitlink-cu12 (>=12.2)"]
+cuda12_local = ["jaxlib (==0.4.23+cuda12.cudnn89)"]
+cuda12_pip = ["jaxlib (==0.4.23+cuda12.cudnn89)", "nvidia-cublas-cu12 (>=12.2.5.6)", "nvidia-cuda-cupti-cu12 (>=12.2.142)", "nvidia-cuda-nvcc-cu12 (>=12.2.140)", "nvidia-cuda-runtime-cu12 (>=12.2.140)", "nvidia-cudnn-cu12 (>=8.9)", "nvidia-cufft-cu12 (>=11.0.8.103)", "nvidia-cusolver-cu12 (>=11.5.2)", "nvidia-cusparse-cu12 (>=12.1.2.141)", "nvidia-nccl-cu12 (>=2.18.3)", "nvidia-nvjitlink-cu12 (>=12.2)"]
+minimum-jaxlib = ["jaxlib (==0.4.19)"]
+tpu = ["jaxlib (==0.4.23)", "libtpu-nightly (==0.1.dev20231213)", "requests"]
+
+[[package]]
+name = "jaxlib"
+version = "0.4.23"
+description = "XLA library for JAX"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+ml-dtypes = ">=0.2.0"
+numpy = ">=1.22"
+scipy = ">=1.9"
+
+[package.extras]
+cuda11_pip = ["nvidia-cublas-cu11 (>=11.11)", "nvidia-cuda-cupti-cu11 (>=11.8)", "nvidia-cuda-nvcc-cu11 (>=11.8)", "nvidia-cuda-runtime-cu11 (>=11.8)", "nvidia-cudnn-cu11 (>=8.8)", "nvidia-cufft-cu11 (>=10.9)", "nvidia-cusolver-cu11 (>=11.4)", "nvidia-cusparse-cu11 (>=11.7)"]
+cuda12_pip = ["nvidia-cublas-cu12", "nvidia-cuda-cupti-cu12", "nvidia-cuda-nvcc-cu12", "nvidia-cuda-runtime-cu12", "nvidia-cudnn-cu12 (>=8.9)", "nvidia-cufft-cu12", "nvidia-cusolver-cu12", "nvidia-cusparse-cu12"]
+
+[[package]]
+name = "jaxoplanet"
+version = "0.0.2.dev62+g2c18af9"
+description = "Probabilistic models for exoplanet inference in JAX"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+develop = false
+
+[package.dependencies]
+equinox = "*"
+jax = "*"
+jaxlib = "*"
+jpu = ">=0.0.2"
+
+[package.extras]
+comparison = ["numpy (<1.22)", "starry", "tqdm", "xarray (<2023.10.0)"]
+dev = ["black", "nox", "pre-commit", "pytest", "ruff", "sympy"]
+docs = ["arviz", "corner", "jaxopt", "matplotlib", "myst-nb", "numpyro", "numpyro-ext", "sphinx-book-theme", "sphinx-design"]
+test = ["batman-package", "exoplanet-core", "pytest", "pytest-xdist"]
+test-math = ["sympy"]
+
+[package.source]
+type = "git"
+url = "https://github.com/exoplanet-dev/jaxoplanet"
+reference = "2c18af9a80aa030b5ff0f0e59bc892581b6248ec"
+resolved_reference = "2c18af9a80aa030b5ff0f0e59bc892581b6248ec"
+
+[[package]]
+name = "jaxopt"
+version = "0.8.3"
+description = "Hardware accelerated, batchable and differentiable optimizers in JAX."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+jax = ">=0.2.18"
+jaxlib = ">=0.1.69"
+numpy = ">=1.18.4"
+scipy = ">=1.0.0"
+
+[[package]]
+name = "jaxtyping"
+version = "0.2.25"
+description = "Type annotations and runtime checking for shape and dtype of JAX arrays, and PyTrees."
+category = "main"
+optional = false
+python-versions = "~=3.9"
+
+[package.dependencies]
+numpy = ">=1.20.0"
+typeguard = ">=2.13.3,<3"
+typing-extensions = ">=3.7.4.1"
+
+[[package]]
+name = "jpu"
+version = "0.0.3"
+description = "JAX + Units"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+jax = "*"
+jaxlib = "*"
+pint = "*"
+
+[package.extras]
+test = ["pytest"]
+
+[[package]]
+name = "ml-dtypes"
+version = "0.3.2"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+numpy = [
+    {version = ">1.20", markers = "python_version < \"3.10\""},
+    {version = ">=1.21.2", markers = "python_version >= \"3.10\""},
+]
+
+[package.extras]
+dev = ["absl-py", "pytest", "pytest-xdist", "pylint (>=2.6.0)", "pyink"]
+
+[[package]]
+name = "more-itertools"
+version = "10.2.0"
+description = "More routines for operating on iterables, beyond itertools"
+category = "dev"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "msgpack"
+version = "1.0.7"
+description = "MessagePack serializer"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "nest-asyncio"
+version = "1.5.9"
+description = "Patch asyncio to allow nested event loops"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "numpy"
+version = "1.26.3"
+description = "Fundamental package for array computing in Python"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[[package]]
+name = "opt-einsum"
+version = "3.3.0"
+description = "Optimizing numpys einsum function"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+numpy = ">=1.7"
+
+[package.extras]
+docs = ["sphinx (==1.2.3)", "sphinxcontrib-napoleon", "sphinx-rtd-theme", "numpydoc"]
+tests = ["pytest", "pytest-cov", "pytest-pep8"]
+
+[[package]]
+name = "optax"
+version = "0.1.8"
+description = "A gradient processing and optimisation library in JAX."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+absl-py = ">=0.7.1"
+chex = ">=0.1.7"
+jax = ">=0.1.55"
+jaxlib = ">=0.1.37"
+numpy = ">=1.18.0"
+
+[package.extras]
+docs = ["sphinx (>=6.0.0)", "sphinx-book-theme (>=1.0.1)", "sphinxcontrib-katex", "sphinx-autodoc-typehints", "ipython (>=8.8.0)", "myst-nb (>=1.0.0)", "matplotlib (>=3.5.0)", "dm-haiku (>=0.0.11)", "sphinx-gallery (>=0.14.0)", "sphinx-collections (>=0.0.1)", "tensorflow (>=2.4.0)", "tensorflow-datasets (>=4.2.0)"]
+dp-accounting = ["absl-py (>=1.0.0)", "attrs (>=21.4.0)", "mpmath (>=1.2.1)", "numpy (>=1.21.4)", "scipy (>=1.7.1)"]
+examples = ["dm-haiku (>=0.0.3)", "tensorflow-datasets (>=4.2.0)", "tensorflow (>=2.4.0)"]
+test = ["dm-haiku (>=0.0.3)", "dm-tree (>=0.1.7)", "flax (==0.5.3)"]
+
+[[package]]
+name = "optree"
+version = "0.10.0"
+description = "Optimized PyTree Utilities."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+typing-extensions = ">=4.0.0"
+
+[package.extras]
+benchmark = ["jax[cpu] (>=0.4.6,<0.5.0a0)", "torch (>=2.0,<2.1.0a0)", "torchvision", "dm-tree (>=0.1,<0.2.0a0)", "pandas", "tabulate", "termcolor"]
+docs = ["sphinx (>=5.2.1)", "sphinx-autoapi", "sphinx-autobuild", "sphinx-copybutton", "sphinx-rtd-theme", "sphinxcontrib-bibtex", "sphinx-autodoc-typehints (>=1.19.2)", "docutils", "jax", "numpy", "torch"]
+jax = ["jax"]
+lint = ["isort (>=5.11.0)", "black (>=22.6.0)", "pylint[spelling] (>=2.15.0)", "mypy (>=0.990)", "flake8", "flake8-bugbear", "flake8-comprehensions", "flake8-docstrings", "flake8-pyi", "flake8-simplify", "ruff", "doc8 (<1.0.0a0)", "pydocstyle", "pyenchant", "xdoctest", "cpplint", "pre-commit"]
+numpy = ["numpy"]
+test = ["pytest", "pytest-cov", "pytest-xdist"]
+torch = ["torch"]
+
+[[package]]
+name = "orbax-checkpoint"
+version = "0.5.0"
+description = "Orbax Checkpoint"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+absl-py = "*"
+etils = {version = "*", extras = ["epath", "epy"]}
+jax = ">=0.4.9"
+jaxlib = "*"
+msgpack = "*"
+nest_asyncio = "*"
+numpy = "*"
+protobuf = "*"
+pyyaml = "*"
+tensorstore = ">=0.1.51"
+typing_extensions = "*"
+
+[package.extras]
+testing = ["flax", "pytest", "pytest-xdist"]
+
+[[package]]
+name = "packaging"
+version = "23.2"
+description = "Core utilities for Python packages"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
+name = "pint"
+version = "0.23"
+description = "Physical quantities module"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+typing-extensions = "*"
+
+[package.extras]
+babel = ["babel (<=2.8)"]
+bench = ["pytest", "pytest-codspeed"]
+dask = ["dask"]
+mip = ["mip (>=1.13)"]
+numpy = ["numpy (>=1.19.5)"]
+pandas = ["pint-pandas (>=0.3)"]
+test = ["pytest", "pytest-mpl", "pytest-cov", "pytest-subtests", "pytest-benchmark"]
+testbase = ["pytest", "pytest-cov", "pytest-subtests", "pytest-benchmark"]
+uncertainties = ["uncertainties (>=3.1.6)"]
+xarray = ["xarray"]
+
+[[package]]
+name = "pluggy"
+version = "0.13.1"
+description = "plugin and hook calling mechanisms for python"
+category = "dev"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[package.extras]
+dev = ["pre-commit", "tox"]
+
+[[package]]
+name = "protobuf"
+version = "4.25.2"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "py"
+version = "1.11.0"
+description = "library with cross-python path, ini-parsing, io, code, log facilities"
+category = "dev"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[[package]]
+name = "pyerfa"
+version = "2.0.1.1"
+description = "Python bindings for ERFA"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+numpy = ">=1.19"
+
+[package.extras]
+docs = ["sphinx-astropy (>=1.3)"]
+test = ["pytest", "pytest-doctestplus (>=0.7)"]
+
+[[package]]
+name = "pytest"
+version = "5.4.3"
+description = "pytest: simple powerful testing with Python"
+category = "dev"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+atomicwrites = {version = ">=1.0", markers = "sys_platform == \"win32\""}
+attrs = ">=17.4.0"
+colorama = {version = "*", markers = "sys_platform == \"win32\""}
+more-itertools = ">=4.0.0"
+packaging = "*"
+pluggy = ">=0.12,<1.0"
+py = ">=1.5.0"
+wcwidth = "*"
+
+[package.extras]
+checkqa-mypy = ["mypy (==v0.761)"]
+testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xmlschema"]
+
+[[package]]
+name = "pytest-cov"
+version = "2.12.1"
+description = "Pytest plugin for measuring coverage."
+category = "dev"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[package.dependencies]
+coverage = ">=5.2.1"
+pytest = ">=4.6"
+toml = "*"
+
+[package.extras]
+testing = ["fields", "hunter", "process-tests", "six", "pytest-xdist", "virtualenv"]
+
+[[package]]
+name = "pytreeclass"
+version = "0.9.2"
+description = "Visualize, create, and operate on JAX PyTree in the most intuitive way possible."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+jax = ">=0.4.7"
+typing-extensions = "*"
+
+[[package]]
+name = "pyyaml"
+version = "6.0.1"
+description = "YAML parser and emitter for Python"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
+name = "scipy"
+version = "1.11.4"
+description = "Fundamental algorithms for scientific computing in Python"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+numpy = ">=1.21.6,<1.28.0"
+
+[package.extras]
+test = ["pytest", "pytest-cov", "pytest-timeout", "pytest-xdist", "asv", "mpmath", "gmpy2", "threadpoolctl", "scikit-umfpack", "pooch"]
+doc = ["sphinx (!=4.1.0)", "pydata-sphinx-theme (==0.9.0)", "sphinx-design (>=0.2.0)", "matplotlib (>2)", "numpydoc", "jupytext", "myst-nb", "pooch"]
+dev = ["mypy", "typing-extensions", "types-psutil", "pycodestyle", "ruff", "cython-lint (>=0.12.2)", "rich-click", "click", "doit (>=0.36.0)", "pydevtool"]
+
+[[package]]
+name = "simple-pytree"
+version = "0.1.7"
+description = ""
+category = "main"
+optional = false
+python-versions = ">=3.8,<3.12"
+
+[package.dependencies]
+jax = "*"
+jaxlib = "*"
+
+[[package]]
+name = "six"
+version = "1.16.0"
+description = "Python 2 and 3 compatibility utilities"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[[package]]
+name = "tensorflow-probability"
+version = "0.19.0"
+description = "Probabilistic modeling and statistical inference in TensorFlow"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+absl-py = "*"
+cloudpickle = ">=1.3"
+decorator = "*"
+dm-tree = "*"
+gast = ">=0.3.2"
+numpy = ">=1.13.3"
+six = ">=1.10.0"
+
+[package.extras]
+jax = ["jax", "jaxlib"]
+tfds = ["tensorflow-datasets (>=2.2.0)"]
+
+[[package]]
+name = "tensorstore"
+version = "0.1.52"
+description = "Read and write large, multi-dimensional arrays"
+category = "main"
+optional = false
+python-versions = ">=3.9"
+
+[package.dependencies]
+ml-dtypes = ">=0.3.1"
+numpy = ">=1.16.0"
+
+[[package]]
+name = "toml"
+version = "0.10.2"
+description = "Python Library for Tom's Obvious, Minimal Language"
+category = "dev"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[[package]]
+name = "toolz"
+version = "0.12.0"
+description = "List processing tools and functional utilities"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
+name = "tqdm"
+version = "4.66.1"
+description = "Fast, Extensible Progress Meter"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+colorama = {version = "*", markers = "platform_system == \"Windows\""}
+
+[package.extras]
+dev = ["pytest (>=6)", "pytest-cov", "pytest-timeout", "pytest-xdist"]
+notebook = ["ipywidgets (>=6)"]
+slack = ["slack-sdk"]
+telegram = ["requests"]
+
+[[package]]
+name = "typeguard"
+version = "2.13.3"
+description = "Run-time type checker for Python"
+category = "main"
+optional = false
+python-versions = ">=3.5.3"
+
+[package.extras]
+doc = ["sphinx-rtd-theme", "sphinx-autodoc-typehints (>=1.2.0)"]
+test = ["pytest", "typing-extensions", "mypy"]
+
+[[package]]
+name = "typing-extensions"
+version = "4.9.0"
+description = "Backported and Experimental Type Hints for Python 3.8+"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[[package]]
+name = "wcwidth"
+version = "0.2.13"
+description = "Measures the displayed width of unicode strings in a terminal"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "zipp"
+version = "3.17.0"
+description = "Backport of pathlib-compatible object wrapper for zip files"
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.extras]
+docs = ["sphinx (>=3.5)", "sphinx (<7.2.5)", "jaraco.packaging (>=9.3)", "rst.linker (>=1.9)", "furo", "sphinx-lint", "jaraco.tidelift (>=1.4)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ruff", "jaraco.itertools", "jaraco.functools", "more-itertools", "big-o", "pytest-ignore-flaky", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
+
+[metadata]
+lock-version = "1.1"
+python-versions = "3.10"
+content-hash = "27f2f974a85264b799e88b1a7a8bb0c430a044865150c73578647e59f581264b"
+
+[metadata.files]
+absl-py = []
+astropy = []
+astropy-iers-data = []
+atomicwrites = []
+attrs = []
+beartype = []
+blackjax = []
+chex = []
+cloudpickle = []
+cola-ml = []
+cola-plum-dispatch = []
+colorama = []
+coverage = []
+decorator = []
+dm-tree = []
+equinox = []
+etils = []
+fastprogress = []
+fsspec = []
+gast = []
+gpjax = []
+importlib-resources = []
+jax = []
+jaxlib = []
+jaxoplanet = []
+jaxopt = []
+jaxtyping = []
+jpu = []
+ml-dtypes = []
+more-itertools = []
+msgpack = []
+nest-asyncio = []
+numpy = []
+opt-einsum = []
+optax = []
+optree = []
+orbax-checkpoint = []
+packaging = []
+pint = []
+pluggy = []
+protobuf = []
+py = []
+pyerfa = []
+pytest = []
+pytest-cov = []
+pytreeclass = []
+pyyaml = []
+scipy = []
+simple-pytree = []
+six = []
+tensorflow-probability = []
+tensorstore = []
+toml = []
+toolz = []
+tqdm = []
+typeguard = []
+typing-extensions = []
+wcwidth = []
+zipp = []
