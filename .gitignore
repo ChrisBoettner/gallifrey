@@ -10,7 +10,7 @@
 /data
 
 # exclude out files
-/notebooks
+# /notebooks
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
