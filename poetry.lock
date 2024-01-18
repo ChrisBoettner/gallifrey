@@ -41,30 +41,6 @@ docs = ["pytest"]
 test = ["pytest", "pytest-remotedata", "hypothesis"]
 
 [[package]]
-name = "atomicwrites"
-version = "1.4.1"
-description = "Atomic file writes."
-category = "dev"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-
-[[package]]
-name = "attrs"
-version = "23.2.0"
-description = "Classes Without Boilerplate"
-category = "dev"
-optional = false
-python-versions = ">=3.7"
-
-[package.extras]
-cov = ["attrs", "coverage[toml] (>=5.3)"]
-dev = ["attrs", "pre-commit"]
-docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-towncrier", "towncrier", "zope-interface"]
-tests = ["attrs", "zope-interface"]
-tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
-tests-no-zope = ["attrs", "cloudpickle", "hypothesis", "pympler", "pytest-xdist", "pytest (>=4.3.0)"]
-
-[[package]]
 name = "beartype"
 version = "0.16.4"
 description = "Unbearably fast runtime type checking in pure Python."
@@ -166,17 +142,6 @@ description = "Cross-platform colored terminal text."
 category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
-
-[[package]]
-name = "coverage"
-version = "7.4.0"
-description = "Code coverage measurement for Python"
-category = "dev"
-optional = false
-python-versions = ">=3.8"
-
-[package.extras]
-toml = ["tomli"]
 
 [[package]]
 name = "decorator"
@@ -461,14 +426,6 @@ numpy = [
 dev = ["absl-py", "pytest", "pytest-xdist", "pylint (>=2.6.0)", "pyink"]
 
 [[package]]
-name = "more-itertools"
-version = "10.2.0"
-description = "More routines for operating on iterables, beyond itertools"
-category = "dev"
-optional = false
-python-versions = ">=3.8"
-
-[[package]]
 name = "msgpack"
 version = "1.0.7"
 description = "MessagePack serializer"
@@ -604,31 +561,12 @@ uncertainties = ["uncertainties (>=3.1.6)"]
 xarray = ["xarray"]
 
 [[package]]
-name = "pluggy"
-version = "0.13.1"
-description = "plugin and hook calling mechanisms for python"
-category = "dev"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-
-[package.extras]
-dev = ["pre-commit", "tox"]
-
-[[package]]
 name = "protobuf"
 version = "4.25.2"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.8"
-
-[[package]]
-name = "py"
-version = "1.11.0"
-description = "library with cross-python path, ini-parsing, io, code, log facilities"
-category = "dev"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "pyerfa"
@@ -644,44 +582,6 @@ numpy = ">=1.19"
 [package.extras]
 docs = ["sphinx-astropy (>=1.3)"]
 test = ["pytest", "pytest-doctestplus (>=0.7)"]
-
-[[package]]
-name = "pytest"
-version = "5.4.3"
-description = "pytest: simple powerful testing with Python"
-category = "dev"
-optional = false
-python-versions = ">=3.5"
-
-[package.dependencies]
-atomicwrites = {version = ">=1.0", markers = "sys_platform == \"win32\""}
-attrs = ">=17.4.0"
-colorama = {version = "*", markers = "sys_platform == \"win32\""}
-more-itertools = ">=4.0.0"
-packaging = "*"
-pluggy = ">=0.12,<1.0"
-py = ">=1.5.0"
-wcwidth = "*"
-
-[package.extras]
-checkqa-mypy = ["mypy (==v0.761)"]
-testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xmlschema"]
-
-[[package]]
-name = "pytest-cov"
-version = "2.12.1"
-description = "Pytest plugin for measuring coverage."
-category = "dev"
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-
-[package.dependencies]
-coverage = ">=5.2.1"
-pytest = ">=4.6"
-toml = "*"
-
-[package.extras]
-testing = ["fields", "hunter", "process-tests", "six", "pytest-xdist", "virtualenv"]
 
 [[package]]
 name = "pytreeclass"
@@ -773,14 +673,6 @@ ml-dtypes = ">=0.3.1"
 numpy = ">=1.16.0"
 
 [[package]]
-name = "toml"
-version = "0.10.2"
-description = "Python Library for Tom's Obvious, Minimal Language"
-category = "dev"
-optional = false
-python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
-
-[[package]]
 name = "toolz"
 version = "0.12.0"
 description = "List processing tools and functional utilities"
@@ -826,14 +718,6 @@ optional = false
 python-versions = ">=3.8"
 
 [[package]]
-name = "wcwidth"
-version = "0.2.13"
-description = "Measures the displayed width of unicode strings in a terminal"
-category = "dev"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "zipp"
 version = "3.17.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
@@ -848,14 +732,12 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-ena
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.12"
-content-hash = "775518b57d467737b88fd3c11abb4d07286e3a22907a5e0b8acf907bb7ba2c3a"
+content-hash = "7c89cb5af8094ffe0d26e90d1086e7d37ddfd70dc7328ba3a8c52c63d1e595ab"
 
 [metadata.files]
 absl-py = []
 astropy = []
 astropy-iers-data = []
-atomicwrites = []
-attrs = []
 beartype = []
 blackjax = []
 chex = []
@@ -863,7 +745,6 @@ cloudpickle = []
 cola-ml = []
 cola-plum-dispatch = []
 colorama = []
-coverage = []
 decorator = []
 dm-tree = []
 equinox = []
@@ -880,7 +761,6 @@ jaxopt = []
 jaxtyping = []
 jpu = []
 ml-dtypes = []
-more-itertools = []
 msgpack = []
 nest-asyncio = []
 numpy = []
@@ -890,12 +770,8 @@ optree = []
 orbax-checkpoint = []
 packaging = []
 pint = []
-pluggy = []
 protobuf = []
-py = []
 pyerfa = []
-pytest = []
-pytest-cov = []
 pytreeclass = []
 pyyaml = []
 scipy = []
@@ -903,10 +779,8 @@ simple-pytree = []
 six = []
 tensorflow-probability = []
 tensorstore = []
-toml = []
 toolz = []
 tqdm = []
 typeguard = []
 typing-extensions = []
-wcwidth = []
 zipp = []

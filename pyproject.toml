@@ -21,23 +21,18 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"
-beartype = "0.16.4"
-gpjax = "0.8.0"
-jax = "0.4.23"
-jaxtyping = "0.2.25"
-numpy = "1.26.3"
-optax = "0.1.8"
-jaxopt = "0.8.3"
-tqdm = "4.66.1"
+beartype = "^0.16"
+gpjax = "^0.8"
+jax = "^0.4"
+jaxtyping = "^0.2"
+numpy = "^1.26"
+optax = "^0.1"
+jaxopt = "^0.8"
+tqdm = "^4.66"
+astropy = "^6.0.0"
 blackjax = { git = "https://github.com/blackjax-devs/blackjax", rev = "2c1d779f6f9ae20818dec375ff55496d6af2467c"  }
 jaxoplanet = { git = "https://github.com/exoplanet-dev/jaxoplanet", rev = "2c18af9a80aa030b5ff0f0e59bc892581b6248ec"  }
-astropy = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.dev-dependencies]
-pytest = "^5.2"
-pytest-cov = "^2.8"
-setuptools = "^42.0"
