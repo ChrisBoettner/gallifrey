@@ -1,7 +1,7 @@
 import gpjax as gpx
 import jax.numpy as jnp
 import tensorflow_probability.substrates.jax as tfp
-from beartype.typing import Callable
+from beartype.typing import Callable, Optional
 from gpjax.objectives import ConjugateMLL
 from gpjax.typing import Array, ScalarFloat
 from jax import jit
@@ -96,7 +96,7 @@ def log_likelihood_function(
         transit_dist = calculate_predictive_dist(
             gp_posterior,
             D_transit.X,  # type: ignore
-            D_background,
+            dataset=D_background,
         )
 
         def objective(params: Array) -> ScalarFloat:
@@ -138,7 +138,7 @@ def log_likelihood_function(
             transit_dist = calculate_predictive_dist(
                 updated_posterior,
                 D_transit.X,  # type: ignore
-                D_background,
+                dataset=D_background,
             )
             # calculate lightcurve model
             lightcurve = lc_model(D_transit.X, params["lc_parameter"])
@@ -162,21 +162,29 @@ def log_likelihood_function(
 def calculate_predictive_dist(
     posterior: gpx.gps.AbstractPosterior,
     input: Array,
-    train_data: gpx.Dataset,
+    dataset: Optional[gpx.Dataset] = None,
+    x: Optional[Array] = None,
+    y: Optional[Array] = None,
 ) -> tfp.distributions.Distribution:
-    """Calculate the predictive distribution
-    of the GP for a given input (x data), under
-    the observations given by train_data.
+    """
+    Calculate the predictive distribution of
+    the GP for a given input (x data),
+    under the observations, which can be either given as
+    a gpjax Dataset or using x, y from which the Dataset
+    gets constructed.
 
     Parameters
     ----------
     posterior : gpx.gps.AbstractPosterior
         The GPJax posterior object.
     input : Array
-        The (x) values at which to calculate the
-        distribution
-    train_data : gpx.Dataset
+        The x values at which to calculate the distribution.
+    dataset : gpx.Dataset, optional
         The training data to condition the GP on.
+    x : Array, optional
+        The x values of the training data.
+    y : Array, optional
+        The y values of the training data.
 
     Returns
     -------
@@ -184,13 +192,28 @@ def calculate_predictive_dist(
         The predictive distribution. (Most likely
         multivariate Gaussian)
     """
-    if input.ndim == 1:
-        input = input.reshape(-1, 1)
 
-    latent_dist = posterior(
-        input,
-        train_data=train_data,
-    )
+    # Reshape input if needed
+    if input.ndim == 1:
+        input = jnp.asarray(input).reshape(-1, 1)
+
+    # Check if dataset is not provided
+    if dataset is None:
+        if x is None or y is None:
+            raise ValueError("Either dataset or x and y must be provided")
+
+        x = jnp.asarray(x)
+        y = jnp.asarray(y)
+
+        if x.ndim == 1:
+            x = x.reshape(-1, 1)
+        if y.ndim == 1:
+            y = y.reshape(-1, 1)
+
+        # Create dataset using x and y
+        dataset = gpx.Dataset(x, y)
+
+    latent_dist = posterior(input, train_data=dataset)
     predictive_dist = posterior.likelihood(
         latent_dist
     )  # adds observational uncertainty

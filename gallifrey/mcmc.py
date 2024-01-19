@@ -175,3 +175,40 @@ def run_mcmc(
 
     final_state, state_history, info_history = pmap_states
     return final_state, state_history, info_history
+
+
+def gelman_rubin_diagnostic(chains: Array) -> Array:
+    """Compute the Gelman-Rubin diagnostic for a set of MCMC
+    chains. Values close to 1 indicate the chains are converged.
+
+    Parameters
+    ----------
+    chains : array
+        An array of shape (num_chains, num_samples, num_parameters)
+        representing the sampled chains.
+
+    Returns
+    -------
+    Array
+        Gelman-Rubin diagnostic for each parameter.
+    """
+    # Number of chains and number of samples per chain
+    num_samples = chains.shape[1]
+
+    # Calculate the within-chain variance
+    # Mean of each chain
+    chain_means = jnp.mean(chains, axis=1)
+    # Variance within each chain
+    within_chain_var = jnp.var(chains, axis=1, ddof=1)
+    # Average of the within-chain variances
+    W = jnp.mean(within_chain_var, axis=0)
+
+    # Calculate the between-chain variance
+    # Variance of the chain means
+    B_over_n = jnp.var(chain_means, axis=0, ddof=1)
+
+    # Estimate of marginal posterior variance
+    var_plus = ((num_samples - 1) / num_samples) * W + B_over_n
+
+    R_hat = var_plus / W
+    return R_hat

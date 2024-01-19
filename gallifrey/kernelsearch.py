@@ -64,6 +64,9 @@ class Node:
             max_log_likelihood,
         )
 
+    def __repr__(self) -> str:
+        return f"Model with kernel: {describe_kernel(self.posterior)}"
+
     def describe_kernel(self) -> str:
         """
         Generate string description of current kernel. Works with nested
@@ -80,7 +83,7 @@ class Node:
         str
             String description of kernel.
         """
-        return describe_kernel(self.posterior.prior.kernel)
+        return describe_kernel(self.posterior)
 
     def get_trainables(self, unconstrain: bool = False) -> Array:
         """Print values of trainable parameter
@@ -135,7 +138,7 @@ class Node:
         """Update the new by setting new posterior,
         max_log_likelihood and n_posterior.
         Automatically calculates n_parameter from the model,
-        and AIC if max_log_likelihood  is available.
+        AIC, and BIC if max_log_likelihood is available.
 
         Parameters
         ----------
@@ -146,12 +149,18 @@ class Node:
         parent : Optional[Node], optional
         """
         self.posterior = posterior
-
+        self.n_datapoints = posterior.likelihood.num_datapoints
         self.n_parameter = sum(ravel_pytree(posterior.trainables())[0])
 
-        if max_log_likelihood is not None:
+        if max_log_likelihood is None:
+            self.max_log_likelihood = -jnp.inf
+        else:
             self.max_log_likelihood = max_log_likelihood
-            self.aic = self.n_parameter * 2 - 2 * self.max_log_likelihood
+
+        self.aic = float(self.n_parameter * 2 - 2 * self.max_log_likelihood)
+        self.bic = float(
+            self.n_parameter * jnp.log(self.n_datapoints) - 2 * self.max_log_likelihood
+        )
 
     def _add_child(
         self,
@@ -173,13 +182,14 @@ class KernelSearch:
         kernel_library: list[gpx.kernels.AbstractKernel],
         X: NDArray | Array,
         y: NDArray | Array,
-        obs_stddev: float | Array = 1,
+        obs_stddev: float | Array,
         fit_obs_stddev: bool = False,
         likelihood: Optional[gpx.likelihoods.AbstractLikelihood] = None,
         objective: Optional[gpx.objectives.AbstractObjective | Wrapped] = None,
         mean_function: Optional[gpx.mean_functions.AbstractMeanFunction] = None,
         root_kernel: Optional[gpx.kernels.AbstractKernel] = None,
         fitting_mode: str = "scipy",
+        criterion: str = "aic",
         num_iters: int = 1000,
         verbosity: int = 1,
         clear_caches: bool = True,
@@ -193,10 +203,13 @@ class KernelSearch:
         X : NDArray | Array
             Array of X data.
         y : NDArray | Array
-            Array of y data.
-        obs_stddev : float | Array, optional
+            Array of y data. The array can be 2d with dimensions (num_datapoints,
+            num_datasets), in which case the data along the second axis is
+            assumed to be independent datasets. In this case, the best kernel
+            that describes all datasets is determined.
+        obs_stddev : float | Array
             The standard deviation of the y data. Is ignored if custom
-            likelihood is given, by default 1
+            likelihood is given. Must be of same length as the number of datasets.
         fit_obs_stddev : bool, optional
             Wether to estimate the standard deviation during fitting process. Is
             ignored if custom likelihood is given, by default False
@@ -216,6 +229,9 @@ class KernelSearch:
         fitting_mode : str, optional
             Fitting procedure. Choose between "scipy" and "adam", by
             default "scipy".
+        criterion : str, optional
+            Criterion to determine quality of fit. Choose from "aic" or "bic",
+            by default "aic".
         num_iters : int, optional
             (Maximum) number of iterations for the fitting, by default 1000.
         verbosity : int, optional
@@ -230,12 +246,14 @@ class KernelSearch:
 
         if isinstance(obs_stddev, float):
             obs_stddev = jnp.array(obs_stddev)
+        assert isinstance(obs_stddev, Array)
+        if obs_stddev.ndim == 0:
+            obs_stddev = obs_stddev.reshape(-1)
+        self.obs_stddev = obs_stddev
 
         # set defaults
         if likelihood is None:
-            likelihood = gpx.likelihoods.Gaussian(
-                num_datapoints=len(X), obs_stddev=obs_stddev
-            )
+            likelihood = gpx.likelihoods.Gaussian(num_datapoints=len(X))
             likelihood = likelihood.replace_trainable(
                 obs_stddev=fit_obs_stddev  # type: ignore
             )  # type: ignore
@@ -251,11 +269,26 @@ class KernelSearch:
 
         self.likelihood = likelihood
         self.objective = objective
+        self.criterion = criterion.lower()
 
-        self.data = gpx.Dataset(
-            X=X.reshape(-1, 1) if X.ndim == 1 else X,
-            y=y.reshape(-1, 1) if y.ndim == 1 else y,
+        # match dimensions of X and y
+        self.X = jnp.asarray(X).reshape(-1, 1) if X.ndim == 1 else X
+        self.X = self.X.T if self.X.shape[1] > self.X.shape[0] else self.X
+        self.y = jnp.asarray(y).reshape(-1, 1) if y.ndim == 1 else y
+        self.y = (
+            self.y.T
+            if (self.X.shape[0] == self.y.shape[1])
+            or (self.X.shape[1] == self.y.shape[0])
+            else self.y
         )
+        if not any([a == b for a, b in zip(self.X.shape, self.y.shape)]):
+            raise ValueError("X and y must match along one axis.")
+
+        if len(self.obs_stddev) != self.y.shape[1]:
+            raise ValueError(
+                "There must be as many values in obs_stddev as there are datasets in y."
+            )
+
         self.kernel_library = kernel_library
         self.nodes: list[Node] = []
 
@@ -276,8 +309,32 @@ class KernelSearch:
             for kernel in (kernel_library if root_kernel is None else [root_kernel])
         ]
 
+    def get_criterion(self, node: Node) -> float:
+        """Return chosen value of fitting
+        criterion.
+
+        Parameters
+        ----------
+        node : Node
+            The node for which to return the value.
+
+        Returns
+        -------
+        float
+            The fitting criterion value (AIC or BIC).
+        """
+        if self.criterion == "aic":
+            return node.aic
+        elif self.criterion == "bic":
+            return node.bic
+        else:
+            raise ValueError("criterion must be 'aic' or 'bic'.")
+
     def fit(
-        self, posterior: gpx.gps.AbstractPosterior
+        self,
+        posterior: gpx.gps.AbstractPosterior,
+        X: NDArray | Array,
+        y: NDArray | Array,
     ) -> tuple[gpx.gps.AbstractPosterior, float]:
         """Fit the hyperparameter of a posterior. Can be done using
         scipy's 'minimize' function using the 'adam' optimiser from
@@ -287,6 +344,10 @@ class KernelSearch:
         ----------
         posterior : gpx.gps.AbstractPosterior
             Posterior model object containing the hyperparameter.
+        X : NDArray | Array
+            Array of X data.
+        y : NDArray | Array
+            Array of y data.
 
         Returns
         -------
@@ -299,6 +360,8 @@ class KernelSearch:
         ValueError
             Thrown if optimiser mode is unknown.
         """
+        data = gpx.Dataset(X=X, y=y)
+
         if self.fitting_mode == "scipy":
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", category=RuntimeWarning)
@@ -306,7 +369,7 @@ class KernelSearch:
                     optimized_posterior, history = gpx.fit_scipy(
                         model=posterior,
                         objective=self.objective,  # type: ignore
-                        train_data=self.data,
+                        train_data=data,
                         max_iters=self.num_iters,
                         verbose=self.verbosity >= 2,
                     )
@@ -325,7 +388,7 @@ class KernelSearch:
             optimized_posterior, history = gpx.fit(
                 model=posterior,
                 objective=self.objective,  # type: ignore
-                train_data=self.data,
+                train_data=data,
                 optim=optim,
                 key=key,
                 num_iters=self.num_iters,
@@ -412,6 +475,9 @@ class KernelSearch:
     ) -> None:
         """Fit the hyperparameter of the posterior for
         all nodes in the current layer.
+        If y is a 2d array of multiple datasets, the total
+        likelihood (product of each likelihood) is used for
+        determining the best model.
 
         Parameters
         ----------
@@ -428,7 +494,19 @@ class KernelSearch:
         ):
             if self.verbosity >= 2:
                 print(f"Current kernel: {describe_kernel(node.posterior.prior.kernel)}")
-            node._update_node(*self.fit(node.posterior))
+
+            max_log_likelihood = 0.0
+            posterior = node.posterior
+            for y, stddev in zip(self.y.T, self.obs_stddev):
+                posterior = (
+                    posterior.likelihood.replace(obs_stddev=stddev) * posterior.prior
+                )  # type: ignore
+
+                posterior, max_log_likelihood = self.fit(
+                    node.posterior, self.X, y.reshape(-1, 1)
+                )
+                max_log_likelihood += max_log_likelihood
+            node._update_node(posterior, max_log_likelihood)
 
     def select_top_nodes(
         self,
@@ -436,7 +514,7 @@ class KernelSearch:
         n_leafs: int,
     ) -> list[Node]:
         """Select top nodes of current layer, based on
-        their AIC value.
+        their AIC/BIC value.
 
         Parameters
         ----------
@@ -451,8 +529,10 @@ class KernelSearch:
             Sorted list of top nodes.
         """
         # sort with id in tuple, so that no errors is thrown if multiple
-        # AIC are the same
-        top_nodes = sorted(layer, key=lambda node: (node.aic, id(node)))[:n_leafs]
+        # AIC/BIC are the same
+        top_nodes = sorted(
+            layer, key=lambda node: (self.get_criterion(node), id(node))
+        )[:n_leafs]
         # return first n_leafs nodes
         return top_nodes
 
@@ -489,8 +569,12 @@ class KernelSearch:
         combinations.
         Start with simple kernel, which gets progressively more
         complex by adding or multiplying new kernels from kernel
-        library. Kernels are evaluated by calculating their AIC
+        library. Kernels are evaluated by calculating their AIC/BIC
         after being fit to data.
+        If the provided data y contains multiple datasets, the kernel
+        structure which fits all data the best is returned. (In that case
+        parameter and obs_stddev need to adjusted for each individual
+        dataset afterwards.)
 
         Parameters
         ----------
@@ -499,7 +583,7 @@ class KernelSearch:
             correspond to more complex kernels, by default 10
         n_leafs : int, optional
             The number of kernels to keep and expand at each layer. Top
-            kernels are chosen based on AIC, by default 3
+            kernels are chosen based on AIC/BIC, by default 3
         patience : int, optional
             Number of layers to calculate without improving before early
             stopping, by default 1
@@ -511,7 +595,7 @@ class KernelSearch:
             for the best kernel.
         list[Node]
             A list of all nodes that were computed in the tree (including)
-            their posteriors, sorted by their AIC value. Only returned
+            their posteriors, sorted by their AIC/BIC value. Only returned
             if return_full is True
 
         """
@@ -523,28 +607,31 @@ class KernelSearch:
 
         best_model = None
         current_depth = 0
-        aic_threshold = jnp.inf
+        criterion_threshold = jnp.inf
         patience_counter = 0
         for current_depth in range(depth):
             # fit and compute AIC at current layer
             self.compute_layer(layer, current_depth)
             if current_depth == 0:
-                best_model = sorted(layer, key=lambda node: (node.aic, id(node)))[-1]
+                best_model = sorted(
+                    layer, key=lambda node: (self.get_criterion(node), id(node))
+                )[-1]
             all_nodes.extend(layer)
 
-            # calculate and sort AICs
-            current_aics = sorted([float(node.aic) for node in layer])
+            # calculate and sort criterion
+            current_crits = sorted([self.get_criterion(node) for node in layer])
             if self.verbosity >= 1:
                 print(
-                    f"Layer {current_depth+1} || Current top AICs: "
-                    f"{current_aics[:n_leafs]}"
+                    f"Layer {current_depth+1} || "
+                    f"Current top {self.criterion.upper()}s: "
+                    f"{current_crits[:n_leafs]}"
                 )
 
             # select best mdeols
             layer = self.select_top_nodes(layer, n_leafs)
 
             # Early stopping if no more improvements are found
-            if current_aics[0] > aic_threshold:
+            if current_crits[0] > criterion_threshold:
                 if patience_counter >= patience:
                     if self.verbosity >= 1:
                         print("No more improvements found! Terminating early..\n")
@@ -552,7 +639,7 @@ class KernelSearch:
                 patience_counter += 1
             else:
                 best_model = layer[0]
-                aic_threshold = current_aics[0]  # min Aic of current layer
+                criterion_threshold = current_crits[0]  # min AIC/BIC of current layer
                 patience_counter = 0
 
             # expand tree and search for new top noded in next layer down
@@ -566,8 +653,10 @@ class KernelSearch:
             print(f"Final log likelihood: {best_model.max_log_likelihood}")
             print(f"Final number of model parameter: {best_model.n_parameter}")
 
-        # save all evaluated nodes, sorted by AIC
-        all_nodes = sorted(all_nodes, key=lambda node: (node.aic, id(node)))
+        # save all evaluated nodes, sorted by AIC/BIC
+        all_nodes = sorted(
+            all_nodes, key=lambda node: (self.get_criterion(node), id(node))
+        )
         self.nodes = all_nodes
         return best_model.posterior
 
