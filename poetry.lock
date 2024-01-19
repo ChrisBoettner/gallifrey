@@ -732,7 +732,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-ena
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.12"
-content-hash = "7c89cb5af8094ffe0d26e90d1086e7d37ddfd70dc7328ba3a8c52c63d1e595ab"
+content-hash = "45d6650ddfadeb8a1b317f8c3ce52d48154d05e8cfd0dd556e640a9fd4e9a8f4"
 
 [metadata.files]
 absl-py = []

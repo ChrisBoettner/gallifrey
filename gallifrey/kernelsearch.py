@@ -17,7 +17,13 @@ from jaxtyping import Array, install_import_hook
 from numpy.typing import NDArray
 from tqdm import tqdm
 
-from .kernels import CombinationKernel, ProductKernel, SumKernel
+from .kernels import (
+    CombinationKernel,
+    ProductKernel,
+    SumKernel,
+    flatten_kernels,
+    get_kernel_info,
+)
 
 with install_import_hook("gpjax", "beartype.beartype"):
     import gpjax as gpx
@@ -566,59 +572,6 @@ class KernelSearch:
         return best_model.posterior
 
 
-def describe_kernel(
-    kernel: gpx.kernels.AbstractKernel
-    | gpx.gps.AbstractPosterior
-    | gpx.gps.AbstractPrior,
-) -> str:
-    """
-    Generate string description of current kernel. Works with nested
-    CombinationKernels in the kernel tree, but only those created
-    explicity be the kernel search and its particular structure.
-
-    Parameters
-    ----------
-    kernel :  gpx.kernels.AbstractKernel
-            | gpx.gps.AbstractPosterior
-            | gpx.gps.AbstractPrior
-        The kernel to be described. Can also pass posterior or
-        prior object, in which case the associated kernel is
-        described.
-
-    Returns
-    -------
-    str
-        String description of kernel.
-    """
-    if isinstance(kernel, gpx.gps.AbstractPosterior):
-        kernel = kernel.prior.kernel
-    elif isinstance(kernel, gpx.gps.AbstractPrior):
-        kernel = kernel.kernel
-    elif isinstance(kernel, gpx.kernels.AbstractKernel):
-        pass
-    else:
-        raise ValueError("'kernel' must be kernel, prior or posterior instance.")
-    assert isinstance(kernel, gpx.kernels.AbstractKernel)
-
-    def get_kernel_name(k: gpx.kernels.AbstractKernel) -> str:
-        if isinstance(k, CombinationKernel):
-            assert k.kernels
-            sub_names = [describe_kernel(sub_k) for sub_k in k.kernels]
-            return f"({' * '.join(sub_names)})"
-        else:
-            return "Const" if hasattr(k, "constant") else f"{k.name}"
-
-    if hasattr(kernel, "kernels"):
-        terms = [get_kernel_name(term) for term in kernel.kernels]  # type: ignore
-        op_symbol = " + " if kernel.operator == jnp.sum else " * "  # type: ignore
-        name = op_symbol.join(terms)
-    elif hasattr(kernel, "name"):
-        name = kernel.name
-    else:
-        raise ValueError("Kernel structure not understood.")
-    return name
-
-
 def get_trainables(
     posterior: gpx.gps.AbstractPosterior,
     unconstrain: bool = False,
@@ -742,3 +695,117 @@ def jit_set_trainables(
 
     new_posterior = tree_structure(posterior).unflatten(updated_parameter)
     return new_posterior
+
+
+def describe_kernel(
+    kernel: gpx.kernels.AbstractKernel
+    | gpx.gps.AbstractPosterior
+    | gpx.gps.AbstractPrior,
+) -> str:
+    """
+    Generate string description of current kernel. Works with nested
+    CombinationKernels in the kernel tree, but only those created
+    explicity be the kernel search and its particular structure.
+
+    Parameters
+    ----------
+    kernel :  gpx.kernels.AbstractKernel
+            | gpx.gps.AbstractPosterior
+            | gpx.gps.AbstractPrior
+        The kernel to be described. Can also pass posterior or
+        prior object, in which case the associated kernel is
+        described.
+
+    Returns
+    -------
+    str
+        String description of kernel.
+    """
+    if isinstance(kernel, gpx.gps.AbstractPosterior):
+        kernel = kernel.prior.kernel
+    elif isinstance(kernel, gpx.gps.AbstractPrior):
+        kernel = kernel.kernel
+    elif isinstance(kernel, gpx.kernels.AbstractKernel):
+        pass
+    else:
+        raise ValueError("'kernel' must be kernel, prior or posterior instance.")
+    assert isinstance(kernel, gpx.kernels.AbstractKernel)
+
+    def get_kernel_name(k: gpx.kernels.AbstractKernel) -> str:
+        if isinstance(k, CombinationKernel):
+            assert k.kernels
+            sub_names = [describe_kernel(sub_k) for sub_k in k.kernels]
+            joined_sub_names = (
+                " • ".join(sub_names)
+                if k.operator == jnp.prod
+                else " + ".join(sub_names)
+            )
+
+            # Wrap in parentheses only if it's not the top-level kernel
+            return f"{joined_sub_names}"
+        else:
+            return "Const" if hasattr(k, "constant") else f"{k.name}"
+
+    return get_kernel_name(kernel)
+
+
+def print_kernel_summary(
+    kernel: gpx.kernels.AbstractKernel
+    | gpx.gps.AbstractPosterior
+    | gpx.gps.AbstractPrior,
+) -> None:
+    """
+    Prints description of kernel as determined by kernel search.
+    Works with nested CombinationKernels in the kernel tree, but only
+    those created explicity be the kernel search and its particular
+    structure.
+
+    Parameters
+    ----------
+    kernel :  gpx.kernels.AbstractKernel
+            | gpx.gps.AbstractPosterior
+            | gpx.gps.AbstractPrior
+        The kernel to be described. Can also pass posterior or
+        prior object, in which case the associated kernel is
+        described.
+    """
+    if isinstance(kernel, gpx.gps.AbstractPosterior):
+        kernel = kernel.prior.kernel
+    elif isinstance(kernel, gpx.gps.AbstractPrior):
+        kernel = kernel.kernel
+    elif isinstance(kernel, gpx.kernels.AbstractKernel):
+        pass
+    else:
+        raise ValueError("'kernel' must be kernel, prior or posterior instance.")
+    assert isinstance(kernel, gpx.kernels.AbstractKernel)
+
+    if hasattr(kernel, "kernels"):
+        kernels = flatten_kernels(kernel.kernels)  # type: ignore
+    else:
+        kernels = [kernel]
+
+    # Header
+    print("Kernel Summary\n")
+    print("=" * 80)
+
+    # Kernel description
+    kernel_description = describe_kernel(kernel)
+    print(f"Kernel Structure: {kernel_description}\n")
+    print("-" * 80)
+
+    # Column headers
+    print(f"{'Kernel':<20} {'Property':<20} {'Value':<20} {'Trainable':<10}")
+    print("-" * 80)
+
+    # Individual kernel properties
+    for k in kernels:
+        kernel_info = get_kernel_info(k)
+        if kernel_info:
+            print(f"{k.name:<20}", end="")  # Kernel name in the first column
+            for idx, (name, value, trainable) in enumerate(kernel_info):
+                if idx > 0:
+                    print(" " * 20, end="")  # Align subsequent rows
+                print(f"{name:<20} {str(value):<20} {str(trainable):<10}")
+                if idx < len(kernel_info) - 1:
+                    print()
+            print("-" * 80)

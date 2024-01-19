@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 from functools import partial
 
 import jax.numpy as jnp
@@ -95,3 +95,68 @@ class OrnsteinUhlenbeck(AbstractKernel):
         y = self.slice_input(y) / self.lengthscale
         K = self.variance * jnp.exp(-0.5 * jnp.sum(jnp.abs(x - y)))
         return K.squeeze()
+
+
+def flatten_kernels(kernels: list[AbstractKernel]) -> list[AbstractKernel]:
+    """Flatten a (nested) list of kernels and Combination kernels into
+    the base kernels.
+
+    Parameters
+    ----------
+    kernels : list[AbstractKernel]
+        The (nested) list of kernels.
+
+    Returns
+    -------
+    list[AbstractKernel]
+        The flattened list of kernels.
+    """
+    flattened = []
+    for kernel in kernels:
+        if isinstance(kernel, CombinationKernel):
+            # Recursively flatten the list
+            flattened.extend(flatten_kernels(kernel.kernels))  # type: ignore
+        else:
+            # It's an base AbstractKernel but not a CombinationKernel
+            flattened.append(kernel)
+    return flattened
+
+
+def get_kernel_info(kernel: AbstractKernel) -> list:
+    """Get kernel parameter names, values and
+    trainable status.
+
+    Parameters
+    ----------
+    kernel : AbstractKernel
+        The kernel.
+
+    Returns
+    -------
+    list
+        A list containing tuples with
+        (parameter name, parameter value, trainable).
+    """
+    kernel_dict = vars(kernel)
+    meta_data = kernel_dict.get("_pytree__meta")
+
+    kernel_info = []
+    if meta_data is not None:
+        # Process using _pytree__meta
+        for field_name, field_value in kernel_dict.items():
+            if field_name == "_pytree__meta":
+                continue
+
+            field_meta = meta_data.get(field_name, {})
+            trainable = field_meta.get("trainable")
+            if trainable is not None:
+                kernel_info.append((field_name, field_value, trainable))
+    else:
+        # Process using dataclasses fields
+        for f in fields(kernel):
+            if f.metadata.get("trainable") is not None:
+                kernel_info.append(
+                    (f.name, getattr(kernel, f.name), f.metadata["trainable"])
+                )
+
+    return kernel_info
