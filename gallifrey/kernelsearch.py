@@ -105,6 +105,18 @@ class Node:
         """
         return get_trainables(self.posterior, unconstrain)
 
+    def update_obs_stddev(self, obs_stddev: float | Array) -> None:
+        """Update psoterior with new obs_stddev.
+
+        Parameters
+        ----------
+        obs_stddev : float | Array
+            The new obs_stddev.
+        """
+        self.posterior: gpx.gps.AbstractPosterior = set_obs_stddev(
+            self.posterior, obs_stddev
+        )
+
     def update_trainables(
         self,
         parameter: tuple | list | Array | NDArray,
@@ -114,8 +126,6 @@ class Node:
 
         Parameters
         ----------
-        posterior : gpx.gps.AbstractPosterior
-                The gpjax posterior model.
         parameter : tuple | list | Array | NDArray
             The list of new parameter. Must be of same length
             as the number of trainable parameter
@@ -126,9 +136,7 @@ class Node:
             default False
 
         """
-        self.posterior: gpx.gps.AbstractPosterior = set_trainables(
-            self.posterior, parameter, unconstrain
-        )
+        self.posterior = set_trainables(self.posterior, parameter, unconstrain)
 
     def _update_node(
         self,
@@ -151,7 +159,6 @@ class Node:
         self.posterior = posterior
         self.n_datapoints = posterior.likelihood.num_datapoints
         self.n_parameter = sum(ravel_pytree(posterior.trainables())[0])
-
         if max_log_likelihood is None:
             self.max_log_likelihood = -jnp.inf
         else:
@@ -493,20 +500,16 @@ class KernelSearch:
             disable=False if self.verbosity == 1 else True,
         ):
             if self.verbosity >= 2:
-                print(f"Current kernel: {describe_kernel(node.posterior.prior.kernel)}")
+                print(f"Current kernel: {describe_kernel(node.posterior)}")
 
-            max_log_likelihood = 0.0
-            posterior = node.posterior
+            total_max_log_likelihood = 0.0
             for y, stddev in zip(self.y.T, self.obs_stddev):
-                posterior = (
-                    posterior.likelihood.replace(obs_stddev=stddev) * posterior.prior
-                )  # type: ignore
-
+                node.update_obs_stddev(stddev)  # update stddev
                 posterior, max_log_likelihood = self.fit(
                     node.posterior, self.X, y.reshape(-1, 1)
                 )
-                max_log_likelihood += max_log_likelihood
-            node._update_node(posterior, max_log_likelihood)
+                total_max_log_likelihood += max_log_likelihood
+            node._update_node(posterior, total_max_log_likelihood)  # type:ignore
 
     def select_top_nodes(
         self,
@@ -563,7 +566,7 @@ class KernelSearch:
         depth: int = 10,
         n_leafs: int = 3,
         patience: int = 1,
-    ) -> gpx.gps.AbstractPosterior:
+    ) -> Node:
         """Search for the best kernel fitting the data
         by performing a greedy search through possible kernel
         combinations.
@@ -591,12 +594,7 @@ class KernelSearch:
         Returns
         -------
         gpx.gps.AbstractPosterior
-            The fitted gpjax posterior object
-            for the best kernel.
-        list[Node]
-            A list of all nodes that were computed in the tree (including)
-            their posteriors, sorted by their AIC/BIC value. Only returned
-            if return_full is True
+            The node containing the best fitted kernel.
 
         """
         if self.clear_caches:
@@ -651,6 +649,7 @@ class KernelSearch:
         if self.verbosity >= 1:
             print(f"Terminated on layer: {current_depth+1}.")
             print(f"Final log likelihood: {best_model.max_log_likelihood}")
+            print(best_model.max_log_likelihood)
             print(f"Final number of model parameter: {best_model.n_parameter}")
 
         # save all evaluated nodes, sorted by AIC/BIC
@@ -658,7 +657,7 @@ class KernelSearch:
             all_nodes, key=lambda node: (self.get_criterion(node), id(node))
         )
         self.nodes = all_nodes
-        return best_model.posterior
+        return best_model
 
 
 def get_trainables(
@@ -690,6 +689,27 @@ def get_trainables(
     return all_params[trainable_mask]
 
 
+def set_obs_stddev(
+    posterior: gpx.gps.AbstractPosterior, obs_stddev: float | Array
+) -> gpx.gps.AbstractPosterior:
+    """Returns posterior with updated obs_stddev.
+
+    Parameters
+    ----------
+    posterior : gpx.gps.AbstractPosterior
+        The gpjax posterior model.
+    obs_stddev : float | Array
+        The new obs_stddev.
+
+    Returns
+    -------
+    gpx.gps.AbstractPosterior
+        The updated posterior.
+    """
+    likelihood = posterior.likelihood.replace(obs_stddev=jnp.array(obs_stddev))
+    return likelihood * posterior.prior  # type: ignore
+
+
 def set_trainables(
     posterior: gpx.gps.AbstractPosterior,
     parameter: tuple | list | Array | NDArray,
@@ -700,7 +720,7 @@ def set_trainables(
     Parameters
     ----------
     posterior : gpx.gps.AbstractPosterior
-            The gpjax posterior model.
+        The gpjax posterior model.
     parameter : tuple | list | Array | NDArray
         The list of new parameter. Must be of same length
         as the number of trainable parameter
