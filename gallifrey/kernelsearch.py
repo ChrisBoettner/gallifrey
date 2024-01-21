@@ -858,15 +858,20 @@ def describe_kernel(
     return get_kernel_name(kernel)
 
 
-def print_kernel_summary(
+def kernel_summary(
     kernel: gpx.kernels.AbstractKernel
     | gpx.gps.AbstractPosterior
     | gpx.gps.AbstractPrior,
-) -> None:
+    to_latex: bool = False,
+    silence: bool = False,
+) -> str:
     """
-    Prints description of kernel as determined by kernel search.
+    Constructs and returns a string describing the kernel as
+    determined by kernel search. If to_latex=True, returns string in
+    LateX table format.
+
     Works with nested CombinationKernels in the kernel tree, but only
-    those created explicity be the kernel search and its particular
+    those created explicitly by the kernel search and its particular
     structure.
 
     Parameters
@@ -877,6 +882,17 @@ def print_kernel_summary(
         The kernel to be described. Can also pass posterior or
         prior object, in which case the associated kernel is
         described.
+    to_latex : bool, optional
+        If True, returns a LaTeX table format of the kernel summary,
+        by default False.
+    silence: bool, optional
+        If True, don't print output, by default False.
+
+    Returns
+    -------
+    str
+        A string containing the summary of the kernel, either as
+        plain text or a LaTeX table.
     """
     if isinstance(kernel, gpx.gps.AbstractPosterior):
         kernel = kernel.prior.kernel
@@ -888,33 +904,67 @@ def print_kernel_summary(
         raise ValueError("'kernel' must be kernel, prior or posterior instance.")
     assert isinstance(kernel, gpx.kernels.AbstractKernel)
 
+    kernel_description = describe_kernel(kernel)
     if hasattr(kernel, "kernels"):
         kernels = flatten_kernels(kernel.kernels)  # type: ignore
     else:
         kernels = [kernel]
 
-    # Header
-    print("Kernel Summary\n")
-    print("=" * 80)
+    output = ""
+    if to_latex:
+        output += "\\begin{table}[ht]\n"
+        output += "\\centering\n"
+        output += (
+            "\\caption{Kernel Summary: "
+            + kernel_description.replace("•", r"$\cdot$")
+            + "}\n"
+        )
+        output += "\\begin{tabular}{llll}\n"
+        output += "Kernel & Property " "& Value & Trainable \\\\\n"
+        output += "\\hline\\hline\n"
+    else:
+        # Header
+        output += "Kernel Summary\n\n"
+        output += "=" * 80 + "\n"
 
-    # Kernel description
-    kernel_description = describe_kernel(kernel)
-    print(f"Kernel Structure: {kernel_description}\n")
-    print("-" * 80)
+        # Kernel description
+        kernel_description = describe_kernel(kernel)
+        output += f"Kernel Structure: {kernel_description}\n\n"
+        output += "-" * 80 + "\n"
 
-    # Column headers
-    print(f"{'Kernel':<20} {'Property':<20} {'Value':<20} {'Trainable':<10}")
-    print("-" * 80)
+        # Column headers
+        output += f"{'Kernel':<20} {'Property':<20} {'Value':<20} {'Trainable':<10}\n"
+        output += "-" * 80 + "\n"
 
     # Individual kernel properties
     for k in kernels:
         kernel_info = get_kernel_info(k)
         if kernel_info:
-            print(f"{k.name:<20}", end="")  # Kernel name in the first column
             for idx, (name, value, trainable) in enumerate(kernel_info):
-                if idx > 0:
-                    print(" " * 20, end="")  # Align subsequent rows
-                print(f"{name:<20} {str(value):<20} {str(trainable):<10}")
-                if idx < len(kernel_info) - 1:
-                    print()
-            print("-" * 80)
+                formatted_value = f"{value:.5e}"
+                if to_latex:
+                    if idx == 0:
+                        output += f"{k.name} & "
+                    else:
+                        output += " & "
+                    output += f"{name} & {formatted_value} & {trainable} \\\\\n"
+                else:
+                    if idx == 0:
+                        output += f"{k.name:<20}"
+                    else:
+                        output += " " * 20
+                    output += f"{name:<20} {formatted_value:<20} {str(trainable):<10}\n"
+                    if idx < len(kernel_info) - 1:
+                        output += "\n"
+            if to_latex:
+                output += "\\hline\n"
+            else:
+                output += "-" * 80 + "\n"
+
+    if to_latex:
+        output += "\\end{tabular}"
+        output += "\\end{table}"
+
+    if not silence:
+        print(output)
+    return output
