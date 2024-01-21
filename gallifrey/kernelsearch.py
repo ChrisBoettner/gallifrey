@@ -859,14 +859,14 @@ def describe_kernel(
 
 
 def kernel_summary(
-    kernel: gpx.kernels.AbstractKernel
+    model: gpx.kernels.AbstractKernel
     | gpx.gps.AbstractPosterior
     | gpx.gps.AbstractPrior,
     to_latex: bool = False,
     silence: bool = False,
 ) -> str:
     """
-    Constructs and returns a string describing the kernel as
+    Constructs and returns a string describing the model as
     determined by kernel search. If to_latex=True, returns string in
     LateX table format.
 
@@ -894,12 +894,14 @@ def kernel_summary(
         A string containing the summary of the kernel, either as
         plain text or a LaTeX table.
     """
-    if isinstance(kernel, gpx.gps.AbstractPosterior):
-        kernel = kernel.prior.kernel
-    elif isinstance(kernel, gpx.gps.AbstractPrior):
-        kernel = kernel.kernel
-    elif isinstance(kernel, gpx.kernels.AbstractKernel):
-        pass
+    likelihood = None
+    if isinstance(model, gpx.gps.AbstractPosterior):
+        likelihood = model.likelihood
+        kernel = model.prior.kernel
+    elif isinstance(model, gpx.gps.AbstractPrior):
+        kernel = model.kernel
+    elif isinstance(model, gpx.kernels.AbstractKernel):
+        kernel = model
     else:
         raise ValueError("'kernel' must be kernel, prior or posterior instance.")
     assert isinstance(kernel, gpx.kernels.AbstractKernel)
@@ -937,20 +939,22 @@ def kernel_summary(
         output += "-" * 80 + "\n"
 
     # Individual kernel properties
-    for k in kernels:
+    for k in ([likelihood] if likelihood else []) + kernels:
         kernel_info = get_kernel_info(k)
         if kernel_info:
             for idx, (name, value, trainable) in enumerate(kernel_info):
                 formatted_value = f"{value:.5e}"
+                kernel_name = getattr(k, "name", "White Noise")
+
                 if to_latex:
                     if idx == 0:
-                        output += f"{k.name} & "
+                        output += f"{kernel_name} & "
                     else:
                         output += " & "
                     output += f"{name} & {formatted_value} & {trainable} \\\\\n"
                 else:
                     if idx == 0:
-                        output += f"{k.name:<20}"
+                        output += f"{kernel_name:<20}"
                     else:
                         output += " " * 20
                     output += f"{name:<20} {formatted_value:<20} {str(trainable):<10}\n"

@@ -4,10 +4,10 @@
 # Data Files
 *.hdf5
 *.ewah
-*.csv
+#*.csv
 
 # exclude data from source control by default
-/data
+#/data
 
 # exclude out files
 # /notebooks

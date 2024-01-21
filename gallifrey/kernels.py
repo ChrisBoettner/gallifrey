@@ -5,6 +5,7 @@ import jax.numpy as jnp
 import tensorflow_probability.substrates.jax.bijectors as tfb
 from beartype.typing import Callable, List, Optional, Union
 from gpjax.base import param_field, static_field
+from gpjax.gps import AbstractLikelihood
 from gpjax.kernels.base import AbstractKernel
 from gpjax.typing import Array, ScalarFloat
 from jaxtyping import Float
@@ -122,14 +123,14 @@ def flatten_kernels(kernels: list[AbstractKernel]) -> list[AbstractKernel]:
     return flattened
 
 
-def get_kernel_info(kernel: AbstractKernel) -> list:
+def get_kernel_info(kernel: AbstractKernel | AbstractLikelihood) -> list:
     """Get kernel parameter names, values and
     trainable status.
 
     Parameters
     ----------
     kernel : AbstractKernel
-        The kernel.
+        The kernel (or likelihood for std parameter).
 
     Returns
     -------
