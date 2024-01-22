@@ -435,7 +435,7 @@ class KernelSearch:
 
                 elif kernel_operation == ProductKernel:
                     # further kernels have variance fixed, so that we only
-                    # have one multiplicative constant per term
+                    # have one multiplicative constant per term,
                     try:
                         new_kernel = new_kernel.replace_trainable(
                             variance=False  # type: ignore
@@ -444,25 +444,43 @@ class KernelSearch:
                         pass
 
                     # multiply each term inidivually, if current kernel
-                    # already is a sum
+                    # already is a sum,
+                    # there is a special check to make sure there are not multiple
+                    # white kernels in a term, since that doesn't change anything
+                    composite_kernels = []
                     if (
                         isinstance(kernel, CombinationKernel)
                         and kernel.operator == jnp.sum
                     ):
-                        composite_kernels = []
                         terms = kernel.kernels
                         assert terms
                         for i in range(len(terms)):
                             new_terms = deepcopy(terms)
-                            new_terms[i] = kernel_operation(
-                                kernels=[new_terms[i], new_kernel]
-                            )
-                            composite_kernels.append(SumKernel(kernels=new_terms))
+
+                            try:
+                                kernel_names = [
+                                    k.name
+                                    for k in flatten_kernels(
+                                        new_terms[i].kernels  # type: ignore
+                                    )
+                                ]
+                            except AttributeError:
+                                kernel_names = [new_terms[i].name]
+
+                            if (
+                                new_kernel.name != "White"
+                                or "White" not in kernel_names
+                            ):
+                                new_terms[i] = kernel_operation(
+                                    kernels=[new_terms[i], new_kernel]
+                                )
+                                composite_kernels.append(SumKernel(kernels=new_terms))
 
                     else:
-                        composite_kernels = [
-                            kernel_operation(kernels=[kernel, new_kernel])
-                        ]  # type: ignore
+                        if kernel.name != "White" or new_kernel.name != "White":
+                            composite_kernels.append(
+                                kernel_operation(kernels=[kernel, new_kernel])
+                            )
                 else:
                     raise RuntimeError
 
@@ -629,7 +647,7 @@ class KernelSearch:
             layer = self.select_top_nodes(layer, n_leafs)
 
             # Early stopping if no more improvements are found
-            if current_crits[0] > criterion_threshold:
+            if current_crits[0] >= criterion_threshold:
                 if patience_counter >= patience:
                     if self.verbosity >= 1:
                         print("No more improvements found! Terminating early..\n")
@@ -894,9 +912,15 @@ def kernel_summary(
         A string containing the summary of the kernel, either as
         plain text or a LaTeX table.
     """
-    likelihood = None
+    likelihood_info = None
     if isinstance(model, gpx.gps.AbstractPosterior):
-        likelihood = model.likelihood
+        if isinstance(model.likelihood, gpx.gps.Gaussian):
+            likelihood_info = get_kernel_info(model.likelihood)[0]
+        else:
+            warnings.warn(
+                "Only parameters for Gaussian likelihood are currently printed.",
+                stacklevel=2,
+            )
         kernel = model.prior.kernel
     elif isinstance(model, gpx.gps.AbstractPrior):
         kernel = model.kernel
@@ -916,11 +940,13 @@ def kernel_summary(
     if to_latex:
         output += "\\begin{table}[ht]\n"
         output += "\\centering\n"
-        output += (
-            "\\caption{Kernel Summary: "
-            + kernel_description.replace("•", r"$\cdot$")
-            + "}\n"
-        )
+        caption = kernel_description.replace("•", r"$\cdot$")
+        if likelihood_info:
+            caption += (
+                f" with observed stddev = {likelihood_info[1]:.5e} "
+                f"(Trainable : {likelihood_info[2]})"
+            )
+        output += "\\caption{Kernel Summary: " + caption + "}\n"
         output += "\\begin{tabular}{llll}\n"
         output += "Kernel & Property " "& Value & Trainable \\\\\n"
         output += "\\hline\\hline\n"
@@ -931,30 +957,32 @@ def kernel_summary(
 
         # Kernel description
         kernel_description = describe_kernel(kernel)
-        output += f"Kernel Structure: {kernel_description}\n\n"
-        output += "-" * 80 + "\n"
+        output += f"Kernel Structure: {kernel_description}\n"
+        if likelihood_info:
+            output += (
+                f"with {likelihood_info[0]} = {likelihood_info[1]:.5e} "
+                f"(Trainable : {likelihood_info[2]})\n\n"
+            )
 
         # Column headers
         output += f"{'Kernel':<20} {'Property':<20} {'Value':<20} {'Trainable':<10}\n"
         output += "-" * 80 + "\n"
 
     # Individual kernel properties
-    for k in ([likelihood] if likelihood else []) + kernels:
+    for k in kernels:
         kernel_info = get_kernel_info(k)
         if kernel_info:
             for idx, (name, value, trainable) in enumerate(kernel_info):
                 formatted_value = f"{value:.5e}"
-                kernel_name = getattr(k, "name", "White Noise")
-
                 if to_latex:
                     if idx == 0:
-                        output += f"{kernel_name} & "
+                        output += f"{k.name} & "
                     else:
                         output += " & "
                     output += f"{name} & {formatted_value} & {trainable} \\\\\n"
                 else:
                     if idx == 0:
-                        output += f"{kernel_name:<20}"
+                        output += f"{k.name:<20}"
                     else:
                         output += " " * 20
                     output += f"{name:<20} {formatted_value:<20} {str(trainable):<10}\n"
