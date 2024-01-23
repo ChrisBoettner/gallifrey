@@ -77,6 +77,8 @@ class OrnsteinUhlenbeck(AbstractKernel):
     ) -> ScalarFloat:
         r"""Compute the OU kernel between a pair of arrays.
 
+        Note: This kernel is equivalent to the Matern12 kernel in GPJax.
+
         Evaluate the kernel on a pair of inputs $`(x, y)`$ with lengthscale parameter
         $`\ell`$ and variance $`\sigma^2`$:
         ```math

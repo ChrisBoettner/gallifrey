@@ -191,12 +191,12 @@ class KernelSearch:
         y: NDArray | Array,
         obs_stddev: float | Array,
         fit_obs_stddev: bool = False,
+        objective: str | gpx.objectives.AbstractObjective | Wrapped = "mll",
+        criterion: str = "aic",
         likelihood: Optional[gpx.likelihoods.AbstractLikelihood] = None,
-        objective: Optional[gpx.objectives.AbstractObjective | Wrapped] = None,
         mean_function: Optional[gpx.mean_functions.AbstractMeanFunction] = None,
         root_kernel: Optional[gpx.kernels.AbstractKernel] = None,
         fitting_mode: str = "scipy",
-        criterion: str = "aic",
         num_iters: int = 1000,
         verbosity: int = 1,
         clear_caches: bool = True,
@@ -220,13 +220,19 @@ class KernelSearch:
         fit_obs_stddev : bool, optional
             Wether to estimate the standard deviation during fitting process. Is
             ignored if custom likelihood is given, by default False
+        objective : str | gpx.objectives.AbstractObjective | Wrapped, optional
+            The objective function used to evalute the quality of a fit. If string,
+            must be either 'mll' for the marginal log likelihood, or 'loocv' for
+            leave-out-out predictive log probability. Otherwise must be a function
+            takes posterior and train_data as inputs and returns a scalar probability,
+            by default 'mll'.
+        criterion : str, optional
+            Criterion to determine quality of fit. Choose from "aic" or "bic",
+            by default "aic".
         likelihood : Optional[gpx.likelihoods.AbstractLikelihood], optional
             Function that calculates the likelihood of the model. By default None,
             which defaults to the Gaussian likelihood with standard deviation
             given by obs_stddev.
-        objective : Optional[gpx.objectives.AbstractObjective  |  Wrapped], optional
-            The objective function used to evalute the quality of a fit. By default
-            None, which defaults to the jit-compiled marginal log likelihood.
         mean_function : Optional[gpx.mean_functions.AbstractMeanFunction], optional
             The mean function of the Gaussian process. By default None, which
             sets the mean to zero.
@@ -236,9 +242,6 @@ class KernelSearch:
         fitting_mode : str, optional
             Fitting procedure. Choose between "scipy" and "adam", by
             default "scipy".
-        criterion : str, optional
-            Criterion to determine quality of fit. Choose from "aic" or "bic",
-            by default "aic".
         num_iters : int, optional
             (Maximum) number of iterations for the fitting, by default 1000.
         verbosity : int, optional
@@ -264,8 +267,6 @@ class KernelSearch:
             likelihood = likelihood.replace_trainable(
                 obs_stddev=fit_obs_stddev  # type: ignore
             )  # type: ignore
-        if objective is None:
-            objective = jit(gpx.objectives.ConjugateMLL(negative=True))
         if mean_function is None:
             mean_function = gpx.mean_functions.Zero()
             # if not jnp.isclose(jnp.mean(y), 0):
@@ -273,6 +274,13 @@ class KernelSearch:
             #        "If no mean function is given, data must be centered at 0. "
             #        "Please center data first using y - mean(y)."
             #    )
+        if isinstance(objective, str):
+            if objective.lower() == "mll":
+                objective = jit(gpx.objectives.ConjugateMLL(negative=True))
+            elif objective.lower() == "loocv":
+                objective = jit(gpx.objectives.ConjugateLOOCV(negative=True))
+            else:
+                raise ValueError("If objective is a string, must be 'mll' or 'loocv'.")
 
         self.likelihood = likelihood
         self.objective = objective
