@@ -5,6 +5,7 @@ import jax.numpy as jnp
 from jaxtyping import Array
 from tensorflow_probability.substrates.jax.distributions import Distribution
 
+plt.style.use("../figures/gpjax.mplstyle")
 colors = mpl.rcParams["axes.prop_cycle"].by_key()["color"]
 
 
