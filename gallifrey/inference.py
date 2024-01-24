@@ -1,4 +1,5 @@
 import gpjax as gpx
+from jax.scipy.linalg import cholesky, inv
 import jax.numpy as jnp
 import tensorflow_probability.substrates.jax as tfp
 from beartype.typing import Callable, Optional
@@ -8,6 +9,7 @@ from jax import jit
 from jax.tree_util import tree_leaves
 
 from .kernelsearch import jit_set_trainables
+from .lightcurve import Transit
 
 
 def log_likelihood_function(
@@ -93,7 +95,7 @@ def log_likelihood_function(
             D_background,
         )
 
-        transit_dist = calculate_predictive_dist(
+        transit_dist = predictive_distribution(
             gp_posterior,
             D_transit.X,  # type: ignore
             dataset=D_background,
@@ -135,7 +137,7 @@ def log_likelihood_function(
                 D_background,
             )
 
-            transit_dist = calculate_predictive_dist(
+            transit_dist = predictive_distribution(
                 updated_posterior,
                 D_transit.X,  # type: ignore
                 dataset=D_background,
@@ -158,13 +160,16 @@ def log_likelihood_function(
     return objective
 
 
-@jit
-def calculate_predictive_dist(
-    posterior: gpx.gps.AbstractPosterior,
+def predictive_distribution(
+    gp_posterior: gpx.gps.AbstractPosterior,
     input: Array,
+    *,
     dataset: Optional[gpx.Dataset] = None,
     x: Optional[Array] = None,
     y: Optional[Array] = None,
+    transit_model: Optional[Callable] = None,
+    transit_parameter: Optional[Array] = None,
+    gp_parameter: Optional[Array] = None,
 ) -> tfp.distributions.Distribution:
     """
     Calculate the predictive distribution of
@@ -172,10 +177,12 @@ def calculate_predictive_dist(
     under the observations, which can be either given as
     a gpjax Dataset or using x, y from which the Dataset
     gets constructed.
+    Optionally, a transit model with transit parameter
+    can be given to include the transit as a mean function.
 
     Parameters
     ----------
-    posterior : gpx.gps.AbstractPosterior
+    gp_posterior : gpx.gps.AbstractPosterior
         The GPJax posterior object.
     input : Array
         The x values at which to calculate the distribution.
@@ -185,6 +192,18 @@ def calculate_predictive_dist(
         The x values of the training data.
     y : Array, optional
         The y values of the training data.
+    transit_model : Optional[Callable], optional
+        The transit model, must be a function of the form
+        f(x, parameter) -> y, that takes the points at which
+        to evaluate the function and parameter as input, and
+        returns the flux at the input points, by default
+        None
+    transit_parameter : Optional[Array], optional
+        The parameter for the transit model. Must be given
+        if the transit model is given, by default None
+    gp_parameter : Optional[Array], optional
+        If given, updates the gp parameter to these values before
+        calculating the distribution, by default None
 
     Returns
     -------
@@ -213,8 +232,62 @@ def calculate_predictive_dist(
         # Create dataset using x and y
         dataset = gpx.Dataset(x, y)
 
-    latent_dist = posterior(input, train_data=dataset)
-    predictive_dist = posterior.likelihood(
+    if gp_parameter is not None:
+        # update gp parameter
+        trainable_idx = jnp.argwhere(
+            jnp.array(tree_leaves(gp_posterior.trainables()))
+        ).reshape(-1)
+        gp_posterior = jit_set_trainables(
+            gp_posterior.unconstrain(),
+            gp_parameter,  # type: ignore
+            trainable_idx,
+        ).constrain()
+
+    if transit_model is not None:
+        # add transit model as mean function
+        if transit_parameter is None:
+            raise ValueError(
+                "If transit_model is given, transit_parameter must be as well."
+            )
+        transit = Transit(transit_model, transit_parameter)
+        gp_prior = gpx.gps.Prior(
+            mean_function=transit,
+            kernel=gp_posterior.prior.kernel,
+        )
+        gp_posterior = gp_posterior.likelihood * gp_prior
+
+    latent_dist = gp_posterior(input, train_data=dataset)
+    predictive_dist = gp_posterior.likelihood(
         latent_dist
     )  # adds observational uncertainty
     return predictive_dist
+
+
+@jit
+def calculate_whitened_residuals(
+    y: Array,
+    distribution: tfp.distributions.Distribution,
+) -> Array:
+    """Calculate whitened residuals for between
+    data y and the predictive distribution through
+    Cholesky decomposition.
+
+    Parameters
+    ----------
+    y : Array
+        y data, usually the light curve/flux.
+    distribution : tfp.distributions.Distribution
+        The predicitve distribution at the points
+        x corresponding to y.
+
+    Returns
+    -------
+    Array
+        The whitened residuals.
+    """
+    residuals = y - distribution.mean()
+    covariance_matrix = distribution.covariance()
+    cholesky_matrix = cholesky(covariance_matrix)
+    inverse_matrix = inv(cholesky_matrix)
+    whitened_residuals = jnp.dot(inverse_matrix, residuals)
+    return whitened_residuals

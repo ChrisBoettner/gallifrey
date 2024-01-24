@@ -65,9 +65,9 @@ class Node:
         )
 
     def __repr__(self) -> str:
-        return f"Model with kernel: {describe_kernel(self.posterior)}"
+        return f"Model with kernel: {_describe_kernel(self.posterior)}"
 
-    def describe_kernel(self) -> str:
+    def _describe_kernel(self) -> str:
         """
         Generate string description of current kernel. Works with nested
         CombinationKernels in the kernel tree, but only those created
@@ -83,7 +83,7 @@ class Node:
         str
             String description of kernel.
         """
-        return describe_kernel(self.posterior)
+        return _describe_kernel(self.posterior)
 
     def get_trainables(self, unconstrain: bool = False) -> Array:
         """Print values of trainable parameter
@@ -526,7 +526,7 @@ class KernelSearch:
             disable=False if self.verbosity == 1 else True,
         ):
             if self.verbosity >= 2:
-                print(f"Current kernel: {describe_kernel(node.posterior)}")
+                print(f"Current kernel: {_describe_kernel(node.posterior)}")
 
             total_max_log_likelihood = 0.0
             for y, stddev in zip(self.y.T, self.obs_stddev):
@@ -803,7 +803,9 @@ def set_trainables(
 
 @jit
 def jit_set_trainables(
-    posterior: gpx.gps.AbstractPosterior, parameter: Array, trainable_idx: Array
+    posterior: gpx.gps.AbstractPosterior,
+    parameter: Array,
+    trainable_idx: Array,
 ) -> gpx.gps.AbstractPosterior:
     """A jit-compatible version of set_trainables. For this, the indices of the
     trainable parameter must be given explicitly. There's no initial check of
@@ -832,7 +834,7 @@ def jit_set_trainables(
     return new_posterior
 
 
-def describe_kernel(
+def _describe_kernel(
     kernel: gpx.kernels.AbstractKernel
     | gpx.gps.AbstractPosterior
     | gpx.gps.AbstractPrior,
@@ -869,7 +871,7 @@ def describe_kernel(
     def get_kernel_name(k: gpx.kernels.AbstractKernel) -> str:
         if isinstance(k, CombinationKernel):
             assert k.kernels
-            sub_names = [describe_kernel(sub_k) for sub_k in k.kernels]
+            sub_names = [_describe_kernel(sub_k) for sub_k in k.kernels]
             joined_sub_names = (
                 " • ".join(sub_names)
                 if k.operator == jnp.prod
@@ -890,6 +892,7 @@ def kernel_summary(
     | gpx.gps.AbstractPrior,
     to_latex: bool = False,
     silence: bool = False,
+    short: bool = False,
 ) -> str:
     """
     Constructs and returns a string describing the model as
@@ -913,6 +916,9 @@ def kernel_summary(
         by default False.
     silence: bool, optional
         If True, don't print output, by default False.
+    short: bool, optional
+        If True, only returns kernel architecture without description
+        of the parameter, by default False.
 
     Returns
     -------
@@ -938,72 +944,84 @@ def kernel_summary(
         raise ValueError("'kernel' must be kernel, prior or posterior instance.")
     assert isinstance(kernel, gpx.kernels.AbstractKernel)
 
-    kernel_description = describe_kernel(kernel)
-    if hasattr(kernel, "kernels"):
-        kernels = flatten_kernels(kernel.kernels)  # type: ignore
-    else:
-        kernels = [kernel]
+    kernel_description = _describe_kernel(kernel)
+    kernel_description = (
+        kernel_description.replace("•", r"$\cdot$") if to_latex else kernel_description
+    )
 
-    output = ""
-    if to_latex:
-        output += "\\begin{table}[ht]\n"
-        output += "\\centering\n"
-        caption = kernel_description.replace("•", r"$\cdot$")
-        if likelihood_info:
-            caption += (
-                f" with observed stddev = {likelihood_info[1]:.5e} "
-                f"(Trainable : {likelihood_info[2]})"
-            )
-        output += "\\caption{Kernel Summary: " + caption + "}\n"
-        output += "\\begin{tabular}{llll}\n"
-        output += "Kernel & Property " "& Value & Trainable \\\\\n"
-        output += "\\hline\\hline\n"
-    else:
-        # Header
-        output += "Kernel Summary\n\n"
-        output += "=" * 80 + "\n"
+    if short:
+        output = kernel_description
 
-        # Kernel description
-        kernel_description = describe_kernel(kernel)
-        output += f"Kernel Structure: {kernel_description}\n"
-        if likelihood_info:
+    else:
+        if hasattr(kernel, "kernels"):
+            kernels = flatten_kernels(kernel.kernels)  # type: ignore
+        else:
+            kernels = [kernel]
+
+        output = ""
+        if to_latex:
+            output += "\\begin{table}[ht]\n"
+            output += "\\centering\n"
+            caption = kernel_description
+            if likelihood_info:
+                caption += (
+                    f" with observed stddev = {likelihood_info[1]:.5e} "
+                    f"(Trainable : {likelihood_info[2]})"
+                )
+            output += "\\caption{Kernel Summary: " + caption + "}\n"
+            output += "\\begin{tabular}{llll}\n"
+            output += "Kernel & Property " "& Value & Trainable \\\\\n"
+            output += "\\hline\\hline\n"
+        else:
+            # Header
+            output += "Kernel Summary\n\n"
+            output += "=" * 80 + "\n"
+
+            # Kernel description
+            kernel_description = _describe_kernel(kernel)
+            output += f"Kernel Structure: {kernel_description}\n"
+            if likelihood_info:
+                output += (
+                    f"with {likelihood_info[0]} = {likelihood_info[1]:.5e} "
+                    f"(Trainable : {likelihood_info[2]})\n\n"
+                )
+
+            # Column headers
             output += (
-                f"with {likelihood_info[0]} = {likelihood_info[1]:.5e} "
-                f"(Trainable : {likelihood_info[2]})\n\n"
+                f"{'Kernel':<20} {'Property':<20} {'Value':<20} {'Trainable':<10}\n"
             )
+            output += "-" * 80 + "\n"
 
-        # Column headers
-        output += f"{'Kernel':<20} {'Property':<20} {'Value':<20} {'Trainable':<10}\n"
-        output += "-" * 80 + "\n"
-
-    # Individual kernel properties
-    for k in kernels:
-        kernel_info = get_kernel_info(k)
-        if kernel_info:
-            for idx, (name, value, trainable) in enumerate(kernel_info):
-                formatted_value = f"{value:.5e}"
+        # Individual kernel properties
+        for k in kernels:
+            kernel_info = get_kernel_info(k)
+            if kernel_info:
+                for idx, (name, value, trainable) in enumerate(kernel_info):
+                    formatted_value = f"{value:.5e}"
+                    if to_latex:
+                        if idx == 0:
+                            output += f"{k.name} & "
+                        else:
+                            output += " & "
+                        output += f"{name} & {formatted_value} & {trainable} \\\\\n"
+                    else:
+                        if idx == 0:
+                            output += f"{k.name:<20}"
+                        else:
+                            output += " " * 20
+                        output += (
+                            f"{name:<20} {formatted_value:<20} {str(trainable):<10}\n"
+                        )
+                        if idx < len(kernel_info) - 1:
+                            output += "\n"
                 if to_latex:
-                    if idx == 0:
-                        output += f"{k.name} & "
-                    else:
-                        output += " & "
-                    output += f"{name} & {formatted_value} & {trainable} \\\\\n"
+                    output += "\\hline\n"
                 else:
-                    if idx == 0:
-                        output += f"{k.name:<20}"
-                    else:
-                        output += " " * 20
-                    output += f"{name:<20} {formatted_value:<20} {str(trainable):<10}\n"
-                    if idx < len(kernel_info) - 1:
-                        output += "\n"
-            if to_latex:
-                output += "\\hline\n"
-            else:
-                output += "-" * 80 + "\n"
+                    output += "-" * 80 + "\n"
 
-    if to_latex:
-        output += "\\end{tabular}"
-        output += "\\end{table}"
+        if to_latex:
+            output += "\\end{tabular}"
+            output += "\\end{table}"
 
     if not silence:
         print(output)
