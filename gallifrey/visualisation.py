@@ -5,6 +5,8 @@ import jax.numpy as jnp
 from jaxtyping import Array
 from tensorflow_probability.substrates.jax.distributions import Distribution
 
+from .util import allan_deviation, allan_deviation_chi2_regions
+
 plt.style.use("../figures/gpjax.mplstyle")
 colors = mpl.rcParams["axes.prop_cycle"].by_key()["color"]
 
@@ -171,7 +173,7 @@ def plot_residuals(
         evaluated.
     whitened_residual_sample : Array
         An array of whitened residual samples,
-        must be of shape (n_samples, t)
+        must be of shape (n_samples, len(t))
     credible_region : int, optional
         The size of the errorbars for the residuals,
         credible region contained within errorbars, by
@@ -196,7 +198,7 @@ def plot_residuals(
         "label", rf"Median Residuals with {credible_region}\% credible region"
     )
     kws_error["color"] = kws_error.get("color", colors[1])
-    kws_error["alpha"] = kws_error.get("alpha", 0.4)
+    kws_error["alpha"] = kws_error.get("alpha", 0.3)
 
     if whitened_residual_sample.ndim == 1:
         whitened_residual_sample = whitened_residual_sample.reshape(1, -1)
@@ -235,5 +237,105 @@ def plot_residuals(
             color=kws_error["color"],
         )
 
+    ax.set_yticks([-2, -1, 0, 1, 2])
     ax.set_xlim(*x_lims)  # type: ignore
+    return ax
+
+
+def plot_allan_deviation(
+    ax: plt.Axes,  # type: ignore
+    whitened_residual_sample: Array,
+    credible_region: int = 0,
+    kws_residuals: Optional[dict] = None,
+    kws_error: Optional[dict] = None,
+) -> plt.Axes:  # type: ignore
+    """Plot whitened residuals and
+    the expected region.
+
+    Parameters
+    ----------
+    ax : plt.Axes
+        The figure axis.
+    whitened_residual_sample : Array
+        An array of whitened residual samples,
+        must be of shape (n_samples, len(t))
+    credible_region : int, optional
+        The size of the errorbars for the residuals,
+        credible region contained within errorbars, by
+        default 0
+    kws_residuals : Optional[dict], optional
+        Additional arguemnts for the mean line,
+        by default None
+    kws_error : Optional[dict], optional
+        Additional arguments for the shaded
+        credible regions, by default None
+
+    Returns
+    -------
+    plt.Axes
+        The figure axis.
+    """
+    kws_residuals = {} if kws_residuals is None else kws_residuals
+    kws_error = {} if kws_error is None else kws_error
+
+    kws_residuals["fmt"] = kws_residuals.get("fmt", ".")
+    kws_residuals["label"] = kws_residuals.get(
+        "label", rf"Median Residuals with {credible_region}\% credible region"
+    )
+    kws_error["color"] = kws_error.get("color", colors[1])
+    kws_error["alpha"] = kws_error.get("alpha", 0.3)
+
+    if whitened_residual_sample.ndim == 1:
+        whitened_residual_sample = whitened_residual_sample.reshape(1, -1)
+
+    # calculate allan deviation
+    bin_sizes, allan_deviation_sample = allan_deviation(
+        whitened_residual_sample
+    )  # type : ignore
+
+    expected_deviation = allan_deviation_chi2_regions(
+        bin_sizes, whitened_residual_sample.shape[-1]
+    )
+
+    # calculate percentiles
+    edges = (100 - credible_region) / 2
+    percentiles = jnp.percentile(
+        allan_deviation_sample,
+        jnp.array([50, edges, 100 - edges]),
+        axis=0,
+    )
+
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+
+    ax.errorbar(
+        bin_sizes,
+        percentiles[0],
+        [
+            percentiles[0] - percentiles[1],
+            percentiles[2] - percentiles[0],
+        ],
+        fmt=".",
+        label=rf"Median Deviation ({credible_region}\% credible region)",
+    )
+
+    ax.plot(
+        bin_sizes,
+        expected_deviation[0],
+        color=kws_error["color"],
+        # label=r"$1/N$",
+    )
+
+    expected_68 = [expected_deviation[1], expected_deviation[2]]
+    expected_95 = [expected_deviation[3], expected_deviation[4]]
+
+    for r, percentage, alpha_adj in [(expected_95, 95, 0), (expected_68, 68, 0.2)]:
+        ax.fill_between(
+            bin_sizes,
+            r[0],
+            r[1],
+            alpha=kws_error["alpha"] + alpha_adj,
+            # label=rf"Expected {percentage}\% credible region",
+            color=kws_error["color"],
+        )
     return ax
