@@ -687,7 +687,7 @@ class KernelSearch:
 
 
 def get_trainables(
-    posterior: gpx.gps.AbstractPosterior,
+    posterior: gpx.gps.AbstractPosterior | gpx.base.Module,
     unconstrain: bool = False,
 ) -> Array:
     """Print values of trainable parameter
@@ -695,7 +695,7 @@ def get_trainables(
 
     Parameters
     ----------
-    posterior : gpx.gps.AbstractPosterior
+    posterior : gpx.gps.AbstractPosterior | gpx.base.Module
             The gpjax posterior model.
     unconstrain : bool, optional
         If True, model parameter are pushed trough bijector first
@@ -801,7 +801,7 @@ def set_trainables(
     return meta_map(updater, posterior)  # type: ignore
 
 
-@jit
+# @jit
 def jit_set_trainables(
     posterior: gpx.gps.AbstractPosterior,
     parameter: Array,
@@ -975,6 +975,7 @@ def kernel_summary(
         else:
             # Header
             output += "Kernel Summary\n\n"
+            output += f"Number of Parameter: {len(get_trainables(kernel))}\n"
             output += "=" * 80 + "\n"
 
             # Kernel description
@@ -982,7 +983,7 @@ def kernel_summary(
             output += f"Kernel Structure: {kernel_description}\n"
             if likelihood_info:
                 output += (
-                    f"with {likelihood_info[0]} = {likelihood_info[1]:.5e} "
+                    f"  with {likelihood_info[0]} = {likelihood_info[1]:.5e} "
                     f"(Trainable : {likelihood_info[2]})\n\n"
                 )
 

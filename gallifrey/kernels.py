@@ -120,5 +120,4 @@ def get_kernel_info(kernel: AbstractKernel | AbstractLikelihood) -> list:
                 kernel_info.append(
                     (f.name, getattr(kernel, f.name), f.metadata["trainable"])
                 )
-
     return kernel_info
