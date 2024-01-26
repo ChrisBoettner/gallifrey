@@ -1,14 +1,21 @@
-import matplotlib as mpl
+import jax.numpy as jnp
 import matplotlib.pyplot as plt
 from beartype.typing import Any, Optional
-import jax.numpy as jnp
 from jaxtyping import Array
 from tensorflow_probability.substrates.jax.distributions import Distribution
 
 from .util import allan_deviation, allan_deviation_chi2_regions
 
-plt.style.use("../figures/gpjax.mplstyle")
-colors = mpl.rcParams["axes.prop_cycle"].by_key()["color"]
+colors = [
+    "#2F83B4",
+    "#B5121B",
+    "#F77F00",
+    "#0B6E4F",
+    "#7A68A6",
+    "#C5BB36",
+    "#8c564b",
+    "#e377c2",
+]
 
 
 def plot_prediction(
@@ -146,10 +153,9 @@ def plot_masks(
         ymin,
         ymax,
         where=~mask,  # type: ignore
-        alpha=0.3,
-        color="grey",
-        zorder=0,
+        **kwargs,
     )
+    ax.set_ylim(ymin, ymax)
     return ax
 
 
@@ -199,6 +205,7 @@ def plot_residuals(
     )
     kws_error["color"] = kws_error.get("color", colors[1])
     kws_error["alpha"] = kws_error.get("alpha", 0.3)
+    kws_error["alpha"] = kws_error.get("alpha", 0.3)
 
     if whitened_residual_sample.ndim == 1:
         whitened_residual_sample = whitened_residual_sample.reshape(1, -1)
@@ -217,28 +224,28 @@ def plot_residuals(
             percentiles[0] - percentiles[1],
             percentiles[2] - percentiles[0],
         ],
-        fmt=".",
-        label=rf"Median Residuals ({credible_region}\% credible region)",
+        **kws_residuals,
     )
 
-    x_lims = [
-        0.9 * t.min() if t.min() > 0 else 1.1 * t.min(),
-        1.1 * t.max(),
+    t_diff = jnp.abs(t.max() - t.min())
+    t_lims = [
+        t.min() - 0.05 * t_diff,
+        t.max() + 0.05 * t_diff,
     ]
 
-    plt.axhline()
+    ax.axhline()
     for r, percentage, alpha_adj in [([-2, 2], 95, 0), ([-1, 1], 68, 0.2)]:
         ax.fill_between(
-            x_lims,
+            t_lims,
             r[0],
             r[1],
             alpha=kws_error["alpha"] + alpha_adj,
             # label=rf"Expected {percentage}\% credible region",
-            color=kws_error["color"],
+            **{k: v for k, v in kws_error.items() if k != "alpha"},
         )
 
     ax.set_yticks([-2, -1, 0, 1, 2])
-    ax.set_xlim(*x_lims)  # type: ignore
+    ax.set_xlim(*t_lims)  # type: ignore
     return ax
 
 
@@ -284,6 +291,7 @@ def plot_allan_deviation(
     )
     kws_error["color"] = kws_error.get("color", colors[1])
     kws_error["alpha"] = kws_error.get("alpha", 0.3)
+    kws_error["alpha"] = kws_error.get("alpha", 0.3)
 
     if whitened_residual_sample.ndim == 1:
         whitened_residual_sample = whitened_residual_sample.reshape(1, -1)
@@ -315,8 +323,7 @@ def plot_allan_deviation(
             percentiles[0] - percentiles[1],
             percentiles[2] - percentiles[0],
         ],
-        fmt=".",
-        label=rf"Median Deviation ({credible_region}\% credible region)",
+        **kws_residuals,
     )
 
     ax.plot(
@@ -336,6 +343,6 @@ def plot_allan_deviation(
             r[1],
             alpha=kws_error["alpha"] + alpha_adj,
             # label=rf"Expected {percentage}\% credible region",
-            color=kws_error["color"],
+            **{k: v for k, v in kws_error.items() if k != "alpha"},
         )
     return ax
