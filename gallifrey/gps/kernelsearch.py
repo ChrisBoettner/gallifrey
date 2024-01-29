@@ -7,31 +7,31 @@ import jax.numpy as jnp
 import jax.random as jr
 import optax as ox
 from beartype.typing import Callable
-from gpjax.base import meta_map
 from gpjax.fit import FailedScipyFitError
-from jax import config, jit, tree_map
+from jax import jit, tree_map
 from jax.flatten_util import ravel_pytree
 from jax.stages import Wrapped
-from jax.tree_util import tree_leaves, tree_structure
 from jaxtyping import Array, install_import_hook
+from joblib import Parallel, delayed
 from numpy.typing import NDArray
 from tqdm import tqdm
 
-from .kernels import (
+from gallifrey.gps.description import _describe_kernel
+from gallifrey.gps.kernels import (
     CombinationKernel,
     ProductKernel,
     SumKernel,
     flatten_kernels,
-    get_kernel_info,
 )
+from gallifrey.gps.trainables import (
+    get_trainables,
+    set_trainables,
+    set_obs_stddev,
+)
+from gallifrey.util import tqdm_joblib
 
 with install_import_hook("gpjax", "beartype.beartype"):
     import gpjax as gpx
-
-# Enable Float64 for more stable matrix inversions.
-config.update("jax_enable_x64", True)
-# Throw error if any of the jax operations evaluate to nan.
-# config.update("jax_debug_nans", True)
 
 # random seed
 key = jr.PRNGKey(42)
@@ -59,7 +59,7 @@ class Node:
         self.children: list["Node"] = []
         self.parent = parent
 
-        self._update_node(
+        self.update(
             posterior,
             max_log_likelihood,
         )
@@ -138,12 +138,12 @@ class Node:
         """
         self.posterior = set_trainables(self.posterior, parameter, unconstrain)
 
-    def _update_node(
+    def update(
         self,
         posterior: gpx.gps.AbstractPosterior,
         max_log_likelihood: Optional[float] = None,
     ) -> None:
-        """Update the new by setting new posterior,
+        """Update the node by setting new posterior,
         max_log_likelihood and n_posterior.
         Automatically calculates n_parameter from the model,
         AIC, and BIC if max_log_likelihood is available.
@@ -198,6 +198,7 @@ class KernelSearch:
         root_kernel: Optional[gpx.kernels.AbstractKernel] = None,
         fitting_mode: str = "scipy",
         num_iters: int = 1000,
+        num_threads: int = 1,
         verbosity: int = 1,
         clear_caches: bool = True,
     ):
@@ -244,6 +245,9 @@ class KernelSearch:
             default "scipy".
         num_iters : int, optional
             (Maximum) number of iterations for the fitting, by default 1000.
+        num_threads : int, optional
+            Number of parallel threads for tree expansion. Deactivate parallelisation
+            using num_threads=1, by default 1.
         verbosity : int, optional
             Verbosity of the output between 0 and 2, by default 1
         clear_caches: bool, optional
@@ -309,6 +313,7 @@ class KernelSearch:
 
         self.fitting_mode = fitting_mode
         self.num_iters = num_iters
+        self.num_threads = num_threads
 
         self.verbosity = verbosity
 
@@ -345,78 +350,88 @@ class KernelSearch:
         else:
             raise ValueError("criterion must be 'aic' or 'bic'.")
 
-    def fit(
+    def get_fit_function(
         self,
-        posterior: gpx.gps.AbstractPosterior,
-        X: NDArray | Array,
-        y: NDArray | Array,
-    ) -> tuple[gpx.gps.AbstractPosterior, float]:
-        """Fit the hyperparameter of a posterior. Can be done using
-        scipy's 'minimize' function using the 'adam' optimiser from
-        optax.
-
-        Parameters
-        ----------
-        posterior : gpx.gps.AbstractPosterior
-            Posterior model object containing the hyperparameter.
-        X : NDArray | Array
-            Array of X data.
-        y : NDArray | Array
-            Array of y data.
+    ) -> Callable:
+        """Returns callable fit function, that fits the hyperparameter
+        to of a posterior model to input data x and y. The Callable
+        returns the optimized posterior and the maximum log likelihood.
+        Can be done using scipy's 'minimize' function using the 'adam'
+        optimiser from optax.
 
         Returns
         -------
-        tuple[gpx.gps.AbstractPosterior, float]
-            Returns the posterior with optimised hyperparameter and
-            log likelihood found at maximum.
+        Callable
+            Returns the fitting function, with signature
+            fit_function(posterior, X, y) ->
+            optimised_posterior, max_log_likelihood.
 
         Raises
         ------
         ValueError
             Thrown if optimiser mode is unknown.
         """
-        data = gpx.Dataset(X=X, y=y)
 
         if self.fitting_mode == "scipy":
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore", category=RuntimeWarning)
-                try:
-                    optimized_posterior, history = gpx.fit_scipy(
-                        model=posterior,
-                        objective=self.objective,  # type: ignore
-                        train_data=data,
-                        max_iters=self.num_iters,
-                        verbose=self.verbosity >= 2,
-                    )
-                except FailedScipyFitError:
-                    optimized_posterior, history = posterior, [jnp.inf]
+
+            def fit_function(
+                posterior: gpx.gps.AbstractPosterior,
+                X: NDArray | Array,
+                y: NDArray | Array,
+            ) -> tuple[Callable, float]:
+                """Fit function using scipy optimizer."""
+                data = gpx.Dataset(X=X, y=y)
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", category=RuntimeWarning)
+                    try:
+                        optimized_posterior, history = gpx.fit_scipy(
+                            model=posterior,
+                            objective=self.objective,  # type: ignore
+                            train_data=data,
+                            max_iters=self.num_iters,
+                            verbose=self.verbosity >= 2,
+                        )
+                    except FailedScipyFitError:
+                        optimized_posterior, history = posterior, [jnp.inf]
+                return optimized_posterior, float(
+                    jnp.nan_to_num(-history[-1], nan=-jnp.inf)
+                )
 
         elif self.fitting_mode == "adam":
-            static_tree = tree_map(lambda x: not x, posterior.trainables)
-            optim = ox.chain(
-                ox.adamw(learning_rate=3e-4),
-                ox.masked(
-                    ox.set_to_zero(),
-                    static_tree,
-                ),
-            )
-            optimized_posterior, history = gpx.fit(
-                model=posterior,
-                objective=self.objective,  # type: ignore
-                train_data=data,
-                optim=optim,
-                key=key,
-                num_iters=self.num_iters,
-                verbose=self.verbosity >= 2,
-            )
+
+            def fit_function(
+                posterior: gpx.gps.AbstractPosterior,
+                X: NDArray | Array,
+                y: NDArray | Array,
+            ) -> tuple[Callable, float]:
+                """Fit function using 'adam' optimizer."""
+                data = gpx.Dataset(X=X, y=y)
+
+                static_tree = tree_map(lambda x: not x, posterior.trainables)
+                optim = ox.chain(
+                    ox.adamw(learning_rate=3e-4),
+                    ox.masked(
+                        ox.set_to_zero(),
+                        static_tree,
+                    ),
+                )
+                optimized_posterior, history = gpx.fit(
+                    model=posterior,
+                    objective=self.objective,  # type: ignore
+                    train_data=data,
+                    optim=optim,
+                    key=key,
+                    num_iters=self.num_iters,
+                    verbose=self.verbosity >= 2,
+                )
+                return optimized_posterior, float(
+                    jnp.nan_to_num(-history[-1], nan=-jnp.inf)
+                )
+
         else:
             raise ValueError("'fitting_mode' must be 'scipy' or 'adam'.")
 
-        max_log_likelihood = -float(history[-1])
-        if not jnp.isfinite(max_log_likelihood):
-            max_log_likelihood = -jnp.inf
-
-        return optimized_posterior, max_log_likelihood
+        return fit_function
 
     def expand_node(self, node: Node) -> None:
         """Logic to expand a node in the search tree. The
@@ -520,22 +535,44 @@ class KernelSearch:
             Integer depth of current layer, used for
             tracking.
         """
-        for node in tqdm(
-            layer,
-            desc=f"Fitting Layer {current_depth +1}",
-            disable=False if self.verbosity == 1 else True,
-        ):
-            if self.verbosity >= 2:
-                print(f"Current kernel: {_describe_kernel(node.posterior)}")
+        fit_function = self.get_fit_function()
 
+        def inner_loop(
+            posterior: gpx.gps.AbstractPosterior,
+        ) -> tuple[gpx.gps.AbstractPosterior, float]:
+            """Inner loop over multiple datasets y for a given
+            Node with a given posterior model."""
+            jax.clear_caches()
             total_max_log_likelihood = 0.0
             for y, stddev in zip(self.y.T, self.obs_stddev):
-                node.update_obs_stddev(stddev)  # update stddev
-                posterior, max_log_likelihood = self.fit(
-                    node.posterior, self.X, y.reshape(-1, 1)
+                posterior = set_obs_stddev(posterior, stddev)  # update stddev
+                posterior, max_log_likelihood = fit_function(
+                    posterior, self.X, y.reshape(-1, 1)
                 )
                 total_max_log_likelihood += max_log_likelihood
-            node._update_node(posterior, total_max_log_likelihood)  # type:ignore
+            return posterior, total_max_log_likelihood
+
+        tqdm_object = tqdm(
+            [deepcopy(node.posterior) for node in layer],
+            desc=f"Fitting Layer {current_depth +1}",
+            disable=False if self.verbosity == 1 else True,
+        )
+
+        if self.num_threads <= 1:
+            fits = []
+            for posterior in tqdm_object:
+                if self.verbosity >= 2:
+                    print(f"Current kernel: {_describe_kernel(posterior)}")
+                fits.append(inner_loop(posterior))
+        else:
+            posteriors = [node.posterior for node in layer]
+            with tqdm_joblib(tqdm_object):
+                fits = Parallel(n_jobs=self.num_threads)(
+                    delayed(inner_loop)(posterior) for posterior in posteriors
+                )
+
+        for node, fit in zip(layer, fits):
+            node.update(*fit)  # type: ignore
 
     def select_top_nodes(
         self,
@@ -684,346 +721,3 @@ class KernelSearch:
         )
         self.nodes = all_nodes
         return best_model
-
-
-def get_trainables(
-    posterior: gpx.gps.AbstractPosterior | gpx.base.Module,
-    unconstrain: bool = False,
-) -> Array:
-    """Print values of trainable parameter
-    of model.
-
-    Parameters
-    ----------
-    posterior : gpx.gps.AbstractPosterior | gpx.base.Module
-            The gpjax posterior model.
-    unconstrain : bool, optional
-        If True, model parameter are pushed trough bijector first
-        making their support encompass the entire real line, by
-        default False
-
-    Returns
-    -------
-    Array
-        List of trainable parameter values.
-    """
-    if unconstrain:
-        posterior = posterior.unconstrain()
-
-    all_params = ravel_pytree(posterior)[0]
-    trainable_mask = ravel_pytree(posterior.trainables())[0]
-    return all_params[trainable_mask]
-
-
-def set_obs_stddev(
-    posterior: gpx.gps.AbstractPosterior, obs_stddev: float | Array
-) -> gpx.gps.AbstractPosterior:
-    """Returns posterior with updated obs_stddev.
-
-    Parameters
-    ----------
-    posterior : gpx.gps.AbstractPosterior
-        The gpjax posterior model.
-    obs_stddev : float | Array
-        The new obs_stddev.
-
-    Returns
-    -------
-    gpx.gps.AbstractPosterior
-        The updated posterior.
-    """
-    likelihood = posterior.likelihood.replace(obs_stddev=jnp.array(obs_stddev))
-    return likelihood * posterior.prior  # type: ignore
-
-
-def set_trainables(
-    posterior: gpx.gps.AbstractPosterior,
-    parameter: tuple | list | Array | NDArray,
-    unconstrain: bool = False,
-) -> gpx.gps.AbstractPosterior:
-    """Returns posterior with updated trainable parameter.
-
-    Parameters
-    ----------
-    posterior : gpx.gps.AbstractPosterior
-        The gpjax posterior model.
-    parameter : tuple | list | Array | NDArray
-        The list of new parameter. Must be of same length
-        as the number of trainable parameter
-    unconstrain : bool, optional
-        If True, model parameter are pushed trough bijector first
-        making their support encompass the entire real line. The given
-        parameter list must then be in this unconstrained space, by
-        default False
-
-    Returns
-    -------
-    gpx.gps.AbstractPosterior
-        The posterior with updated parameter.
-    """
-
-    def create_parameter_updater() -> Callable:
-        # Check if the number of trainable parameters matches the length
-        # of the parameter list
-        num_trainable_params = sum(ravel_pytree(posterior.trainables())[0])
-        if len(parameter) != num_trainable_params:
-            raise ValueError(
-                f"The length of the parameter list ({len(parameter)}) must "
-                "match the number of trainable parameters "
-                f"({num_trainable_params}) in the model."
-            )
-
-        # create iterable iterates through values in parameter list
-        # everytime its called
-        param_iterator = iter(parameter)
-
-        # filter leaves, and assign new parameter from parameter list
-        # if trainable is found
-        def update_trainable(meta_leaf: tuple[dict, Array]) -> Array:
-            meta, leaf = meta_leaf
-            if meta.get("trainable", False):
-                try:
-                    return jnp.array(next(param_iterator))
-                except StopIteration:
-                    raise IndexError(
-                        "Found more parameter in paramter list than "
-                        "trainable parameters in model."
-                    )
-            else:
-                return leaf
-
-        return update_trainable
-
-    updater = create_parameter_updater()
-
-    if unconstrain:
-        posterior = posterior.unconstrain()
-    return meta_map(updater, posterior)  # type: ignore
-
-
-# @jit
-def jit_set_trainables(
-    posterior: gpx.gps.AbstractPosterior,
-    parameter: Array,
-    trainable_idx: Array,
-) -> gpx.gps.AbstractPosterior:
-    """A jit-compatible version of set_trainables. For this, the indices of the
-    trainable parameter must be given explicitly. There's no initial check of
-    lengths, so make sure the length of the parameter array is the same as the
-    number of trainable parameter.
-
-    Parameters
-    ----------
-    posterior : gpx.gps.AbstractPosterior
-            The gpjax posterior model.
-    parameter : Array
-        The array of new parameter. Must be of same length
-        as the number of trainable parameter, and a jnp array.
-    trainable_idx : Array
-        A jnp array containing the indices of the trainable parameter.
-
-    Returns
-    -------
-    gpx.gps.AbstractPosterior
-        The posterior with updated parameter.
-    """
-    old_parameter = jnp.array(tree_leaves(posterior))
-    updated_parameter = old_parameter.at[trainable_idx].set(parameter)
-
-    new_posterior = tree_structure(posterior).unflatten(updated_parameter)
-    return new_posterior
-
-
-def _describe_kernel(
-    kernel: gpx.kernels.AbstractKernel
-    | gpx.gps.AbstractPosterior
-    | gpx.gps.AbstractPrior,
-) -> str:
-    """
-    Generate string description of current kernel. Works with nested
-    CombinationKernels in the kernel tree, but only those created
-    explicity be the kernel search and its particular structure.
-
-    Parameters
-    ----------
-    kernel :  gpx.kernels.AbstractKernel
-            | gpx.gps.AbstractPosterior
-            | gpx.gps.AbstractPrior
-        The kernel to be described. Can also pass posterior or
-        prior object, in which case the associated kernel is
-        described.
-
-    Returns
-    -------
-    str
-        String description of kernel.
-    """
-    if isinstance(kernel, gpx.gps.AbstractPosterior):
-        kernel = kernel.prior.kernel
-    elif isinstance(kernel, gpx.gps.AbstractPrior):
-        kernel = kernel.kernel
-    elif isinstance(kernel, gpx.kernels.AbstractKernel):
-        pass
-    else:
-        raise ValueError("'kernel' must be kernel, prior or posterior instance.")
-    assert isinstance(kernel, gpx.kernels.AbstractKernel)
-
-    def get_kernel_name(k: gpx.kernels.AbstractKernel) -> str:
-        if isinstance(k, CombinationKernel):
-            assert k.kernels
-            sub_names = [_describe_kernel(sub_k) for sub_k in k.kernels]
-            joined_sub_names = (
-                " • ".join(sub_names)
-                if k.operator == jnp.prod
-                else " + ".join(sub_names)
-            )
-
-            # Wrap in parentheses only if it's not the top-level kernel
-            return f"{joined_sub_names}"
-        else:
-            return "Const" if hasattr(k, "constant") else f"{k.name}"
-
-    return get_kernel_name(kernel)
-
-
-def kernel_summary(
-    model: gpx.kernels.AbstractKernel
-    | gpx.gps.AbstractPosterior
-    | gpx.gps.AbstractPrior,
-    to_latex: bool = False,
-    silence: bool = False,
-    short: bool = False,
-) -> str:
-    """
-    Constructs and returns a string describing the model as
-    determined by kernel search. If to_latex=True, returns string in
-    LateX table format.
-
-    Works with nested CombinationKernels in the kernel tree, but only
-    those created explicitly by the kernel search and its particular
-    structure.
-
-    Parameters
-    ----------
-    kernel :  gpx.kernels.AbstractKernel
-            | gpx.gps.AbstractPosterior
-            | gpx.gps.AbstractPrior
-        The kernel to be described. Can also pass posterior or
-        prior object, in which case the associated kernel is
-        described.
-    to_latex : bool, optional
-        If True, returns a LaTeX table format of the kernel summary,
-        by default False.
-    silence: bool, optional
-        If True, don't print output, by default False.
-    short: bool, optional
-        If True, only returns kernel architecture without description
-        of the parameter, by default False.
-
-    Returns
-    -------
-    str
-        A string containing the summary of the kernel, either as
-        plain text or a LaTeX table.
-    """
-    likelihood_info = None
-    if isinstance(model, gpx.gps.AbstractPosterior):
-        if isinstance(model.likelihood, gpx.gps.Gaussian):
-            likelihood_info = get_kernel_info(model.likelihood)[0]
-        else:
-            warnings.warn(
-                "Only parameters for Gaussian likelihood are currently printed.",
-                stacklevel=2,
-            )
-        kernel = model.prior.kernel
-    elif isinstance(model, gpx.gps.AbstractPrior):
-        kernel = model.kernel
-    elif isinstance(model, gpx.kernels.AbstractKernel):
-        kernel = model
-    else:
-        raise ValueError("'kernel' must be kernel, prior or posterior instance.")
-    assert isinstance(kernel, gpx.kernels.AbstractKernel)
-
-    kernel_description = _describe_kernel(kernel)
-    kernel_description = (
-        kernel_description.replace("•", r"$\cdot$") if to_latex else kernel_description
-    )
-
-    if short:
-        output = kernel_description
-
-    else:
-        if hasattr(kernel, "kernels"):
-            kernels = flatten_kernels(kernel.kernels)  # type: ignore
-        else:
-            kernels = [kernel]
-
-        output = ""
-        if to_latex:
-            output += "\\begin{table}[ht]\n"
-            output += "\\centering\n"
-            caption = kernel_description
-            if likelihood_info:
-                caption += (
-                    f" with observed stddev = {likelihood_info[1]:.5e} "
-                    f"(Trainable : {likelihood_info[2]})"
-                )
-            output += "\\caption{Kernel Summary: " + caption + "}\n"
-            output += "\\begin{tabular}{llll}\n"
-            output += "Kernel & Property " "& Value & Trainable \\\\\n"
-            output += "\\hline\\hline\n"
-        else:
-            # Header
-            output += "Kernel Summary\n\n"
-            output += f"Number of Parameter: {len(get_trainables(kernel))}\n"
-            output += "=" * 80 + "\n"
-
-            # Kernel description
-            kernel_description = _describe_kernel(kernel)
-            output += f"Kernel Structure: {kernel_description}\n"
-            if likelihood_info:
-                output += (
-                    f"  with {likelihood_info[0]} = {likelihood_info[1]:.5e} "
-                    f"(Trainable : {likelihood_info[2]})\n\n"
-                )
-
-            # Column headers
-            output += (
-                f"{'Kernel':<20} {'Property':<20} {'Value':<20} {'Trainable':<10}\n"
-            )
-            output += "-" * 80 + "\n"
-
-        # Individual kernel properties
-        for k in kernels:
-            kernel_info = get_kernel_info(k)
-            if kernel_info:
-                for idx, (name, value, trainable) in enumerate(kernel_info):
-                    formatted_value = f"{value:.5e}"
-                    if to_latex:
-                        if idx == 0:
-                            output += f"{k.name} & "
-                        else:
-                            output += " & "
-                        output += f"{name} & {formatted_value} & {trainable} \\\\\n"
-                    else:
-                        if idx == 0:
-                            output += f"{k.name:<20}"
-                        else:
-                            output += " " * 20
-                        output += (
-                            f"{name:<20} {formatted_value:<20} {str(trainable):<10}\n"
-                        )
-                        if idx < len(kernel_info) - 1:
-                            output += "\n"
-                if to_latex:
-                    output += "\\hline\n"
-                else:
-                    output += "-" * 80 + "\n"
-
-        if to_latex:
-            output += "\\end{tabular}"
-            output += "\\end{table}"
-
-    if not silence:
-        print(output)
-    return output

@@ -4,7 +4,7 @@ from beartype.typing import Any, Optional
 from jaxtyping import Array
 from tensorflow_probability.substrates.jax.distributions import Distribution
 
-from .util import allan_deviation, allan_deviation_chi2_regions
+from gallifrey.util.allan_deviation import allan_deviation, allan_deviation_chi2_regions
 
 colors = [
     "#2F83B4",

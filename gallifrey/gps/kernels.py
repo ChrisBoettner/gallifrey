@@ -14,7 +14,9 @@ from jaxtyping import Float
 
 @dataclass
 class CombinationKernel(AbstractKernel):
-    r"""A base class for products or sums of MeanFunctions."""
+    r"""A base class for combining kernels.
+    Directly copied and modified from GPJax.
+    Temporary solution to fix a bug in the GPJax codebase."""
 
     kernels: Optional[List[AbstractKernel]] = None
     operator: Callable = static_field(None)

@@ -60,7 +60,7 @@ def nuts_warmup(
     return state, parameters
 
 
-def run_inference_algorithm(
+def inference_algorithm(
     rng_key: Array,
     initial_state_or_position: ArrayLikeTree | NamedTuple,
     inference_algorithm: SamplingAlgorithm,
@@ -127,7 +127,7 @@ def run_mcmc(
     initial_positions: ArrayLikeTree | NamedTuple,
     num_steps: int = 500,
 ) -> tuple:
-    """Run the parallel mcmc sampling
+    """Run the (parallel) NUTS mcmc sampling.
 
     Parameters
     ----------
@@ -157,7 +157,7 @@ def run_mcmc(
     initial_states = jax.vmap(nuts.init, in_axes=(0))(initial_positions)  # type: ignore
 
     inference_loop_multiple_chains = jax.pmap(
-        run_inference_algorithm,
+        inference_algorithm,
         in_axes=(0, 0, None, None, None),  # type: ignore
         static_broadcasted_argnums=(2, 3, 4),
     )
