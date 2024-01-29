@@ -1,12 +1,66 @@
 import blackjax
 import jax
 import jax.numpy as jnp
-from beartype.typing import Callable, NamedTuple
+from beartype.typing import Callable, NamedTuple, Optional
 from blackjax.base import SamplingAlgorithm
 from blackjax.progress_bar import progress_bar_scan
 from blackjax.types import ArrayLikeTree
 from jax import jit
 from jaxtyping import Array
+
+
+def create_initial_positions(
+    initial_position: Array,
+    num: int,
+    sigma: float = 0,
+    key: Optional[Array] = None,
+) -> Array:
+    """Create an array of initial positions from an input
+    initial position, and optionally add scatter.
+
+    Parameters
+    ----------
+    initial_position : Array
+        The original initial_position to extend.
+    num : int
+        Number of initial_positions to return.
+    sigma : float, optional
+        Spread of scatter, normalised to initial_position
+        value, by default False.
+    key : Array, optional
+        Key for creating random scatter. Must be given, if
+        sigma>0, by default None.
+
+    Returns
+    -------
+    Array
+        The initial positions, of shape
+        (num, len(initial_position)).
+    """
+    initial_position = jnp.atleast_1d(initial_position)
+    initial_positions = jnp.tile(initial_position, (num, 1))
+
+    if sigma > 0:
+        if key is None:
+            raise ValueError("If sigma>0, random key must be given.")
+
+        initial_positions += (
+            sigma
+            * initial_position
+            * jax.random.normal(
+                key,
+                shape=(
+                    num,
+                    initial_position.size,
+                ),
+            )
+        )
+
+    # match dimensions
+    if len(initial_position) <= 1:
+        initial_positions = initial_positions[:, 0]
+
+    return initial_positions
 
 
 def nuts_warmup(
@@ -171,7 +225,6 @@ def run_mcmc(
         num_steps,
         False,
     )
-    _ = pmap_states[1].position["lc_parameter"].block_until_ready()
 
     final_state, state_history, info_history = pmap_states
     return final_state, state_history, info_history
