@@ -8,15 +8,16 @@ from jaxtyping import Array
 
 
 @jit
-def example_transit_model(t: Array, params: list) -> Array:
+def example_transit_model(t: Array, params: dict) -> Array:
     """Example transit model using jaxoplanet.
 
     Parameters
     ----------
     t : Array
         The time's at which to evaluate the light curve.
-    params : list
-        The light curve parameter (radius, u1, u2).
+    params : dict
+        The light curve parameter dict with keys
+        (radius, u1, u2).
 
     Returns
     -------
@@ -25,12 +26,12 @@ def example_transit_model(t: Array, params: list) -> Array:
     """
     orbit = orbits.keplerian.Body(
         period=15,
-        radius=params[0],
+        radius=params["radius"],
         inclination=jnp.deg2rad(89),
         time_transit=0,
     )
 
-    lc = LimbDarkLightCurve([params[1], params[2]]).light_curve(orbit, t=t)
+    lc = LimbDarkLightCurve([params["u1"], params["u2"]]).light_curve(orbit, t=t)
     return lc
 
 
@@ -70,7 +71,9 @@ def example_lightcurve(
 
     example["t"] = jnp.linspace(-0.8, 0.8, 1000)
 
-    example["transit"] = example_transit_model(example["t"], [0.1, 0.1, 0.3])
+    example["transit"] = example_transit_model(
+        example["t"], {"radius": 0.1, "u1": 0.1, "u2": 0.3}
+    )
 
     example["background"] = 0.002 * (
         5 * example["t"] ** 2

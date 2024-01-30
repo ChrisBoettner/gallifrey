@@ -558,14 +558,14 @@ class KernelSearch:
             disable=False if self.verbosity == 1 else True,
         )
 
+        posteriors = [node.posterior for node in layer]
         if self.num_threads <= 1:
             fits = []
-            for posterior in tqdm_object:
+            for posterior in posteriors:
                 if self.verbosity >= 2:
                     print(f"Current kernel: {_describe_kernel(posterior)}")
                 fits.append(inner_loop(posterior))
         else:
-            posteriors = [node.posterior for node in layer]
             with tqdm_joblib(tqdm_object):
                 fits = Parallel(n_jobs=self.num_threads)(
                     delayed(inner_loop)(posterior) for posterior in posteriors
@@ -720,4 +720,7 @@ class KernelSearch:
             all_nodes, key=lambda node: (self.get_criterion(node), id(node))
         )
         self.nodes = all_nodes
+
+        if self.clear_caches:
+            jax.clear_caches()
         return best_model

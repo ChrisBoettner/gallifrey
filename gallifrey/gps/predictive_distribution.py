@@ -17,7 +17,7 @@ def predictive_distribution(
     X: Optional[Array] = None,
     y: Optional[Array] = None,
     transit_model: Optional[Callable] = None,
-    transit_parameter: Optional[Array] = None,
+    transit_parameter: Optional[Array | dict] = None,
     gp_parameter: Optional[Array] = None,
 ) -> tfp.distributions.Distribution:
     """
@@ -47,9 +47,10 @@ def predictive_distribution(
         to evaluate the function and parameter as input, and
         returns the flux at the input points, by default
         None
-    transit_parameter : Optional[Array], optional
+    transit_parameter : Optional[Array | dict], optional
         The parameter for the transit model. Must be given
-        if the transit model is given, by default None
+        if the transit model is given and of compatible type
+        with the transit model, by default None
     gp_parameter : Optional[Array], optional
         If given, updates the gp parameter to these values before
         calculating the distribution, by default None
@@ -87,7 +88,7 @@ def predictive_distribution(
             jnp.array(tree_leaves(gp_posterior.trainables()))
         ).reshape(-1)
         gp_posterior = jit_set_trainables(
-            gp_posterior.unconstrain(),
+            gp_posterior.unconstrain(),  # type: ignore
             gp_parameter,  # type: ignore
             trainable_idx,
         ).constrain()

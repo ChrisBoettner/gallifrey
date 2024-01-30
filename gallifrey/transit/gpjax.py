@@ -26,7 +26,7 @@ class Transit(AbstractMeanFunction):
     """
 
     transit_model: Callable = static_field()
-    transit_parameter: Float[Array, " O"] = static_field()
+    transit_parameter: Float[Array | dict, " O"] = static_field()
 
     def __call__(self, x: Num[Array, "N"]) -> Float[Array, "N"]:
         """Evaluate the transit model at the given points.

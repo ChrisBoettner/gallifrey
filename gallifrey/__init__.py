@@ -5,7 +5,7 @@ import logging
 config.update("jax_enable_x64", True)
 
 # Throw error if any of the jax operations evaluate to nan.
-# config.update("jax_debug_nans", True)
+#config.update("jax_debug_nans", True)
 
 # silence jaxoplanet unit override
 logging.getLogger("pint").setLevel(logging.ERROR)
