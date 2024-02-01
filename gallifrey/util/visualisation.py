@@ -4,7 +4,7 @@ from beartype.typing import Any, Optional
 from jaxtyping import Array
 from tensorflow_probability.substrates.jax.distributions import Distribution
 
-from gallifrey.util.allan_deviation import allan_deviation, allan_deviation_chi2_regions
+from gallifrey.stats.allan_deviation import allan_deviation, chi2_regions
 
 colors = [
     "#2F83B4",
@@ -301,9 +301,7 @@ def plot_allan_deviation(
         whitened_residual_sample
     )  # type : ignore
 
-    expected_deviation = allan_deviation_chi2_regions(
-        bin_sizes, whitened_residual_sample.shape[-1]
-    )
+    expected_deviation = chi2_regions(whitened_residual_sample.shape[-1], bin_sizes)
 
     # calculate percentiles
     edges = (100 - credible_region) / 2

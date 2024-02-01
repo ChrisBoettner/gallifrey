@@ -1,4 +1,5 @@
 import numpy as np
+from beartype.typing import Iterable
 from jaxtyping import Array
 from numpy.typing import NDArray
 from scipy.stats import chi2
@@ -51,8 +52,14 @@ def allan_deviation(data: Array | NDArray | list) -> tuple[NDArray, NDArray]:
     return bin_sizes, allan_deviation_values
 
 
-def allan_deviation_chi2_regions(bin_sizes: NDArray | Array, n_data: int) -> NDArray:
-    """Calculate the expected mean and percentiles for the binned residuals in the
+def chi2_regions(
+    n_data: int,
+    bin_sizes: Iterable | int = 1,
+    percentiles: Iterable | float = [16, 84, 2.5, 97.5],
+    variance: float = 1,
+) -> NDArray:
+    """
+    Calculate the expected mean and percentiles for the binned residuals in the
     Allan Deviation, for whitened resiudals.
 
     The whitened residuals are assumed to follow a standard normal distribution
@@ -65,36 +72,44 @@ def allan_deviation_chi2_regions(bin_sizes: NDArray | Array, n_data: int) -> NDA
 
     Parameters
     ----------
-    bin_sizes : NDArray | Array
-        A list with the bin_sizes considered
     n_data : int
         The total number of datapoints for the residuals.
+    bin_sizes : Iterable | float
+        A list with the bin_sizes considered.
+    percentiles : Iterable | float
+        The percentiles to calculate, by default [0.16, 0.84, 0.025, 0.975].
+    variance : float
+        The initial variance for bin_size = 1. By default 1, which is the
+        expected value for whitened resiudals.
 
     Returns
     -------
     NDArray
         The chi square statistics for all bin sized, of shape (5, bin_sizes),
         where the rows are [mean, 16th percentile, 84th percentile,
-        2.5th percentile, 97.5th percentile].
+        2.5th percentile, 97.5th percentile], or specified bins.
     """
 
     values = []
 
+    bin_sizes = np.atleast_1d(np.asarray(bin_sizes))
+    percentiles = np.atleast_1d(np.asarray(percentiles))
+    assert isinstance(bin_sizes, Iterable)  # type: ignore
+    assert isinstance(percentiles, np.ndarray)  # type: ignore
+
     for bin_size in bin_sizes:
         n_data_binned = n_data // bin_size
         degrees_of_freedom = n_data_binned - 1
-        variance = 1 / bin_size
+        binned_variance = variance / bin_size
 
-        scale_factor = variance / degrees_of_freedom
+        scale_factor = binned_variance / degrees_of_freedom
 
         mean = chi2.mean(degrees_of_freedom) * scale_factor
-        percentiles = (
-            np.array(
-                [chi2.ppf(x, degrees_of_freedom) for x in [0.16, 0.84, 0.025, 0.975]]
-            )
+        regions = (
+            np.array([chi2.ppf(x, degrees_of_freedom) for x in (percentiles / 100)])
             * scale_factor
         )
 
-        values.append(np.concatenate([[mean], percentiles]))
+        values.append(np.concatenate([[mean], regions]))
 
     return np.array(values).T
