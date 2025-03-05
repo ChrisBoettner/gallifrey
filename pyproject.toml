@@ -1,0 +1,23 @@
+[project]
+name = "gallifrey"
+version = "0.0.9"
+description = "A JAX-based gaussian process structure learning package for time series modelling."
+authors = [
+    {name = "Chris Boettner",email = "boettnec@gmail.com"}
+]
+license = {text = "Apache 2.0"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "blackjax (>=1.2.5,<2.0.0)",
+    "jax (>=0.5.0,<0.6.0)",
+    "flax (>=0.10.3,<0.11.0)",
+    "equinox (>=0.11.11,<0.12.0)",
+    "beartype (>=0.19.0,<0.20.0)",
+    "tensorflow-probability (>=0.25.0,<0.26.0)",
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

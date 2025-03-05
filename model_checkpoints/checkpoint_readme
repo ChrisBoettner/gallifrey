@@ -1,0 +1,13 @@
+Model checkpoints for tutorial notebooks:
+
+stellar_variability_extrapolation: particles=64, max_depth=3, smc_rounds=20, atoms=[Linear, RBF, Periodic], operators=[Sum, Product], n_mcmc=75, n_hmc=10
+stellar_variability_interpolationpolation: particles=64, max_depth=3, smc_rounds=20, atoms=[Linear, RBF, Periodic], operators=[Sum, Product], n_mcmc=75, n_hmc=10
+
+psls_deep: particles=64, max_depth=2, smc_rounds=20, atoms=[RBF, Matern32], operators=[Sum, Product], n_mcmc=75, n_hmc=10
+psls_deep: particles=64, max_depth=0, smc_rounds=20, atoms=[RBF, Matern32], operators=[Sum, Product], n_mcmc=75, n_hmc=10
+
+quickstart_example: particles=64, max_depth=3, smc_rounds=220, atoms=[Linear, RBF, Periodic], operators=[Sum, Product], n_mcmc=75, n_hmc=10
+
+mcmc_comparison_learned: particles=8, max_depth=3, smc_rounds=30, atoms=[Linear, RBF, Periodic], operators=[Sum, Product], n_mcmc=75, n_hmc=10
+mcmc_comparison_rbf: particles=8, max_depth=0, smc_rounds=30, atoms=[RBF], operators=[], n_mcmc=75, n_hmc=10
+mcmc_comparison_learned_many_rounds: particles=8, max_depth=3, smc_rounds=129, atoms=[Linear, RBF, Periodic], operators=[Sum, Product], n_mcmc=30, n_hmc=5

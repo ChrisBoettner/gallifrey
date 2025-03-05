@@ -1,0 +1,76 @@
+========================================================
+========================================================
+TESS
+========================================================
+========================================================
+TIC_10863087_LC.csv
+-------------------------
+- TESS lightcurve for target 10863087
+- Used in stellar variability notebook
+- Generated using the following code:
+import lightkurve as lk
+# get lightcurve
+lcf = (
+    lk.search_lightcurve("TIC 10863087", mission="TESS", author="SPOC", limit=1)
+    .download(quality_bitmask="hard")
+    .remove_nans()
+)
+# we thin the lightcurve to speed up the GP fitting, and remove outliers
+lc = lcf[100:5000:6].remove_outliers(sigma=3)
+
+# convert to pandas dataframe
+df = (
+    lc.to_pandas()
+    .reset_index()
+    .filter(["time", "flux", "flux_err"])
+    .rename(
+        columns={
+            "time": "Time [Days]",
+            "flux": r"Flux [$\frac{\mathrm{e}^{-}}{\mathrm{s}}$]",
+            "flux_err": r"Flux Error [$\frac{\mathrm{e}^{-}}{\mathrm{s}}$]]",
+        }
+    )
+)
+========================================================
+========================================================
+PSLS
+========================================================
+========================================================
+0012069449.csv
+0012069449_with_transit.csv
+---------------------------
+- Data generated using the Plato Solar-Like Lightcurve Simulator (https://sites.lesia.obspm.fr/psls/)
+- Simulated light curve for 16 Cyg B (KIC 12069449) (example target in PSLS v.18, cleaned
+- See Samadi+2019, section 6.1 (DOI https://doi.org/10.1051/0004-6361/201834822)
+- Two versions:
+	- without transit
+	- with transit, following settings
+		  PlanetRadius : 0.5   # in jupiter radii
+  		  OrbitalPeriod : 10.  # in days
+  		  PlanetSemiMajorAxis : 1.  # in A.U.
+  		  OrbitalAngle : 0. # in deg
+  		  LimbDarkeningCoefficients: [0.25,0.75] # 2 or 4 coefficients can be used. 2 for a quadratic law and 4 for a non-linear law
+========================================================
+========================================================
+HATS46b
+========================================================
+========================================================  
+HATS_46b.fits
+HATS_46b_reference.csv
+---------------------------	  
+- light curves kindly provided by Evie Ahrer
+
+- paper is here: https://ui.adsabs.harvard.edu/abs/2023MNRAS.521.5636A/abstract 
+- light curves are available here: https://ui.adsabs.harvard.edu/abs/2023yCat..75215636A/abstract 
+
+- the HATS_46b.fits files contain the light curve data
+- the HATS_46b_reference.csv files contain parameters estimated in the references papers
+- the entry with wavelength 0 corresponds to the white light curve
+========================================================
+========================================================
+mcmc_chains
+========================================================
+========================================================
+HATS46b.pkl
+---------------------------
+- transit parameter mcmc chains, see notebooks/transmission_spectrum.ipynb
