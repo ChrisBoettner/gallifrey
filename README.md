@@ -1,7 +1,6 @@
 # $\texttt{gallifrey}$: Bayesian Time Series Structure Learning with Gaussian Processes
 
 [![Documentation](https://img.shields.io/badge/docs-main-red.svg)](https://chrisboettner.github.io/gallifrey/)
-[![PyPI version](https://badge.fury.io/py/gallifrey.svg)](https://pypi.org/project/gallifrey/)
 [![DOI](https://zenodo.org/badge/DOI/tba.svg)](https://doi.org/10.000)
 [![License](https://img.shields.io/badge/License-Apache%202.0-lightgrey.svg)](https://opensource.org/licenses/Apache-2.0)
 
