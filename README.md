@@ -2,7 +2,7 @@
 
 [![Documentation](https://img.shields.io/badge/docs-main-red.svg)](https://chrisboettner.github.io/gallifrey/)
 [![DOI](https://zenodo.org/badge/DOI/tba.svg)](https://doi.org/10.000)
-[![License](https://img.shields.io/badge/License-Apache%202.0-lightgrey.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-Apache%202.0-white.svg)](https://opensource.org/licenses/Apache-2.0)
 
 $\texttt{gallifrey}$ is a Python package designed for  Bayesian structure learning, inference, and analysis with Gaussian Process (GP) models, focused on time series data. It is a JAX-based python implementation of the julia package [AutoGP.jl](https://probsys.github.io/AutoGP.jl/stable/index.html) by Feras Saad. 
 
