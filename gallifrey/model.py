@@ -163,7 +163,7 @@ class GPModel:
     Attributes
     ----------
 
-    num_particles : int
+    num_particles : ScalarInt
         Number of particles in the model.
     config : GPConfig
         The config instance for the GP model (see
@@ -546,13 +546,13 @@ class GPModel:
         return self.config.noise_prior
 
     @property
-    def num_particles(self) -> int:
+    def num_particles(self) -> ScalarInt:
         """
         Get the number of particles in the model.
 
         Returns
         -------
-        int
+        ScalarInt
             The number of particles.
         """
         return self.state.num_particles
@@ -724,7 +724,7 @@ class GPModel:
         final_state, history, accepted_mcmc, accepted_hmc = pmap(
             jit(wrapper), in_axes=0
         )(
-            jr.split(key, self.num_particles),
+            jr.split(key, int(self.num_particles)),
             self.state.particle_states,  # use states batched over 0th axis
         )
 
@@ -924,7 +924,7 @@ class GPModel:
         gpstate: tp.Optional[GPState] = None,
         data: tp.Optional[Dataset] = None,
         log_weights: tp.Optional[Float[Array, " N"]] = None,
-        num_particles: tp.Optional[int] = None,
+        num_particles: tp.Optional[ScalarInt] = None,
         key: tp.Optional[PRNGKeyArray] = None,
         latent: bool = False,
     ) -> Distribution:
@@ -962,7 +962,7 @@ class GPModel:
             The log weights of the particles. If None, the log weights from the
             GP state are used. An error is raised if the log weights are not provided
             and the GP state does not contain log weights. By default None.
-        num_particles : tp.Optional[int], optional
+        num_particles : tp.Optional[ScalarInt], optional
             Number of particles to include in the mixture distribution. If None,
             all particles in the state are included. If provided, a random sample
             of particles is chosen based on the weights. By default None.
@@ -1036,7 +1036,7 @@ class GPModel:
                 key,
                 jnp.arange(len(weights)),
                 p=weights,
-                shape=(num_particles,),
+                shape=(int(num_particles),),
                 replace=False,
             )
             # normalize weights
@@ -1060,7 +1060,7 @@ class GPModel:
     def display(
         self,
         gpstate: tp.Optional[GPState] = None,
-        num_particles: tp.Optional[int] = None,
+        num_particles: tp.Optional[ScalarInt] = None,
     ) -> None:
         """
         Prints a summary of the GP model, including particle kernels
@@ -1078,7 +1078,7 @@ class GPModel:
         gpstate : tp.Optional[GPState], optional
             The GP state object, containing the particle states. If None, the current
             state of the model is used. By default None.
-        num_particles : tp.Optional[int], optional
+        num_particles : tp.Optional[ScalarInt], optional
             Number of particles to display. If None, all particles are displayed.
             By default None.
 

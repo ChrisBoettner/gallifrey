@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="115 45 320 310">
+
+<!-- Root to B -->
+<line x1="285.7" y1="100.6" x2="213.3" y2="139.4" stroke="gray" stroke-width="4" />
+<!-- Root to C -->
+<line x1="313.3" y1="100.6" x2="381.7" y2="144.4" stroke="gray" stroke-width="4" />
+<!-- B to D -->
+<line x1="186.7" y1="180.6" x2="163.3" y2="219.4" stroke="gray" stroke-width="4" />
+<!-- B to E -->
+<line x1="213.3" y1="180.6" x2="236.7" y2="219.4" stroke="gray" stroke-width="4" />
+<!-- E to F (now positioned under E) -->
+<line x1="239.1" y1="260.8" x2="214.1" y2="299.2" stroke="gray" stroke-width="4" />
+<!-- E to G (now positioned under E) -->
+<line x1="260.9" y1="260.8" x2="285.9" y2="299.2" stroke="gray" stroke-width="4" />
+<!-- Nodes -->
+<!-- Root node -->
+<circle cx="300" cy="80" r="25" fill="#781c54" fill-opacity="1.0" />
+<text x="300" y="85" font-family="Computer Modern Serif, serif" font-size="16" text-anchor="middle" fill="white">+</text>
+<!-- B node -->
+<circle cx="200" cy="160" r="25" fill="#781c54" fill-opacity="1.0" />
+<text x="200" y="165" font-family="Computer Modern Serif, serif" font-size="16" text-anchor="middle" fill="white">×</text>
+<!-- C node -->
+<circle cx="400" cy="160" r="25" fill="#781c54" fill-opacity="1.0" />
+<text x="400" y="165" font-family="Computer Modern Serif, serif" font-size="16" text-anchor="middle" fill="white">k<tspan font-size="12" dy="2" baseline-shift="-4">4</tspan></text>
+<!-- D node -->
+<circle cx="150" cy="240" r="25" fill="#781c54" fill-opacity="1.0" />
+<text x="150" y="245" font-family="Computer Modern Serif, serif" font-size="16" text-anchor="middle" fill="white">k<tspan font-size="12" dy="2" baseline-shift="-4">1</tspan></text>
+<!-- E node -->
+<circle cx="250" cy="240" r="25" fill="#781c54" fill-opacity="1.0" />
+<text x="250" y="245" font-family="Computer Modern Serif, serif" font-size="16" text-anchor="middle" fill="white">+</text>
+<!-- F node (repositioned under E) -->
+<circle cx="200" cy="320" r="25" fill="#781c54" fill-opacity="1.0" />
+<text x="200" y="325" font-family="Computer Modern Serif, serif" font-size="16" text-anchor="middle" fill="white">k<tspan font-size="12" dy="2" baseline-shift="-4">2</tspan></text>
+<!-- G node (repositioned under E) -->
+<circle cx="300" cy="320" r="25" fill="#781c54" fill-opacity="1.0" />
+<text x="300" y="325" font-family="Computer Modern Serif, serif" font-size="16" text-anchor="middle" fill="white">k<tspan font-size="12" dy="2" baseline-shift="-4">3</tspan></text>
+</svg>
