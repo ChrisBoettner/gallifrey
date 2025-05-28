@@ -1,7 +1,7 @@
 # $\texttt{gallifrey}$: Bayesian Time Series Structure Learning with Gaussian Processes
 
 [![Documentation](https://img.shields.io/badge/docs-main-red.svg)](https://chrisboettner.github.io/gallifrey/)
-[![DOI](https://zenodo.org/badge/DOI/tba.svg)](https://doi.org/10.000)
+[![DOI](https://zenodo.org/badge/DOI/10.1051/0004-6361/202554518.svg)](https://doi.org/10.1051/0004-6361/202554518)
 [![License](https://img.shields.io/badge/License-Apache%202.0-white.svg)](https://opensource.org/licenses/Apache-2.0)
 
 $\texttt{gallifrey}$ is a Python package designed for  Bayesian structure learning, inference, and analysis with Gaussian Process (GP) models, focused on time series data. It is a JAX-based python implementation of the julia package [AutoGP.jl](https://probsys.github.io/AutoGP.jl/stable/index.html) by Feras Saad. 
@@ -151,8 +151,22 @@ We welcome bug reports, feature requests, and pull requests.
 If you use $\texttt{gallifrey}$ in your research, please cite it as:
 
 ```bibtex
-tba
+@article{https://doi.org/10.1051/0004-6361/202554518,
+  doi = {10.1051/0004-6361/202554518},
+  author = {Boettner, Christopher},
+  title = {gallifrey: JAX-based Gaussian Process Structure Learning for Astronomical Time Series},
+  year = {2025},
+  journal = {A\&A},
+  publisher = {EDP Sciences},
+  issn = {0004-6361, 1432-0746},
+  eprint = {2505.20394},
+  archiveprefix = {arXiv},
+  primaryclass = {astro-ph},
+  keywords = {Astrophysics - Earth and Planetary Astrophysics,Astrophysics - Instrumentation and Methods for Astrophysics},
+  copyright = {{\copyright} 2025, ESO},
+}
 ```
+
 And please also cite the original paper by Saad et al.
 
 ```bibtex
