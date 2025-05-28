@@ -1,0 +1,4408 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://ChrisBoettner.github.io/gallifrey/autoapi/gallifrey/moves/detach_attach/">
+      
+      
+        <link rel="prev" href="../acceptance_probability/">
+      
+      
+        <link rel="next" href="../noise_proposal/">
+      
+      
+      <link rel="icon" href="../../../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>detach_attach - gallifrey Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="amber" data-md-color-accent="lime">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gallifrey.moves.detach_attach" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="gallifrey Documentation" class="md-header__button md-logo" aria-label="gallifrey Documentation" data-md-component="logo">
+      
+  <img src="../../../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            gallifrey Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              detach_attach
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="amber" data-md-color-accent="lime"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="deep-orange"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ChrisBoettner/gallifrey" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="gallifrey Documentation" class="md-nav__button md-logo" aria-label="gallifrey Documentation" data-md-component="logo">
+      
+  <img src="../../../../assets/logo.png" alt="logo">
+
+    </a>
+    gallifrey Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ChrisBoettner/gallifrey" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../stellar_variability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Time series interpolation and forecasting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../transit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transit fitting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../comparison_with_simple_kernel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Comparison with simple kernel
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../transmission_spectrum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Transmission spectrum of HATS-46 b
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    gallifrey
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            gallifrey
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    data
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gpconfig/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    gpconfig
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_3" id="__nav_4_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    inference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            inference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../inference/hmc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    hmc
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../inference/parameter_rejuvenation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    parameter_rejuvenation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../inference/rejuvenation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    rejuvenation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../inference/smc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    smc
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../inference/state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    state
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../inference/transforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    transforms
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_4" id="__nav_4_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    kernels
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            kernels
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kernels/atoms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    atoms
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kernels/library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    library
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kernels/prior/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    prior
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kernels/tree/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    tree
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    model
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_6" id="__nav_4_1_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    moves
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_1_6">
+            <span class="md-nav__icon md-icon"></span>
+            moves
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../acceptance_probability/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    acceptance_probability
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    detach_attach
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    detach_attach
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach" class="md-nav__link">
+    <span class="md-ellipsis">
+      detach_attach
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.attach_move" class="md-nav__link">
+    <span class="md-ellipsis">
+      attach_move
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.detach_attach_move" class="md-nav__link">
+    <span class="md-ellipsis">
+      detach_attach_move
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.detach_move" class="md-nav__link">
+    <span class="md-ellipsis">
+      detach_move
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.detach_subtree" class="md-nav__link">
+    <span class="md-ellipsis">
+      detach_subtree
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.scaffold_proposal" class="md-nav__link">
+    <span class="md-ellipsis">
+      scaffold_proposal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.structure_attach_move" class="md-nav__link">
+    <span class="md-ellipsis">
+      structure_attach_move
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.structure_detach_move" class="md-nav__link">
+    <span class="md-ellipsis">
+      structure_detach_move
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.transplant_subtree" class="md-nav__link">
+    <span class="md-ellipsis">
+      transplant_subtree
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../noise_proposal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    noise_proposal
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../particle_move/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    particle_move
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../subtree_replace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    subtree_replace
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../parameter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    parameter
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../particles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    particles
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../schedule/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    schedule
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_1_10" id="__nav_4_1_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    utils
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_1_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1_10">
+            <span class="md-nav__icon md-icon"></span>
+            utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/probability_calculations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    probability_calculations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/tree_helper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    tree_helper
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../utils/typing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    typing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach" class="md-nav__link">
+    <span class="md-ellipsis">
+      detach_attach
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.attach_move" class="md-nav__link">
+    <span class="md-ellipsis">
+      attach_move
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.detach_attach_move" class="md-nav__link">
+    <span class="md-ellipsis">
+      detach_attach_move
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.detach_move" class="md-nav__link">
+    <span class="md-ellipsis">
+      detach_move
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.detach_subtree" class="md-nav__link">
+    <span class="md-ellipsis">
+      detach_subtree
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.scaffold_proposal" class="md-nav__link">
+    <span class="md-ellipsis">
+      scaffold_proposal
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.structure_attach_move" class="md-nav__link">
+    <span class="md-ellipsis">
+      structure_attach_move
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.structure_detach_move" class="md-nav__link">
+    <span class="md-ellipsis">
+      structure_detach_move
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gallifrey.moves.detach_attach.transplant_subtree" class="md-nav__link">
+    <span class="md-ellipsis">
+      transplant_subtree
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+  <h1>detach_attach</h1>
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="gallifrey.moves.detach_attach"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="gallifrey.moves.detach_attach.attach_move" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">attach_move</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">,</span> <span class="n">kernel_prior</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Perform attach move. In this move, a subtree is detached from the
+tree expression (at idx a), a scaffold is attached to the tree
+expression (at idx a), and the subtree originally at idx a is
+reattached to the scaffold (at idx b).</p>
+<p>Also returns the probabilities associated with the proposals q_A
+(going from the original tree to the new tree using the attach move)
+and q_D (going from the new tree to the original tree using a detach move).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>key</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.PRNGKeyArray">PRNGKeyArray</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The random key.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>kernel_state</code>
+            </td>
+            <td>
+                  <code><span title="flax.nnx.State">State</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The original kernel state, must have attributes:
+- parameters
+- leaf_level_map
+- node_sizes
+- tree_expression
+- is_operator</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>kernel_prior</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="KernelPrior (gallifrey.kernels.prior.KernelPrior)" href="../../kernels/prior/#gallifrey.kernels.prior.KernelPrior">KernelPrior</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The prior to sample the new subtree from.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>verbosity</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The verbosity level, by default 0. Debug information is printed
+if verbosity &gt; 2.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="flax.nnx.State">State</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The updated kernel state after the move.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarFloat">ScalarFloat</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The probability associated with the proposal q_D (b|a, k', theta'),
+i.e. the transition probability from the new tree to the original tree
+using a detach move.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarFloat">ScalarFloat</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The probability associated with the proposal q_A (b|a, k, theta),
+i.e. going from the original tree to the new tree using the attach move.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>gallifrey/moves/detach_attach.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;kernel_prior&quot;</span><span class="p">,</span> <span class="s2">&quot;verbosity&quot;</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">attach_move</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PRNGKeyArray</span><span class="p">,</span>
+    <span class="n">kernel_state</span><span class="p">:</span> <span class="n">nnx</span><span class="o">.</span><span class="n">State</span><span class="p">,</span>
+    <span class="n">kernel_prior</span><span class="p">:</span> <span class="n">KernelPrior</span><span class="p">,</span>
+    <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">nnx</span><span class="o">.</span><span class="n">State</span><span class="p">,</span> <span class="n">ScalarFloat</span><span class="p">,</span> <span class="n">ScalarFloat</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform attach move. In this move, a subtree is detached from the</span>
+<span class="sd">    tree expression (at idx a), a scaffold is attached to the tree</span>
+<span class="sd">    expression (at idx a), and the subtree originally at idx a is</span>
+<span class="sd">    reattached to the scaffold (at idx b).</span>
+
+<span class="sd">    Also returns the probabilities associated with the proposals q_A</span>
+<span class="sd">    (going from the original tree to the new tree using the attach move)</span>
+<span class="sd">    and q_D (going from the new tree to the original tree using a detach move).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : PRNGKeyArray</span>
+<span class="sd">        The random key.</span>
+<span class="sd">    kernel_state : nnx.State</span>
+<span class="sd">        The original kernel state, must have attributes:</span>
+<span class="sd">        - parameters</span>
+<span class="sd">        - leaf_level_map</span>
+<span class="sd">        - node_sizes</span>
+<span class="sd">        - tree_expression</span>
+<span class="sd">        - is_operator</span>
+<span class="sd">    kernel_prior : KernelPrior</span>
+<span class="sd">        The prior to sample the new subtree from.</span>
+<span class="sd">    verbosity : int, optional</span>
+<span class="sd">        The verbosity level, by default 0. Debug information is printed</span>
+<span class="sd">        if verbosity &gt; 2.</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nnx.State</span>
+<span class="sd">        The updated kernel state after the move.</span>
+<span class="sd">    ScalarFloat</span>
+<span class="sd">        The probability associated with the proposal q_D (b|a, k&#39;, theta&#39;),</span>
+<span class="sd">        i.e. the transition probability from the new tree to the original tree</span>
+<span class="sd">        using a detach move.</span>
+<span class="sd">    ScalarFloat</span>
+<span class="sd">        The probability associated with the proposal q_A (b|a, k, theta),</span>
+<span class="sd">        i.e. going from the original tree to the new tree using the attach move.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">parameter_key</span><span class="p">,</span> <span class="n">structure_key</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># get the new structure and the mapping between the old and new indices</span>
+    <span class="n">new_structure</span><span class="p">,</span> <span class="n">changes</span><span class="p">,</span> <span class="n">index_mapping</span><span class="p">,</span> <span class="n">log_p_path</span><span class="p">,</span> <span class="n">log_p_scaffold</span><span class="p">,</span> <span class="n">idx_a</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">structure_attach_move</span><span class="p">(</span>
+            <span class="n">structure_key</span><span class="p">,</span>
+            <span class="n">kernel_state</span><span class="o">.</span><span class="n">tree_expression</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">kernel_state</span><span class="o">.</span><span class="n">post_level_map</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">kernel_state</span><span class="o">.</span><span class="n">node_heights</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">kernel_prior</span><span class="p">,</span>
+            <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># get attributes of new tree</span>
+    <span class="n">new_kernel</span> <span class="o">=</span> <span class="n">nnx</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">kernel_prior</span><span class="o">.</span><span class="n">graphdef</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">)</span>
+    <span class="n">new_kernel</span><span class="o">.</span><span class="n">init_tree</span><span class="p">(</span>
+        <span class="n">new_structure</span><span class="p">,</span>
+        <span class="n">kernel_prior</span><span class="o">.</span><span class="n">kernel_library</span><span class="p">,</span>
+        <span class="n">kernel_prior</span><span class="o">.</span><span class="n">max_depth</span><span class="p">,</span>
+        <span class="n">kernel_prior</span><span class="o">.</span><span class="n">num_datapoints</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># move parameters of subtree from old indices to new indices</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">new_kernel_state</span> <span class="o">=</span> <span class="n">nnx</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">new_kernel</span><span class="p">)</span>
+    <span class="n">new_kernel_state</span> <span class="o">=</span> <span class="n">move_parameters</span><span class="p">(</span>
+        <span class="n">new_kernel_state</span><span class="p">,</span>
+        <span class="n">index_mapping</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+        <span class="n">kernel_prior</span><span class="o">.</span><span class="n">max_depth</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># sample new kernel parameters, but first remove the nodes</span>
+    <span class="c1"># from changes that were already moved to a new place (since we</span>
+    <span class="c1"># want to keep the parameters of the moved nodes and only sample</span>
+    <span class="c1"># parameters for completely new nodes introduced by scaffold)</span>
+    <span class="n">changes</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+        <span class="n">jnp</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">changes</span><span class="p">,</span> <span class="n">index_mapping</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+        <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">changes</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">new_kernel_state</span><span class="p">,</span> <span class="n">log_prob_parameter</span> <span class="o">=</span> <span class="n">kernel_prior</span><span class="o">.</span><span class="n">parameter_prior</span><span class="o">.</span><span class="n">sample_subset</span><span class="p">(</span>
+        <span class="n">parameter_key</span><span class="p">,</span>
+        <span class="n">new_kernel_state</span><span class="p">,</span>
+        <span class="n">considered_nodes</span><span class="o">=</span><span class="n">changes</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># calculate q_A (b|a, k, theta), i.e. probability associated with the</span>
+    <span class="c1"># proposal going from the original tree to the new tree using the attach move</span>
+    <span class="n">log_q_A</span> <span class="o">=</span> <span class="n">log_p_path</span> <span class="o">+</span> <span class="n">log_p_scaffold</span> <span class="o">+</span> <span class="n">log_prob_parameter</span>
+
+    <span class="c1"># calculate q_D (b|a, k&#39;, theta&#39;), i.e. the transition probability</span>
+    <span class="c1"># from the new tree to the original tree using a detach move</span>
+    <span class="n">log_q_D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">new_kernel</span><span class="o">.</span><span class="n">node_sizes</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">idx_a</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">new_kernel_state</span><span class="p">,</span> <span class="n">log_q_D</span><span class="p">,</span> <span class="n">log_q_A</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="gallifrey.moves.detach_attach.detach_attach_move" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">detach_attach_move</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">,</span> <span class="n">kernel_prior</span><span class="p">,</span> <span class="n">detach_prob</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Perform detach-attach move. In this move, a subtree is detached
+from the tree expression (at idx a), and a scaffold is attached
+to the tree expression (at idx a). The subtree is then reattached
+to the scaffold.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>key</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.PRNGKeyArray">PRNGKeyArray</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The random key.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>kernel_state</code>
+            </td>
+            <td>
+                  <code><span title="flax.nnx.State">State</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The original kernel state, must have attributes:
+- parameters
+- leaf_level_map
+- node_sizes
+- tree_expression
+- is_operator</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>kernel_prior</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="KernelPrior (gallifrey.kernels.prior.KernelPrior)" href="../../kernels/prior/#gallifrey.kernels.prior.KernelPrior">KernelPrior</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The kernel prior object that contains the kernel structure prior.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>detach_prob</code>
+            </td>
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarFloat">ScalarFloat</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The probability of performing the detach move, by default 0.5.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0.5</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>verbosity</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The verbosity level, by default 0. Debug information is printed
+if verbosity &gt; 2.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="flax.nnx.State">State</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The updated kernel state after the move.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarFloat">ScalarFloat</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The log acceptance ratio contribution of the move,
+needs to be added to the log acceptance ratio of the
+subtree-replace move.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>gallifrey/moves/detach_attach.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;kernel_prior&quot;</span><span class="p">,</span> <span class="s2">&quot;verbosity&quot;</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">detach_attach_move</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PRNGKeyArray</span><span class="p">,</span>
+    <span class="n">kernel_state</span><span class="p">:</span> <span class="n">nnx</span><span class="o">.</span><span class="n">State</span><span class="p">,</span>
+    <span class="n">kernel_prior</span><span class="p">:</span> <span class="n">KernelPrior</span><span class="p">,</span>
+    <span class="n">detach_prob</span><span class="p">:</span> <span class="n">ScalarFloat</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">nnx</span><span class="o">.</span><span class="n">State</span><span class="p">,</span> <span class="n">ScalarFloat</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform detach-attach move. In this move, a subtree is detached</span>
+<span class="sd">    from the tree expression (at idx a), and a scaffold is attached</span>
+<span class="sd">    to the tree expression (at idx a). The subtree is then reattached</span>
+<span class="sd">    to the scaffold.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : PRNGKeyArray</span>
+<span class="sd">        The random key.</span>
+<span class="sd">    kernel_state : nnx.State</span>
+<span class="sd">        The original kernel state, must have attributes:</span>
+<span class="sd">        - parameters</span>
+<span class="sd">        - leaf_level_map</span>
+<span class="sd">        - node_sizes</span>
+<span class="sd">        - tree_expression</span>
+<span class="sd">        - is_operator</span>
+<span class="sd">    kernel_prior : KernelPrior</span>
+<span class="sd">        The kernel prior object that contains the kernel structure prior.</span>
+<span class="sd">    detach_prob : ScalarFloat, optional</span>
+<span class="sd">        The probability of performing the detach move, by default 0.5.</span>
+<span class="sd">    verbosity : int, optional</span>
+<span class="sd">        The verbosity level, by default 0. Debug information is printed</span>
+<span class="sd">        if verbosity &gt; 2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nnx.State</span>
+<span class="sd">        The updated kernel state after the move.</span>
+<span class="sd">    ScalarFloat</span>
+<span class="sd">        The log acceptance ratio contribution of the move,</span>
+<span class="sd">        needs to be added to the log acceptance ratio of the</span>
+<span class="sd">        subtree-replace move.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">selection_subkey</span><span class="p">,</span> <span class="n">move_subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># Cannot perform detach-attach move on kernels with max depth = 1.</span>
+    <span class="n">perform_detach</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">bernoulli</span><span class="p">(</span>
+        <span class="n">selection_subkey</span><span class="p">,</span>
+        <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">kernel_state</span><span class="o">.</span><span class="n">node_sizes</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
+            <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">detach_prob</span><span class="p">),</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">lax</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span>
+            <span class="n">perform_detach</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Performing detach move.&quot;</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Performing attach move.&quot;</span><span class="p">),</span>
+            <span class="n">perform_detach</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="c1"># ratio of the probabilities of proposing detach and attach moves,</span>
+    <span class="c1"># needed for acceptance ratio calculation (Saad2023 - Proposition 2)</span>
+    <span class="n">log_detach_vs_attach_prob</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">detach_prob</span><span class="p">)</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">detach_prob</span><span class="p">)</span>
+
+    <span class="c1"># perform detach or attach move</span>
+    <span class="n">new_kernel_state</span><span class="p">,</span> <span class="n">log_q_D</span><span class="p">,</span> <span class="n">log_q_A</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span>
+        <span class="n">perform_detach</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">detach_move</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">,</span> <span class="n">kernel_prior</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">),</span>
+        <span class="k">lambda</span> <span class="n">key</span><span class="p">:</span> <span class="n">attach_move</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">,</span> <span class="n">kernel_prior</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">),</span>
+        <span class="n">move_subkey</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># calculate the log acceptance ratio contribution for the move</span>
+    <span class="c1"># (Saad2023 - Proposition 2)</span>
+    <span class="n">log_acceptance_ratio_contribution</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span>
+        <span class="n">perform_detach</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">log_p</span><span class="p">:</span> <span class="n">log_p</span><span class="p">,</span>
+        <span class="k">lambda</span> <span class="n">log_p</span><span class="p">:</span> <span class="o">-</span><span class="n">log_p</span><span class="p">,</span>
+        <span class="n">log_q_A</span> <span class="o">-</span> <span class="n">log_q_D</span> <span class="o">+</span> <span class="n">log_detach_vs_attach_prob</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_kernel_state</span><span class="p">,</span> <span class="n">log_acceptance_ratio_contribution</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="gallifrey.moves.detach_attach.detach_move" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">detach_move</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">kernel_state</span><span class="p">,</span> <span class="n">kernel_prior</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Perform detach move. In this move, a scaffold is detached
+from the tree expression (at idx a), and a subtree from the
+scaffold (at idx b) is detached and then reattached to the
+root (idx a) of the scaffold.</p>
+<p>Also returns the probabilities associated with the proposals q_D
+(going from the original tree to the new tree using the detach move)
+and q_A (going from the new tree to the original tree using an attach
+move).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>key</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.PRNGKeyArray">PRNGKeyArray</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The random key.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>kernel_state</code>
+            </td>
+            <td>
+                  <code><span title="flax.nnx.State">State</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The original kernel state, must have attributes:
+- parameters
+- leaf_level_map
+- node_sizes
+- tree_expression
+- is_operator</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>kernel_prior</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="KernelPrior (gallifrey.kernels.prior.KernelPrior)" href="../../kernels/prior/#gallifrey.kernels.prior.KernelPrior">KernelPrior</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The prior to sample the new subtree from.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>verbosity</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The verbosity level, by default 0. Debug information is printed
+if verbosity &gt; 2.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="flax.nnx.State">State</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The updated kernel state after the move.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarFloat">ScalarFloat</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The probability associated with the proposal q_D (b|a, k, theta),
+i.e. going from the original tree to the new tree using the detach move.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarFloat">ScalarFloat</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The probability associated with the proposal q_A (b|a, k', theta'),
+i.e. the transition probability from the new tree to the original tree
+using an attach move.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>gallifrey/moves/detach_attach.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">340</span>
+<span class="normal">341</span>
+<span class="normal">342</span>
+<span class="normal">343</span>
+<span class="normal">344</span>
+<span class="normal">345</span>
+<span class="normal">346</span>
+<span class="normal">347</span>
+<span class="normal">348</span>
+<span class="normal">349</span>
+<span class="normal">350</span>
+<span class="normal">351</span>
+<span class="normal">352</span>
+<span class="normal">353</span>
+<span class="normal">354</span>
+<span class="normal">355</span>
+<span class="normal">356</span>
+<span class="normal">357</span>
+<span class="normal">358</span>
+<span class="normal">359</span>
+<span class="normal">360</span>
+<span class="normal">361</span>
+<span class="normal">362</span>
+<span class="normal">363</span>
+<span class="normal">364</span>
+<span class="normal">365</span>
+<span class="normal">366</span>
+<span class="normal">367</span>
+<span class="normal">368</span>
+<span class="normal">369</span>
+<span class="normal">370</span>
+<span class="normal">371</span>
+<span class="normal">372</span>
+<span class="normal">373</span>
+<span class="normal">374</span>
+<span class="normal">375</span>
+<span class="normal">376</span>
+<span class="normal">377</span>
+<span class="normal">378</span>
+<span class="normal">379</span>
+<span class="normal">380</span>
+<span class="normal">381</span>
+<span class="normal">382</span>
+<span class="normal">383</span>
+<span class="normal">384</span>
+<span class="normal">385</span>
+<span class="normal">386</span>
+<span class="normal">387</span>
+<span class="normal">388</span>
+<span class="normal">389</span>
+<span class="normal">390</span>
+<span class="normal">391</span>
+<span class="normal">392</span>
+<span class="normal">393</span>
+<span class="normal">394</span>
+<span class="normal">395</span>
+<span class="normal">396</span>
+<span class="normal">397</span>
+<span class="normal">398</span>
+<span class="normal">399</span>
+<span class="normal">400</span>
+<span class="normal">401</span>
+<span class="normal">402</span>
+<span class="normal">403</span>
+<span class="normal">404</span>
+<span class="normal">405</span>
+<span class="normal">406</span>
+<span class="normal">407</span>
+<span class="normal">408</span>
+<span class="normal">409</span>
+<span class="normal">410</span>
+<span class="normal">411</span>
+<span class="normal">412</span>
+<span class="normal">413</span>
+<span class="normal">414</span>
+<span class="normal">415</span>
+<span class="normal">416</span>
+<span class="normal">417</span>
+<span class="normal">418</span>
+<span class="normal">419</span>
+<span class="normal">420</span>
+<span class="normal">421</span>
+<span class="normal">422</span>
+<span class="normal">423</span>
+<span class="normal">424</span>
+<span class="normal">425</span>
+<span class="normal">426</span>
+<span class="normal">427</span>
+<span class="normal">428</span>
+<span class="normal">429</span>
+<span class="normal">430</span>
+<span class="normal">431</span>
+<span class="normal">432</span>
+<span class="normal">433</span>
+<span class="normal">434</span>
+<span class="normal">435</span>
+<span class="normal">436</span>
+<span class="normal">437</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;kernel_prior&quot;</span><span class="p">,</span> <span class="s2">&quot;verbosity&quot;</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">detach_move</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PRNGKeyArray</span><span class="p">,</span>
+    <span class="n">kernel_state</span><span class="p">:</span> <span class="n">nnx</span><span class="o">.</span><span class="n">State</span><span class="p">,</span>
+    <span class="n">kernel_prior</span><span class="p">:</span> <span class="n">KernelPrior</span><span class="p">,</span>
+    <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">nnx</span><span class="o">.</span><span class="n">State</span><span class="p">,</span> <span class="n">ScalarFloat</span><span class="p">,</span> <span class="n">ScalarFloat</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform detach move. In this move, a scaffold is detached</span>
+<span class="sd">    from the tree expression (at idx a), and a subtree from the</span>
+<span class="sd">    scaffold (at idx b) is detached and then reattached to the</span>
+<span class="sd">    root (idx a) of the scaffold.</span>
+
+<span class="sd">    Also returns the probabilities associated with the proposals q_D</span>
+<span class="sd">    (going from the original tree to the new tree using the detach move)</span>
+<span class="sd">    and q_A (going from the new tree to the original tree using an attach</span>
+<span class="sd">    move).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : PRNGKeyArray</span>
+<span class="sd">        The random key.</span>
+<span class="sd">    kernel_state : nnx.State</span>
+<span class="sd">        The original kernel state, must have attributes:</span>
+<span class="sd">        - parameters</span>
+<span class="sd">        - leaf_level_map</span>
+<span class="sd">        - node_sizes</span>
+<span class="sd">        - tree_expression</span>
+<span class="sd">        - is_operator</span>
+<span class="sd">    kernel_prior : KernelPrior</span>
+<span class="sd">        The prior to sample the new subtree from.</span>
+<span class="sd">    verbosity : int, optional</span>
+<span class="sd">        The verbosity level, by default 0. Debug information is printed</span>
+<span class="sd">        if verbosity &gt; 2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    nnx.State</span>
+<span class="sd">        The updated kernel state after the move.</span>
+<span class="sd">    ScalarFloat</span>
+<span class="sd">        The probability associated with the proposal q_D (b|a, k, theta),</span>
+<span class="sd">        i.e. going from the original tree to the new tree using the detach move.</span>
+<span class="sd">    ScalarFloat</span>
+<span class="sd">        The probability associated with the proposal q_A (b|a, k&#39;, theta&#39;),</span>
+<span class="sd">        i.e. the transition probability from the new tree to the original tree</span>
+<span class="sd">        using an attach move.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># get the new structure and the mapping between the old and new indices</span>
+    <span class="n">new_structure</span><span class="p">,</span> <span class="n">index_mapping</span><span class="p">,</span> <span class="n">idx_a</span><span class="p">,</span> <span class="n">idx_b</span> <span class="o">=</span> <span class="n">structure_detach_move</span><span class="p">(</span>
+        <span class="n">key</span><span class="p">,</span>
+        <span class="n">kernel_state</span><span class="o">.</span><span class="n">tree_expression</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="n">kernel_state</span><span class="o">.</span><span class="n">post_level_map</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># get attributes of new tree</span>
+    <span class="n">new_kernel</span> <span class="o">=</span> <span class="n">kernel_prior</span><span class="o">.</span><span class="n">reconstruct_kernel</span><span class="p">(</span><span class="n">kernel_state</span><span class="p">)</span>
+    <span class="n">new_kernel</span><span class="o">.</span><span class="n">init_tree</span><span class="p">(</span>
+        <span class="n">new_structure</span><span class="p">,</span>
+        <span class="n">kernel_prior</span><span class="o">.</span><span class="n">kernel_library</span><span class="p">,</span>
+        <span class="n">kernel_prior</span><span class="o">.</span><span class="n">max_depth</span><span class="p">,</span>
+        <span class="n">kernel_prior</span><span class="o">.</span><span class="n">num_datapoints</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># move parameters from old indices to new indices</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">new_kernel_state</span> <span class="o">=</span> <span class="n">nnx</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">new_kernel</span><span class="p">)</span>
+    <span class="n">new_kernel_state</span> <span class="o">=</span> <span class="n">move_parameters</span><span class="p">(</span>
+        <span class="n">new_kernel_state</span><span class="p">,</span>
+        <span class="n">index_mapping</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+        <span class="n">kernel_prior</span><span class="o">.</span><span class="n">max_depth</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># calculate q_D (b|a, k, theta), i.e. the probability associated with the</span>
+    <span class="c1"># detach move going from the original tree to the new tree using the detach move</span>
+    <span class="c1"># (which is equal to the probability of sampling idx_b given idx_a</span>
+    <span class="c1"># was sampled, which is simply the inverse of the number of nodes in the</span>
+    <span class="c1"># subtree, assuming uniform sampling)</span>
+    <span class="n">log_q_D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">kernel_state</span><span class="o">.</span><span class="n">node_sizes</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="n">idx_a</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
+
+    <span class="c1"># calculate q_A (b|a, k&#39;, theta&#39;), i.e. involution attach move</span>
+    <span class="c1"># going from the new tree to the original tree using an attach move</span>
+    <span class="n">path</span><span class="p">,</span> <span class="n">log_p_path</span> <span class="o">=</span> <span class="n">reconstruct_path</span><span class="p">(</span>
+        <span class="n">idx_a</span><span class="p">,</span>
+        <span class="n">idx_b</span><span class="p">,</span>
+        <span class="n">max_depth</span><span class="o">=</span><span class="n">kernel_prior</span><span class="o">.</span><span class="n">kernel_structure_prior</span><span class="o">.</span><span class="n">max_depth</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># we use the original kernel here, since we are calculating the probability</span>
+    <span class="c1"># of sampling exactly the (now) missing scaffold, so we have to traverse</span>
+    <span class="c1"># the scaffold from the original kernel</span>
+    <span class="n">log_p_scaffold</span> <span class="o">=</span> <span class="n">kernel_prior</span><span class="o">.</span><span class="n">kernel_structure_prior</span><span class="o">.</span><span class="n">log_prob_single</span><span class="p">(</span>
+        <span class="n">kernel_state</span><span class="o">.</span><span class="n">tree_expression</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+        <span class="n">path_to_hole</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+        <span class="n">hole_idx</span><span class="o">=</span><span class="n">idx_b</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">log_q_A</span> <span class="o">=</span> <span class="n">log_p_path</span> <span class="o">+</span> <span class="n">log_p_scaffold</span>
+
+    <span class="k">return</span> <span class="n">new_kernel_state</span><span class="p">,</span> <span class="n">log_q_D</span><span class="p">,</span> <span class="n">log_q_A</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="gallifrey.moves.detach_attach.detach_subtree" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">detach_subtree</span><span class="p">(</span><span class="n">tree_expression</span><span class="p">,</span> <span class="n">subtree_root_idx</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Cut a subtree from a tree expression, starting at the subtree root
+node.</p>
+<p>Returns the tree_expression with the subtree removed, the subtree
+expression, and the indices of the nodes in the subtree.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>tree_expression</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tree expression, given in level order notation.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>subtree_root_idx</code>
+            </td>
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The index of node where the subtree is rooted.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>fill_value</code>
+            </td>
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The value to fill the hole with in the subtree, by default -1.
+(Must be negative.)</p>
+              </div>
+            </td>
+            <td>
+                  <code>-1</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The (level order) tree expression with the subtree removed.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The (level order) tree expression of the subtree, same length as the
+input tree expression.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The indices of the nodes in the subtree.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>gallifrey/moves/detach_attach.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">757</span>
+<span class="normal">758</span>
+<span class="normal">759</span>
+<span class="normal">760</span>
+<span class="normal">761</span>
+<span class="normal">762</span>
+<span class="normal">763</span>
+<span class="normal">764</span>
+<span class="normal">765</span>
+<span class="normal">766</span>
+<span class="normal">767</span>
+<span class="normal">768</span>
+<span class="normal">769</span>
+<span class="normal">770</span>
+<span class="normal">771</span>
+<span class="normal">772</span>
+<span class="normal">773</span>
+<span class="normal">774</span>
+<span class="normal">775</span>
+<span class="normal">776</span>
+<span class="normal">777</span>
+<span class="normal">778</span>
+<span class="normal">779</span>
+<span class="normal">780</span>
+<span class="normal">781</span>
+<span class="normal">782</span>
+<span class="normal">783</span>
+<span class="normal">784</span>
+<span class="normal">785</span>
+<span class="normal">786</span>
+<span class="normal">787</span>
+<span class="normal">788</span>
+<span class="normal">789</span>
+<span class="normal">790</span>
+<span class="normal">791</span>
+<span class="normal">792</span>
+<span class="normal">793</span>
+<span class="normal">794</span>
+<span class="normal">795</span>
+<span class="normal">796</span>
+<span class="normal">797</span>
+<span class="normal">798</span>
+<span class="normal">799</span>
+<span class="normal">800</span>
+<span class="normal">801</span>
+<span class="normal">802</span>
+<span class="normal">803</span>
+<span class="normal">804</span>
+<span class="normal">805</span>
+<span class="normal">806</span>
+<span class="normal">807</span>
+<span class="normal">808</span>
+<span class="normal">809</span>
+<span class="normal">810</span>
+<span class="normal">811</span>
+<span class="normal">812</span>
+<span class="normal">813</span>
+<span class="normal">814</span>
+<span class="normal">815</span>
+<span class="normal">816</span>
+<span class="normal">817</span>
+<span class="normal">818</span>
+<span class="normal">819</span>
+<span class="normal">820</span>
+<span class="normal">821</span>
+<span class="normal">822</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">detach_subtree</span><span class="p">(</span>
+    <span class="n">tree_expression</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">subtree_root_idx</span><span class="p">:</span> <span class="n">ScalarInt</span><span class="p">,</span>
+    <span class="n">fill_value</span><span class="p">:</span> <span class="n">ScalarInt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cut a subtree from a tree expression, starting at the subtree root</span>
+<span class="sd">    node.</span>
+
+<span class="sd">    Returns the tree_expression with the subtree removed, the subtree</span>
+<span class="sd">    expression, and the indices of the nodes in the subtree.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tree_expression : Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The tree expression, given in level order notation.</span>
+<span class="sd">    subtree_root_idx : ScalarInt</span>
+<span class="sd">        The index of node where the subtree is rooted.</span>
+<span class="sd">    fill_value : ScalarInt, optional</span>
+<span class="sd">        The value to fill the hole with in the subtree, by default -1.</span>
+<span class="sd">        (Must be negative.)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The (level order) tree expression with the subtree removed.</span>
+<span class="sd">    Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The (level order) tree expression of the subtree, same length as the</span>
+<span class="sd">        input tree expression.</span>
+<span class="sd">    Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The indices of the nodes in the subtree.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">max_nodes</span> <span class="o">=</span> <span class="n">tree_expression</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># if tree_expression[subtree_root_idx] == -1:</span>
+    <span class="c1">#     raise ValueError(&quot;The start index must be a non-empty node.&quot;)</span>
+    <span class="c1"># if fill_value &gt;= 0:</span>
+    <span class="c1">#     raise ValueError(&quot;The fill value must be negative.&quot;)</span>
+
+    <span class="c1"># create initial state</span>
+    <span class="n">subtree_expression</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">max_nodes</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">index_array</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">subtree_expression</span><span class="p">)</span>
+    <span class="n">index_pointer</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">subtree_expression</span><span class="p">)</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">subtree_root_idx</span><span class="p">)</span>
+    <span class="n">stack_pointer</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">tree_expression</span><span class="p">,</span>
+        <span class="n">subtree_expression</span><span class="p">,</span>
+        <span class="n">index_array</span><span class="p">,</span>
+        <span class="n">index_pointer</span><span class="p">,</span>
+        <span class="n">stack</span><span class="p">,</span>
+        <span class="n">stack_pointer</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">tree_expression</span><span class="p">,</span> <span class="n">subtree_expression</span><span class="p">,</span> <span class="n">index_array</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_detach_subtree</span><span class="p">(</span>
+        <span class="n">initial_state</span><span class="p">,</span>
+        <span class="n">max_nodes</span><span class="p">,</span>
+        <span class="n">fill_value</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tree_expression</span><span class="p">,</span> <span class="n">subtree_expression</span><span class="p">,</span> <span class="n">index_array</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="gallifrey.moves.detach_attach.scaffold_proposal" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">scaffold_proposal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">max_depth</span><span class="p">,</span> <span class="n">path_to_hole</span><span class="p">,</span> <span class="n">hole_idx</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">is_operator</span><span class="p">,</span> <span class="n">empty_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Propose the tree structure for the scaffold in the
+attach move. Also returns the log-probability of the proposal.</p>
+<p>The scaffold is a tree structure proposal very similar
+to the samples created from the kernel prior (see
+gallifrey.kernels.prior.TreeStructurePrior). The difference
+is that this prior is conditioned by the path to the hole, meaning
+some branches are fixed to be operator nodes, so that the hole can
+be reached.
+The root of the scaffold is assumed to be first index in the path_to_hole.</p>
+<p>The hole itself is fixed to be a leaf node, and empty (filled by the
+empty_value) in the scaffold.
+NOTE: This means the returned scaffold is not a valid kernel structure
+in itself, the hole must be filled by a valid subtree.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>key</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.PRNGKeyArray">PRNGKeyArray</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Random key for sampling.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>max_depth</code>
+            </td>
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The maximum depth of the nested kernel structure tree.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>path_to_hole</code>
+            </td>
+            <td>
+                  <code> Int[jnp.ndarray, &#34; D&#34;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The path to the hole in the tree. A list of indices that
+describe the path from the root to the hole (level order
+indices).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>hole_idx</code>
+            </td>
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The index of the hole in the tree (level order index).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>probs</code>
+            </td>
+            <td>
+                  <code> Float[jnp.ndarray, &#34; D&#34;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The probabilities of sampling each kernel in the library.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>is_operator</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Bool">Bool</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An array that indicates whether each kernel in the library is an operator.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>empty_value</code>
+            </td>
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The value to fill the hole with in the scaffold, by default -1.</p>
+              </div>
+            </td>
+            <td>
+                  <code>-1</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code> Int[jnp.ndarray, &#34; D&#34;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>An array that describes the scaffold structure.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarFloat">ScalarFloat</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The log probability associated with the scaffold.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>gallifrey/moves/detach_attach.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">524</span>
+<span class="normal">525</span>
+<span class="normal">526</span>
+<span class="normal">527</span>
+<span class="normal">528</span>
+<span class="normal">529</span>
+<span class="normal">530</span>
+<span class="normal">531</span>
+<span class="normal">532</span>
+<span class="normal">533</span>
+<span class="normal">534</span>
+<span class="normal">535</span>
+<span class="normal">536</span>
+<span class="normal">537</span>
+<span class="normal">538</span>
+<span class="normal">539</span>
+<span class="normal">540</span>
+<span class="normal">541</span>
+<span class="normal">542</span>
+<span class="normal">543</span>
+<span class="normal">544</span>
+<span class="normal">545</span>
+<span class="normal">546</span>
+<span class="normal">547</span>
+<span class="normal">548</span>
+<span class="normal">549</span>
+<span class="normal">550</span>
+<span class="normal">551</span>
+<span class="normal">552</span>
+<span class="normal">553</span>
+<span class="normal">554</span>
+<span class="normal">555</span>
+<span class="normal">556</span>
+<span class="normal">557</span>
+<span class="normal">558</span>
+<span class="normal">559</span>
+<span class="normal">560</span>
+<span class="normal">561</span>
+<span class="normal">562</span>
+<span class="normal">563</span>
+<span class="normal">564</span>
+<span class="normal">565</span>
+<span class="normal">566</span>
+<span class="normal">567</span>
+<span class="normal">568</span>
+<span class="normal">569</span>
+<span class="normal">570</span>
+<span class="normal">571</span>
+<span class="normal">572</span>
+<span class="normal">573</span>
+<span class="normal">574</span>
+<span class="normal">575</span>
+<span class="normal">576</span>
+<span class="normal">577</span>
+<span class="normal">578</span>
+<span class="normal">579</span>
+<span class="normal">580</span>
+<span class="normal">581</span>
+<span class="normal">582</span>
+<span class="normal">583</span>
+<span class="normal">584</span>
+<span class="normal">585</span>
+<span class="normal">586</span>
+<span class="normal">587</span>
+<span class="normal">588</span>
+<span class="normal">589</span>
+<span class="normal">590</span>
+<span class="normal">591</span>
+<span class="normal">592</span>
+<span class="normal">593</span>
+<span class="normal">594</span>
+<span class="normal">595</span>
+<span class="normal">596</span>
+<span class="normal">597</span>
+<span class="normal">598</span>
+<span class="normal">599</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">scaffold_proposal</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PRNGKeyArray</span><span class="p">,</span>
+    <span class="n">max_depth</span><span class="p">:</span> <span class="n">ScalarInt</span><span class="p">,</span>
+    <span class="n">path_to_hole</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">hole_idx</span><span class="p">:</span> <span class="n">ScalarInt</span><span class="p">,</span>
+    <span class="n">probs</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">is_operator</span><span class="p">:</span> <span class="n">Bool</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">empty_value</span><span class="p">:</span> <span class="n">ScalarInt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">ScalarFloat</span><span class="p">,</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Propose the tree structure for the scaffold in the</span>
+<span class="sd">    attach move. Also returns the log-probability of the proposal.</span>
+
+<span class="sd">    The scaffold is a tree structure proposal very similar</span>
+<span class="sd">    to the samples created from the kernel prior (see</span>
+<span class="sd">    gallifrey.kernels.prior.TreeStructurePrior). The difference</span>
+<span class="sd">    is that this prior is conditioned by the path to the hole, meaning</span>
+<span class="sd">    some branches are fixed to be operator nodes, so that the hole can</span>
+<span class="sd">    be reached.</span>
+<span class="sd">    The root of the scaffold is assumed to be first index in the path_to_hole.</span>
+
+<span class="sd">    The hole itself is fixed to be a leaf node, and empty (filled by the</span>
+<span class="sd">    empty_value) in the scaffold.</span>
+<span class="sd">    NOTE: This means the returned scaffold is not a valid kernel structure</span>
+<span class="sd">    in itself, the hole must be filled by a valid subtree.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : PRNGKeyArray</span>
+<span class="sd">        Random key for sampling.</span>
+<span class="sd">    max_depth : ScalarInt</span>
+<span class="sd">        The maximum depth of the nested kernel structure tree.</span>
+<span class="sd">    path_to_hole :  Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The path to the hole in the tree. A list of indices that</span>
+<span class="sd">        describe the path from the root to the hole (level order</span>
+<span class="sd">        indices).</span>
+<span class="sd">    hole_idx : ScalarInt</span>
+<span class="sd">        The index of the hole in the tree (level order index).</span>
+<span class="sd">    probs :  Float[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The probabilities of sampling each kernel in the library.</span>
+<span class="sd">    is_operator : Bool[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        An array that indicates whether each kernel in the library is an operator.</span>
+<span class="sd">    empty_value : ScalarInt, optional</span>
+<span class="sd">        The value to fill the hole with in the scaffold, by default -1.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">     Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        An array that describes the scaffold structure.</span>
+<span class="sd">    ScalarFloat</span>
+<span class="sd">        The log probability associated with the scaffold.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">max_nodes</span> <span class="o">=</span> <span class="n">calculate_max_nodes</span><span class="p">(</span><span class="n">max_depth</span><span class="p">)</span>
+
+    <span class="c1"># create sample array to be filled, this will be the output (empty</span>
+    <span class="c1"># nodes are labeled -1)</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">max_nodes</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># create initial stack: empty except for the root node, start at beginning of path</span>
+    <span class="n">initial_stack</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">path_to_hole</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">pointer</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># initial position of the stack pointer</span>
+    <span class="n">initial_log_p</span> <span class="o">=</span> <span class="mf">0.0</span>  <span class="c1"># initial probability</span>
+
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">initial_stack</span><span class="p">,</span> <span class="n">pointer</span><span class="p">,</span> <span class="n">initial_log_p</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_scaffold_proposal</span><span class="p">(</span>
+        <span class="n">initial_state</span><span class="p">,</span>
+        <span class="n">probs</span><span class="p">,</span>
+        <span class="n">is_operator</span><span class="p">,</span>
+        <span class="n">path_to_hole</span><span class="p">,</span>
+        <span class="n">hole_idx</span><span class="p">,</span>
+        <span class="n">max_depth</span><span class="p">,</span>
+        <span class="n">empty_value</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="gallifrey.moves.detach_attach.structure_attach_move" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">structure_attach_move</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">tree_expression</span><span class="p">,</span> <span class="n">post_level_map</span><span class="p">,</span> <span class="n">node_heights</span><span class="p">,</span> <span class="n">kernel_prior</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Perform attach move on the kernel structure array. In this move,
+a subtree is detached from the tree expression (at idx a), a
+scaffold is attached to the tree expression (at idx a), and the
+subtree originally at idx a is reattached to the scaffold (at idx b).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>key</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.PRNGKeyArray">PRNGKeyArray</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The random key.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>tree_expression</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tree expression, given in level order notation.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>post_level_map</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The array that maps the post order index to the level order index.
+(This is useful, since the post_level_map contains all the indices
+of the nodes in the tree, which we can sample).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>node_heights</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The heights of each node in the tree. (See
+gallifrey.kernels.tree.TreeKernel for more information.)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>kernel_prior</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="KernelPrior (gallifrey.kernels.prior.KernelPrior)" href="../../kernels/prior/#gallifrey.kernels.prior.KernelPrior">KernelPrior</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The kernel prior object that contains the kernel structure prior.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>verbosity</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The verbosity level, by default 0. Debug information is printed
+if verbosity &gt; 2.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The new tree expression with the scaffold attached and the subtree
+reattached.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The changes in the tree structure, a list of indices that differ
+between the original tree and the new tree.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39;2 D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The mapping between the old and new indices of the nodes in the
+subtree. The first column contains the old indices, and the second
+column contains the new indices.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarFloat">ScalarFloat</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The log probability associated with the path to the hole in the
+scaffold.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarFloat">ScalarFloat</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The log probability associated with the scaffold.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The index of the root of the subtree that was detached/scaffold
+attached (idx a).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The index where the subtree was reattached (idx b).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>gallifrey/moves/detach_attach.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span>
+<span class="normal">335</span>
+<span class="normal">336</span>
+<span class="normal">337</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">structure_attach_move</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PRNGKeyArray</span><span class="p">,</span>
+    <span class="n">tree_expression</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">post_level_map</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">node_heights</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">kernel_prior</span><span class="p">:</span> <span class="n">KernelPrior</span><span class="p">,</span>
+    <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot;2 D&quot;</span><span class="p">],</span>
+    <span class="n">ScalarFloat</span><span class="p">,</span>
+    <span class="n">ScalarFloat</span><span class="p">,</span>
+    <span class="n">ScalarInt</span><span class="p">,</span>
+    <span class="n">ScalarInt</span><span class="p">,</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform attach move on the kernel structure array. In this move,</span>
+<span class="sd">    a subtree is detached from the tree expression (at idx a), a</span>
+<span class="sd">    scaffold is attached to the tree expression (at idx a), and the</span>
+<span class="sd">    subtree originally at idx a is reattached to the scaffold (at idx b).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : PRNGKeyArray</span>
+<span class="sd">        The random key.</span>
+<span class="sd">    tree_expression : Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The tree expression, given in level order notation.</span>
+<span class="sd">    post_level_map : Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The array that maps the post order index to the level order index.</span>
+<span class="sd">        (This is useful, since the post_level_map contains all the indices</span>
+<span class="sd">        of the nodes in the tree, which we can sample).</span>
+<span class="sd">    node_heights : Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The heights of each node in the tree. (See</span>
+<span class="sd">        gallifrey.kernels.tree.TreeKernel for more information.)</span>
+<span class="sd">    kernel_prior : KernelPrior</span>
+<span class="sd">        The kernel prior object that contains the kernel structure prior.</span>
+<span class="sd">    verbosity : int, optional</span>
+<span class="sd">        The verbosity level, by default 0. Debug information is printed</span>
+<span class="sd">        if verbosity &gt; 2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The new tree expression with the scaffold attached and the subtree</span>
+<span class="sd">        reattached.</span>
+<span class="sd">    Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The changes in the tree structure, a list of indices that differ</span>
+<span class="sd">        between the original tree and the new tree.</span>
+<span class="sd">    Int[jnp.ndarray, &quot;2 D&quot;]</span>
+<span class="sd">        The mapping between the old and new indices of the nodes in the</span>
+<span class="sd">        subtree. The first column contains the old indices, and the second</span>
+<span class="sd">        column contains the new indices.</span>
+<span class="sd">    ScalarFloat</span>
+<span class="sd">        The log probability associated with the path to the hole in the</span>
+<span class="sd">        scaffold.</span>
+<span class="sd">    ScalarFloat</span>
+<span class="sd">        The log probability associated with the scaffold.</span>
+<span class="sd">    ScalarInt</span>
+<span class="sd">        The index of the root of the subtree that was detached/scaffold</span>
+<span class="sd">        attached (idx a).</span>
+<span class="sd">    ScalarInt</span>
+<span class="sd">        The index where the subtree was reattached (idx b).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">idx_a_subkey</span><span class="p">,</span> <span class="n">path_subkey</span><span class="p">,</span> <span class="n">scaffold_subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+    <span class="c1"># select where the scaffold will be attached</span>
+    <span class="n">idx_a</span> <span class="o">=</span> <span class="n">pick_random_node</span><span class="p">(</span><span class="n">idx_a_subkey</span><span class="p">,</span> <span class="n">post_level_map</span><span class="p">)</span>
+
+    <span class="c1"># generate a random path to the hole in the scaffold (this is where</span>
+    <span class="c1"># the subtree originally at idx_a will be re-attached),</span>
+    <span class="c1"># the path needs to respect the node height of the detached subtree,</span>
+    <span class="c1"># since it shouldn&#39;t overshoot the max depth when reattached</span>
+    <span class="n">idx_b</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">path_log_prob</span> <span class="o">=</span> <span class="n">generate_random_path</span><span class="p">(</span>
+        <span class="n">path_subkey</span><span class="p">,</span>
+        <span class="n">idx_a</span><span class="p">,</span>
+        <span class="n">max_depth</span><span class="o">=</span><span class="n">kernel_prior</span><span class="o">.</span><span class="n">max_depth</span><span class="p">,</span>
+        <span class="n">node_height</span><span class="o">=</span><span class="n">node_heights</span><span class="p">[</span><span class="n">idx_a</span><span class="p">],</span>
+    <span class="p">)</span>
+
+    <span class="n">scaffold</span><span class="p">,</span> <span class="n">scaffold_log_p</span> <span class="o">=</span> <span class="n">scaffold_proposal</span><span class="p">(</span>
+        <span class="n">key</span><span class="p">,</span>
+        <span class="n">max_depth</span><span class="o">=</span><span class="n">kernel_prior</span><span class="o">.</span><span class="n">kernel_structure_prior</span><span class="o">.</span><span class="n">max_depth</span><span class="p">,</span>
+        <span class="n">path_to_hole</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+        <span class="n">hole_idx</span><span class="o">=</span><span class="n">idx_b</span><span class="p">,</span>
+        <span class="n">probs</span><span class="o">=</span><span class="n">kernel_prior</span><span class="o">.</span><span class="n">kernel_structure_prior</span><span class="o">.</span><span class="n">probs</span><span class="p">,</span>
+        <span class="n">is_operator</span><span class="o">=</span><span class="n">kernel_prior</span><span class="o">.</span><span class="n">kernel_structure_prior</span><span class="o">.</span><span class="n">is_operator</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># transplant the subtree from the original tree at idx_a to the scaffold</span>
+    <span class="c1"># at idx_b</span>
+    <span class="n">scaffold_with_subtree</span><span class="p">,</span> <span class="n">index_mapping</span> <span class="o">=</span> <span class="n">transplant_subtree</span><span class="p">(</span>
+        <span class="n">tree_expression</span><span class="p">,</span>
+        <span class="n">scaffold</span><span class="p">,</span>
+        <span class="n">idx_a</span><span class="p">,</span>
+        <span class="n">idx_b</span><span class="p">,</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">calculate_max_nodes</span><span class="p">(</span><span class="n">kernel_prior</span><span class="o">.</span><span class="n">max_depth</span><span class="p">)),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># replace the subtree at idx_a with the scaffold + subtree at idx_b</span>
+    <span class="n">new_tree_expression</span><span class="p">,</span> <span class="n">changes</span> <span class="o">=</span> <span class="n">replace_subtree_structure_with</span><span class="p">(</span>
+        <span class="n">tree_expression</span><span class="p">,</span>
+        <span class="n">scaffold_with_subtree</span><span class="p">,</span>
+        <span class="n">idx_a</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;idx_a: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">idx_a</span><span class="p">)</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;idx_b: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">idx_b</span><span class="p">)</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;path: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;scaffold: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">scaffold</span><span class="p">)</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;scaffold_with_subtree: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">scaffold_with_subtree</span><span class="p">)</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;path_log_prob: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">path_log_prob</span><span class="p">)</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;scaffold_log_p: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">scaffold_log_p</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">new_tree_expression</span><span class="p">,</span>
+        <span class="n">changes</span><span class="p">,</span>
+        <span class="n">index_mapping</span><span class="p">,</span>
+        <span class="n">path_log_prob</span><span class="p">,</span>
+        <span class="n">scaffold_log_p</span><span class="p">,</span>
+        <span class="n">idx_a</span><span class="p">,</span>
+        <span class="n">idx_b</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="gallifrey.moves.detach_attach.structure_detach_move" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">structure_detach_move</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">tree_expression</span><span class="p">,</span> <span class="n">post_level_map</span><span class="p">,</span> <span class="n">empty_node_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Perform detach move on the kernel structure array. In this move,
+a scaffold is detached from the tree expression (at idx a), and a
+subtree from the scaffold (at idx b) is detached and then
+reattached to the root (idx a) of the scaffold.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>key</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.PRNGKeyArray">PRNGKeyArray</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The random key for sampling.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>tree_expression</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tree expression, given in level order notation.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>post_level_map</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The array that maps the post order index to the level order index.
+(This is useful, since the post_level_map contains all the indices
+of the nodes in the tree, which we can sample).</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>empty_node_value</code>
+            </td>
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The value to fill the hole with in the subtree, by default -1.
+(Must be negative.)</p>
+              </div>
+            </td>
+            <td>
+                  <code>-1</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>verbosity</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The verbosity level, by default 0. Debug information is printed
+if verbosity &gt; 2.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The new tree expression with the scaffold removed and the subtree
+reattached.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39;2 D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The mapping between the old and new indices of the nodes in the
+subtree. The first column contains the old indices, and the second
+column contains the new indices.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The index of the root of the scaffold (idx a).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The index of the root of the subtree that was detached from the
+scaffold (idx b).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>gallifrey/moves/detach_attach.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">440</span>
+<span class="normal">441</span>
+<span class="normal">442</span>
+<span class="normal">443</span>
+<span class="normal">444</span>
+<span class="normal">445</span>
+<span class="normal">446</span>
+<span class="normal">447</span>
+<span class="normal">448</span>
+<span class="normal">449</span>
+<span class="normal">450</span>
+<span class="normal">451</span>
+<span class="normal">452</span>
+<span class="normal">453</span>
+<span class="normal">454</span>
+<span class="normal">455</span>
+<span class="normal">456</span>
+<span class="normal">457</span>
+<span class="normal">458</span>
+<span class="normal">459</span>
+<span class="normal">460</span>
+<span class="normal">461</span>
+<span class="normal">462</span>
+<span class="normal">463</span>
+<span class="normal">464</span>
+<span class="normal">465</span>
+<span class="normal">466</span>
+<span class="normal">467</span>
+<span class="normal">468</span>
+<span class="normal">469</span>
+<span class="normal">470</span>
+<span class="normal">471</span>
+<span class="normal">472</span>
+<span class="normal">473</span>
+<span class="normal">474</span>
+<span class="normal">475</span>
+<span class="normal">476</span>
+<span class="normal">477</span>
+<span class="normal">478</span>
+<span class="normal">479</span>
+<span class="normal">480</span>
+<span class="normal">481</span>
+<span class="normal">482</span>
+<span class="normal">483</span>
+<span class="normal">484</span>
+<span class="normal">485</span>
+<span class="normal">486</span>
+<span class="normal">487</span>
+<span class="normal">488</span>
+<span class="normal">489</span>
+<span class="normal">490</span>
+<span class="normal">491</span>
+<span class="normal">492</span>
+<span class="normal">493</span>
+<span class="normal">494</span>
+<span class="normal">495</span>
+<span class="normal">496</span>
+<span class="normal">497</span>
+<span class="normal">498</span>
+<span class="normal">499</span>
+<span class="normal">500</span>
+<span class="normal">501</span>
+<span class="normal">502</span>
+<span class="normal">503</span>
+<span class="normal">504</span>
+<span class="normal">505</span>
+<span class="normal">506</span>
+<span class="normal">507</span>
+<span class="normal">508</span>
+<span class="normal">509</span>
+<span class="normal">510</span>
+<span class="normal">511</span>
+<span class="normal">512</span>
+<span class="normal">513</span>
+<span class="normal">514</span>
+<span class="normal">515</span>
+<span class="normal">516</span>
+<span class="normal">517</span>
+<span class="normal">518</span>
+<span class="normal">519</span>
+<span class="normal">520</span>
+<span class="normal">521</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">structure_detach_move</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">PRNGKeyArray</span><span class="p">,</span>
+    <span class="n">tree_expression</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">post_level_map</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">empty_node_value</span><span class="p">:</span> <span class="n">ScalarInt</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">verbosity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot;2 D&quot;</span><span class="p">],</span>
+    <span class="n">ScalarInt</span><span class="p">,</span>
+    <span class="n">ScalarInt</span><span class="p">,</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform detach move on the kernel structure array. In this move,</span>
+<span class="sd">    a scaffold is detached from the tree expression (at idx a), and a</span>
+<span class="sd">    subtree from the scaffold (at idx b) is detached and then</span>
+<span class="sd">    reattached to the root (idx a) of the scaffold.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    key : PRNGKeyArray</span>
+<span class="sd">        The random key for sampling.</span>
+<span class="sd">    tree_expression : Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The tree expression, given in level order notation.</span>
+<span class="sd">    post_level_map : Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The array that maps the post order index to the level order index.</span>
+<span class="sd">        (This is useful, since the post_level_map contains all the indices</span>
+<span class="sd">        of the nodes in the tree, which we can sample).</span>
+<span class="sd">    empty_node_value : ScalarInt, optional</span>
+<span class="sd">        The value to fill the hole with in the subtree, by default -1.</span>
+<span class="sd">        (Must be negative.)</span>
+<span class="sd">    verbosity : int, optional</span>
+<span class="sd">        The verbosity level, by default 0. Debug information is printed</span>
+<span class="sd">        if verbosity &gt; 2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The new tree expression with the scaffold removed and the subtree</span>
+<span class="sd">        reattached.</span>
+<span class="sd">    Int[jnp.ndarray, &quot;2 D&quot;]</span>
+<span class="sd">        The mapping between the old and new indices of the nodes in the</span>
+<span class="sd">        subtree. The first column contains the old indices, and the second</span>
+<span class="sd">        column contains the new indices.</span>
+<span class="sd">    ScalarInt</span>
+<span class="sd">        The index of the root of the scaffold (idx a).</span>
+<span class="sd">    ScalarInt</span>
+<span class="sd">        The index of the root of the subtree that was detached from the</span>
+<span class="sd">        scaffold (idx b).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">key</span><span class="p">,</span> <span class="n">idx_a_subkey</span><span class="p">,</span> <span class="n">idx_b_subkey</span> <span class="o">=</span> <span class="n">jr</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># choose the root of the scaffold to detach</span>
+    <span class="n">idx_a</span> <span class="o">=</span> <span class="n">pick_random_node</span><span class="p">(</span><span class="n">idx_a_subkey</span><span class="p">,</span> <span class="n">post_level_map</span><span class="p">)</span>
+
+    <span class="c1"># detach the subtree</span>
+    <span class="n">amputee_tree</span><span class="p">,</span> <span class="n">subtree_at_a</span><span class="p">,</span> <span class="n">subtree_at_a_indices</span> <span class="o">=</span> <span class="n">detach_subtree</span><span class="p">(</span>
+        <span class="n">tree_expression</span><span class="p">,</span>
+        <span class="n">idx_a</span><span class="p">,</span>
+        <span class="n">fill_value</span><span class="o">=</span><span class="n">empty_node_value</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># select the root of the subtree to detach from the scaffold</span>
+    <span class="n">idx_b</span> <span class="o">=</span> <span class="n">pick_random_node</span><span class="p">(</span><span class="n">idx_b_subkey</span><span class="p">,</span> <span class="n">subtree_at_a_indices</span><span class="p">)</span>
+
+    <span class="c1"># get the subtree from the scaffold and move it to the root of the scaffold,</span>
+    <span class="c1"># also get mapping between old and new indices</span>
+    <span class="n">subtree_at_b</span><span class="p">,</span> <span class="n">index_mapping</span> <span class="o">=</span> <span class="n">get_subtree</span><span class="p">(</span><span class="n">subtree_at_a</span><span class="p">,</span> <span class="n">idx_b</span><span class="p">,</span> <span class="n">new_root_idx</span><span class="o">=</span><span class="n">idx_a</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;idx_a: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">idx_a</span><span class="p">)</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;idx_b: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">idx_b</span><span class="p">)</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Remaining Original Tree: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">amputee_tree</span><span class="p">)</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Subtree at a: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">subtree_at_a</span><span class="p">)</span>
+        <span class="n">debug</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="s2">&quot;Subtree at b: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">subtree_at_b</span><span class="p">)</span>
+
+    <span class="c1"># attach the subtree at the root of the scaffold (this assumes the empty nodes in</span>
+    <span class="c1"># the original tree are -1, and all filled nodes are &gt;= 0)</span>
+    <span class="n">new_tree</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">subtree_at_b</span> <span class="o">&gt;</span> <span class="n">amputee_tree</span><span class="p">,</span> <span class="n">subtree_at_b</span><span class="p">,</span> <span class="n">amputee_tree</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_tree</span><span class="p">,</span> <span class="n">index_mapping</span><span class="p">,</span> <span class="n">idx_a</span><span class="p">,</span> <span class="n">idx_b</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="gallifrey.moves.detach_attach.transplant_subtree" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">transplant_subtree</span><span class="p">(</span><span class="n">donor_tree_expression</span><span class="p">,</span> <span class="n">recipient_tree_expression</span><span class="p">,</span> <span class="n">donor_root_idx</span><span class="p">,</span> <span class="n">recipient_root_idx</span><span class="p">,</span> <span class="n">max_nodes</span><span class="p">)</span></code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Transplant a subtree from one tree to another. The subtree is
+rooted at the donor root index and re-rooted at the recipient
+root index.
+The recipient tree must have an empty node at the recipient root index.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>donor_tree_expression</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tree expression of the donor tree.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>recipient_tree_expression</code>
+            </td>
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tree expression of the recipient tree.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>donor_root_idx</code>
+            </td>
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The index of the root of the subtree to be moved.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>recipient_root_idx</code>
+            </td>
+            <td>
+                  <code><span title="gallifrey.utils.typing.ScalarInt">ScalarInt</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The index of the root of the subtree to be moved to.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>max_nodes</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The maximum number of nodes in the tree.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39; D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The tree expression of the recipient tree with the attached subtree.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="jaxtyping.Int">Int</span>[<span title="jax.numpy.ndarray">ndarray</span>, &#39;2 D&#39;]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The indices of the moved nodes. Two rows, the first row
+contains the indices of the subtree in the donor tree, the second
+row contains the indices of the subtree in the recipient tree.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>gallifrey/moves/detach_attach.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 969</span>
+<span class="normal"> 970</span>
+<span class="normal"> 971</span>
+<span class="normal"> 972</span>
+<span class="normal"> 973</span>
+<span class="normal"> 974</span>
+<span class="normal"> 975</span>
+<span class="normal"> 976</span>
+<span class="normal"> 977</span>
+<span class="normal"> 978</span>
+<span class="normal"> 979</span>
+<span class="normal"> 980</span>
+<span class="normal"> 981</span>
+<span class="normal"> 982</span>
+<span class="normal"> 983</span>
+<span class="normal"> 984</span>
+<span class="normal"> 985</span>
+<span class="normal"> 986</span>
+<span class="normal"> 987</span>
+<span class="normal"> 988</span>
+<span class="normal"> 989</span>
+<span class="normal"> 990</span>
+<span class="normal"> 991</span>
+<span class="normal"> 992</span>
+<span class="normal"> 993</span>
+<span class="normal"> 994</span>
+<span class="normal"> 995</span>
+<span class="normal"> 996</span>
+<span class="normal"> 997</span>
+<span class="normal"> 998</span>
+<span class="normal"> 999</span>
+<span class="normal">1000</span>
+<span class="normal">1001</span>
+<span class="normal">1002</span>
+<span class="normal">1003</span>
+<span class="normal">1004</span>
+<span class="normal">1005</span>
+<span class="normal">1006</span>
+<span class="normal">1007</span>
+<span class="normal">1008</span>
+<span class="normal">1009</span>
+<span class="normal">1010</span>
+<span class="normal">1011</span>
+<span class="normal">1012</span>
+<span class="normal">1013</span>
+<span class="normal">1014</span>
+<span class="normal">1015</span>
+<span class="normal">1016</span>
+<span class="normal">1017</span>
+<span class="normal">1018</span>
+<span class="normal">1019</span>
+<span class="normal">1020</span>
+<span class="normal">1021</span>
+<span class="normal">1022</span>
+<span class="normal">1023</span>
+<span class="normal">1024</span>
+<span class="normal">1025</span>
+<span class="normal">1026</span>
+<span class="normal">1027</span>
+<span class="normal">1028</span>
+<span class="normal">1029</span>
+<span class="normal">1030</span>
+<span class="normal">1031</span>
+<span class="normal">1032</span>
+<span class="normal">1033</span>
+<span class="normal">1034</span>
+<span class="normal">1035</span>
+<span class="normal">1036</span>
+<span class="normal">1037</span>
+<span class="normal">1038</span>
+<span class="normal">1039</span>
+<span class="normal">1040</span>
+<span class="normal">1041</span>
+<span class="normal">1042</span>
+<span class="normal">1043</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;max_nodes&quot;</span><span class="p">,))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">transplant_subtree</span><span class="p">(</span>
+    <span class="n">donor_tree_expression</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">recipient_tree_expression</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">donor_root_idx</span><span class="p">:</span> <span class="n">ScalarInt</span><span class="p">,</span>
+    <span class="n">recipient_root_idx</span><span class="p">:</span> <span class="n">ScalarInt</span><span class="p">,</span>
+    <span class="n">max_nodes</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot; D&quot;</span><span class="p">],</span>
+    <span class="n">Int</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="s2">&quot;2 D&quot;</span><span class="p">],</span>
+<span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transplant a subtree from one tree to another. The subtree is</span>
+<span class="sd">    rooted at the donor root index and re-rooted at the recipient</span>
+<span class="sd">    root index.</span>
+<span class="sd">    The recipient tree must have an empty node at the recipient root index.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    donor_tree_expression : Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The tree expression of the donor tree.</span>
+<span class="sd">    recipient_tree_expression : Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The tree expression of the recipient tree.</span>
+<span class="sd">    donor_root_idx : ScalarInt</span>
+<span class="sd">        The index of the root of the subtree to be moved.</span>
+<span class="sd">    recipient_root_idx : ScalarInt</span>
+<span class="sd">        The index of the root of the subtree to be moved to.</span>
+<span class="sd">    max_nodes : int</span>
+<span class="sd">        The maximum number of nodes in the tree.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Int[jnp.ndarray, &quot; D&quot;]</span>
+<span class="sd">        The tree expression of the recipient tree with the attached subtree.</span>
+<span class="sd">    Int[jnp.ndarray, &quot;2 D&quot;]</span>
+<span class="sd">        The indices of the moved nodes. Two rows, the first row</span>
+<span class="sd">        contains the indices of the subtree in the donor tree, the second</span>
+<span class="sd">        row contains the indices of the subtree in the recipient tree.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if donor_tree_expression[donor_root_idx] == -1:</span>
+    <span class="c1">#     raise ValueError(&quot;The donor root index must be a non-empty node.&quot;)</span>
+    <span class="c1"># if recipient_tree_expression[recipient_root_idx] != -1:</span>
+    <span class="c1">#     raise ValueError(&quot;The recipient root index must be an empty node.&quot;)</span>
+
+    <span class="c1"># create initial state</span>
+    <span class="n">index_array</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_nodes</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">index_pointer</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">stack</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">max_nodes</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">donor_root_idx</span><span class="p">)</span>
+    <span class="n">new_stack</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">stack</span><span class="p">)</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">recipient_root_idx</span><span class="p">)</span>
+    <span class="n">stack_pointer</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">recipient_tree_expression</span><span class="p">,</span>
+        <span class="n">index_array</span><span class="p">,</span>
+        <span class="n">index_pointer</span><span class="p">,</span>
+        <span class="n">stack</span><span class="p">,</span>
+        <span class="n">new_stack</span><span class="p">,</span>
+        <span class="n">stack_pointer</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">tree_expression</span><span class="p">,</span> <span class="n">index_array</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_transplant_subtree</span><span class="p">(</span>
+        <span class="n">donor_tree_expression</span><span class="p">,</span>
+        <span class="n">initial_state</span><span class="p">,</span>
+        <span class="n">max_nodes</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">index_array</span> <span class="o">=</span> <span class="n">index_array</span>
+    <span class="c1"># if jnp.any(index_array &gt;= max_nodes):</span>
+    <span class="c1">#     raise ValueError(</span>
+    <span class="c1">#         &quot;The index array is out of bounds. This could happen if the tree &quot;</span>
+    <span class="c1">#         &quot;is re-rooted to a spot where one of its leaves exceeds the &quot;</span>
+    <span class="c1">#         &quot;maximum number of nodes.&quot;</span>
+    <span class="c1">#     )</span>
+    <span class="k">return</span> <span class="n">tree_expression</span><span class="p">,</span> <span class="n">index_array</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.tabs.link", "content.code.copy", "content.code.annotate", "header.autohide"], "search": "../../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
