@@ -346,7 +346,7 @@ class LinearAtom(AbstractAtom):
 class LinearWithShiftAtom(AbstractAtom):
     """(Non-stationary) linear atom."""
 
-    name = "Linear"
+    name = "LinearWithShiftAtom"
     num_parameter = 3
     parameter_support = ["positive", "positive", "real"]
     parameter_names = ["bias", "variance", "shift"]
@@ -362,3 +362,27 @@ class LinearWithShiftAtom(AbstractAtom):
         shift = params[2]
         k = bias + variance * ((x - shift) * (y - shift))
         return jnp.asarray(k).squeeze()
+
+
+class GammaExponentialAtom(AbstractAtom):
+    """Gamma Exponential atom. Formula taken from Saad et al. 2023 (https://arxiv.org/abs/2307.09607)"""
+
+    name = "GammaExponential"
+    num_parameter = 3
+    parameter_support = ["positive", "positive", "positive"]
+    parameter_names = ["lengthscale", "variance", "power"]
+
+    def __call__(
+        self,
+        x: Float[jnp.ndarray, "..."],
+        y: Float[jnp.ndarray, "..."],
+        params: Float[jnp.ndarray, " P"],
+    ) -> Float[jnp.ndarray, "..."]:
+        lengthscale = params[0]
+        variance = params[1]
+        power = params[2]
+
+        k = variance * jnp.exp(
+            (-((jnp.abs(x - y) / lengthscale) ** jnp.clip(power, min=0.001, max=2.0)))
+        )
+        return k.squeeze()
