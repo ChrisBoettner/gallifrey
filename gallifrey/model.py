@@ -8,7 +8,8 @@ import beartype.typing as tp
 import jax.numpy as jnp
 import jax.random as jr
 from flax import nnx
-from jax import jit, pmap
+from jax import jit, pmap, vmap, default_backend
+# from jax import jit, pmap
 from jax import tree_util as jtu
 from jax.scipy.special import logsumexp
 from jaxtyping import Float, PRNGKeyArray, PyTree
@@ -721,12 +722,26 @@ class GPModel:
                 verbosity=verbosity,
             )
 
-        final_state, history, accepted_mcmc, accepted_hmc = pmap(
+        # check whether GPU is active
+        if default_backend() != "gpu":
+            final_state, history, accepted_mcmc, accepted_hmc = pmap(
             jit(wrapper), in_axes=0
         )(
             jr.split(key, int(self.num_particles)),
             self.state.particle_states,  # use states batched over 0th axis
         )
+        else:
+            final_state, history, accepted_mcmc, accepted_hmc = jit(vmap(
+            wrapper, in_axes=0)
+        )(
+            jr.split(key, int(self.num_particles)),
+            self.state.particle_states,  # use states batched over 0th axis
+        )
+
+
+
+
+        
 
         # print information
         if verbosity > 0:
@@ -770,7 +785,7 @@ class GPModel:
         Fits the GP model using SMC.
 
         For a detailed description of the SMC algorithm, see the
-        'gallofrey.inference.smc.smc_loop' function.
+        'gallifrey.inference.smc.smc_loop' function.
 
         Parameters
         ----------
