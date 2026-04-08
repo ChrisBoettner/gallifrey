@@ -347,14 +347,6 @@ def smc_round(
             resampled_particle_states,
         )
 
-
-    # run rejuvenation on all particles, parallelised
-    final_state, _, accepted_mcmc, accepted_hmc = vmap(wrapper, in_axes=0)(
-    # final_state, _, accepted_mcmc, accepted_hmc = pmap(wrapper, in_axes=0)(
-        jr.split(rejuvenate_key, num_particles),  # type: ignore
-        resampled_particle_states,
-    )
-
     if verbosity > 0:
         for i, acc_mcmc, acc_hmc in zip(
             range(smc_state.num_particles),  # type: ignore

@@ -738,10 +738,7 @@ class GPModel:
             self.state.particle_states,  # use states batched over 0th axis
         )
 
-
-
-
-        
+     
 
         # print information
         if verbosity > 0:
