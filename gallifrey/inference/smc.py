@@ -8,7 +8,6 @@ import jax.tree_util as jtu
 from blackjax.smc.resampling import stratified
 from flax import nnx
 from jax import jit, lax, pmap, vmap, default_backend
-# from jax import jit, lax, pmap, vmap
 from jax.scipy.special import logsumexp
 from jaxtyping import Float, PRNGKeyArray
 from tensorflow_probability.substrates.jax.distributions import Distribution

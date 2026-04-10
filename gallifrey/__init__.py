@@ -15,7 +15,7 @@ from gallifrey.schedule import LinearSchedule, LogSchedule  # noqa: E402
 # in order to show JAX trace while debugging
 os.environ["JAX_TRACEBACK_FILTERING"] = "off"
 
-# required by Numpy
+# required by for accurately (i.e. without NaNs) computing Cholesky decomposition?
 os.environ["JAX_ENABLE_X64"] = "True"
 jax_config.update("jax_enable_x64", True)
 
