@@ -346,7 +346,7 @@ class LinearAtom(AbstractAtom):
 class LinearWithShiftAtom(AbstractAtom):
     """(Non-stationary) linear atom."""
 
-    name = "LinearWithShiftAtom"
+    name = "LinearWithShift"
     num_parameter = 3
     parameter_support = ["positive", "positive", "real"]
     parameter_names = ["bias", "variance", "shift"]
