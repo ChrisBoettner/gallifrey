@@ -3,6 +3,7 @@ import os
 from beartype import BeartypeConf
 from beartype.claw import beartype_this_package
 from jax import config as jax_config
+from jax import default_backend
 
 # type checks the entire package, but only throw warnings
 # (must be before gallifrey imports)
@@ -11,13 +12,24 @@ beartype_this_package(conf=BeartypeConf(violation_type=UserWarning))  # type: ig
 from gallifrey.model import GPConfig, GPModel  # noqa: E402
 from gallifrey.schedule import LinearSchedule, LogSchedule  # noqa: E402
 
+# in order to show JAX trace while debugging
+os.environ["JAX_TRACEBACK_FILTERING"] = "off"
+
+# required by for accurately (i.e. without NaNs) computing Cholesky decomposition?
 os.environ["JAX_ENABLE_X64"] = "True"
 jax_config.update("jax_enable_x64", True)
-# no idea why, but this increases performance by a factor of 2, at least on CPU
-os.environ["OMP_NUM_THREADS"] = "1"
+
+# check whether GPU is active
+if default_backend() != "gpu":
+    # no idea why, but this increases performance by a factor of 2, at least on CPU
+    os.environ["OMP_NUM_THREADS"] = "1"
+    print("gallifrey: Setting flag `OMP_NUM_THREADS` to `1`")
+else:
+    pass
+
 
 print("gallifrey: Setting flag `JAX_ENABLE_X64` to `True`")
-print("gallifrey: Setting flag `OMP_NUM_THREADS` to `1`")
+
 
 
 __all__ = [

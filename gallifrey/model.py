@@ -8,7 +8,7 @@ import beartype.typing as tp
 import jax.numpy as jnp
 import jax.random as jr
 from flax import nnx
-from jax import jit, pmap
+from jax import jit, pmap, vmap, default_backend
 from jax import tree_util as jtu
 from jax.scipy.special import logsumexp
 from jaxtyping import Float, PRNGKeyArray, PyTree
@@ -721,12 +721,23 @@ class GPModel:
                 verbosity=verbosity,
             )
 
-        final_state, history, accepted_mcmc, accepted_hmc = pmap(
+        # check whether GPU is active
+        if default_backend() != "gpu":
+            final_state, history, accepted_mcmc, accepted_hmc = pmap(
             jit(wrapper), in_axes=0
         )(
             jr.split(key, int(self.num_particles)),
-            self.state.particle_states,  # use states batched over 0th axis
+            static_argnums=(self.state.particle_states),  # use states batched over 0th axis
         )
+        else:
+            final_state, history, accepted_mcmc, accepted_hmc = jit(vmap(
+            wrapper, in_axes=0)
+        )(
+            jr.split(key, int(self.num_particles)),
+            static_argnums=(self.state.particle_states),  # use states batched over 0th axis
+        )
+
+     
 
         # print information
         if verbosity > 0:
@@ -770,7 +781,7 @@ class GPModel:
         Fits the GP model using SMC.
 
         For a detailed description of the SMC algorithm, see the
-        'gallofrey.inference.smc.smc_loop' function.
+        'gallifrey.inference.smc.smc_loop' function.
 
         Parameters
         ----------
@@ -932,7 +943,7 @@ class GPModel:
         Get the mixture distribution of an SMC state.
 
         The predictive distributions for an SMC ensemble are
-        the individual predictive (Gaussion) distributions of the
+        the individual predictive (Gaussian) distributions of the
         particles, weighted by the particle weights. The resulting
         distribution is a Gaussian mixture model, implemented as
         a `MixtureSameFamily` distribution from `tensorflow_probability`, see

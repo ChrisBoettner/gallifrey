@@ -7,7 +7,7 @@ import jax.random as jr
 import jax.tree_util as jtu
 from blackjax.smc.resampling import stratified
 from flax import nnx
-from jax import jit, lax, pmap, vmap
+from jax import jit, lax, pmap, vmap, default_backend
 from jax.scipy.special import logsumexp
 from jaxtyping import Float, PRNGKeyArray
 from tensorflow_probability.substrates.jax.distributions import Distribution
@@ -332,11 +332,19 @@ def smc_round(
             verbosity=verbosity,
         )
 
-    # run rejuvenation on all particles, parallelised
-    final_state, _, accepted_mcmc, accepted_hmc = pmap(wrapper, in_axes=0)(
-        jr.split(rejuvenate_key, num_particles),  # type: ignore
-        resampled_particle_states,
-    )
+    # check whether GPU is active
+    if default_backend() != "gpu":
+        # run rejuvenation on all particles, parallelised
+        final_state, _, accepted_mcmc, accepted_hmc = pmap(wrapper, in_axes=0)(
+            jr.split(rejuvenate_key, num_particles),  # type: ignore
+            resampled_particle_states,
+        )
+    else:
+        # run rejuvenation on all particles, parallelised
+        final_state, _, accepted_mcmc, accepted_hmc = vmap(wrapper, in_axes=0)(
+            jr.split(rejuvenate_key, num_particles),  # type: ignore
+            resampled_particle_states,
+        )
 
     if verbosity > 0:
         for i, acc_mcmc, acc_hmc in zip(
